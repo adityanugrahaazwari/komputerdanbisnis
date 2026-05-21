@@ -41,18 +41,15 @@ class PermissionGroupRbacSeeder extends Seeder
             $admin->permissions()->syncWithoutDetaching($newPermIds);
         }
 
-        // 3. Create Menu under "RBAC Management"
-        $rbacMenu = Menu::where('title', 'RBAC Management')->first();
-        if ($rbacMenu) {
-            // Adjust orders for other RBAC submenus
-            Menu::where('parent_id', $rbacMenu->id)->where('order', '>=', 4)->increment('order');
-            
+        // 3. Create Menu under "Pengaturan Sistem"
+        $parent = Menu::where('title', 'Pengaturan Sistem')->first();
+        if ($parent) {
             Menu::updateOrCreate(
                 ['url' => '/permission-groups'],
                 [
-                    'title' => 'Permission Groups',
+                    'title' => 'Grup Izin',
                     'icon' => 'fas fa-layer-group',
-                    'parent_id' => $rbacMenu->id,
+                    'parent_id' => $parent->id,
                     'permission_slug' => 'permission_groups_view',
                     'order' => 4,
                     'is_active' => true

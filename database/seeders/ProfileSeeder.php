@@ -69,14 +69,16 @@ class ProfileSeeder extends Seeder
             $adminRole->permissions()->syncWithoutDetaching(Permission::whereIn('slug', ['profiles_view', 'profiles_edit'])->pluck('id'));
         }
 
-        // 4. Create Menu
+        // 4. Create Menu under "Profil Lembaga"
+        $parent = Menu::where('title', 'Profil Lembaga')->first();
         Menu::updateOrCreate(
             ['url' => '/profiles'],
             [
-                'title' => 'Profil Web',
-                'icon' => 'fas fa-id-card',
+                'title' => 'Informasi Umum',
+                'icon' => 'fas fa-info-circle',
+                'parent_id' => $parent ? $parent->id : null,
                 'permission_slug' => 'profiles_view',
-                'order' => 4
+                'order' => 1
             ]
         );
     }

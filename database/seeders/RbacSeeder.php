@@ -82,44 +82,46 @@ class RbacSeeder extends Seeder
         );
         $opUser->roles()->sync([$operatorRole->id]);
 
-        $opUser2 = User::updateOrCreate(
-            ['email' => 'operator2@example.com'],
-            ['name' => 'Operator 2', 'password' => Hash::make('password')]
-        );
-        $opUser2->roles()->sync([$operatorRole->id]);
-
-        // 5. Create Menus
-        // Dashboard Menu
+        // 5. Create Root Menus (Categories)
         Menu::updateOrCreate(
             ['url' => '/dashboard'],
             ['title' => 'Dashboard', 'icon' => 'fas fa-home', 'permission_slug' => 'view_dashboard', 'order' => 1]
         );
 
-        // Settings Parent Menu (Dropdown)
-        $settingsMenu = Menu::updateOrCreate(
-            ['title' => 'RBAC Management'],
-            ['url' => null, 'icon' => 'fas fa-user-shield', 'permission_slug' => null, 'order' => 2]
+        Menu::updateOrCreate(
+            ['title' => 'Manajemen Konten'],
+            ['url' => null, 'icon' => 'fas fa-edit', 'permission_slug' => null, 'order' => 2]
         );
 
-        // Sub Menus
+        Menu::updateOrCreate(
+            ['title' => 'Profil Lembaga'],
+            ['url' => null, 'icon' => 'fas fa-university', 'permission_slug' => null, 'order' => 3]
+        );
+
+        $systemMenu = Menu::updateOrCreate(
+            ['title' => 'Pengaturan Sistem'],
+            ['url' => null, 'icon' => 'fas fa-cogs', 'permission_slug' => null, 'order' => 4]
+        );
+
+        // Sub Menus for Pengaturan Sistem
         Menu::updateOrCreate(
             ['url' => '/users'],
-            ['title' => 'User Management', 'icon' => 'fas fa-users', 'parent_id' => $settingsMenu->id, 'permission_slug' => 'users_view', 'order' => 1]
+            ['title' => 'Manajemen User', 'icon' => 'fas fa-users', 'parent_id' => $systemMenu->id, 'permission_slug' => 'users_view', 'order' => 1]
         );
 
         Menu::updateOrCreate(
             ['url' => '/roles'],
-            ['title' => 'Role Management', 'icon' => 'fas fa-shield-alt', 'parent_id' => $settingsMenu->id, 'permission_slug' => 'roles_view', 'order' => 2]
+            ['title' => 'Role & Hak Akses', 'icon' => 'fas fa-user-shield', 'parent_id' => $systemMenu->id, 'permission_slug' => 'roles_view', 'order' => 2]
         );
 
         Menu::updateOrCreate(
             ['url' => '/permissions'],
-            ['title' => 'Permission Management', 'icon' => 'fas fa-key', 'parent_id' => $settingsMenu->id, 'permission_slug' => 'permissions_view', 'order' => 3]
+            ['title' => 'Daftar Izin (Permissions)', 'icon' => 'fas fa-key', 'parent_id' => $systemMenu->id, 'permission_slug' => 'permissions_view', 'order' => 3]
         );
 
         Menu::updateOrCreate(
             ['url' => '/menus'],
-            ['title' => 'Menu Management', 'icon' => 'fas fa-list', 'parent_id' => $settingsMenu->id, 'permission_slug' => 'menus_view', 'order' => 4]
+            ['title' => 'Manajemen Menu', 'icon' => 'fas fa-list', 'parent_id' => $systemMenu->id, 'permission_slug' => 'menus_view', 'order' => 5]
         );
     }
 }

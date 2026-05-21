@@ -41,20 +41,18 @@ class OrganizationalStructureRbacSeeder extends Seeder
             $admin->permissions()->syncWithoutDetaching($newPermIds);
         }
 
-        // 3. Create Menu under "Profil Web"
-        $profileMenu = Menu::where('title', 'Profil Web')->first();
-        if ($profileMenu) {
-            Menu::updateOrCreate(
-                ['url' => '/organizational-structures'],
-                [
-                    'title' => 'Struktur Organisasi',
-                    'icon' => 'fas fa-sitemap',
-                    'parent_id' => $profileMenu->id,
-                    'permission_slug' => 'organizational_structures_view',
-                    'order' => 1,
-                    'is_active' => true
-                ]
-            );
-        }
+        // 3. Create Menu under "Profil Lembaga"
+        $parent = Menu::where('title', 'Profil Lembaga')->first();
+        Menu::updateOrCreate(
+            ['url' => '/organizational-structures'],
+            [
+                'title' => 'Struktur Organisasi',
+                'icon' => 'fas fa-sitemap',
+                'parent_id' => $parent ? $parent->id : null,
+                'permission_slug' => 'organizational_structures_view',
+                'order' => 2,
+                'is_active' => true
+            ]
+        );
     }
 }

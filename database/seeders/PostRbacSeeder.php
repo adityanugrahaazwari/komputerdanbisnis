@@ -56,14 +56,16 @@ class PostRbacSeeder extends Seeder
             $operatorRole->permissions()->syncWithoutDetaching($operatorPostPerms);
         }
 
-        // 4. Create Menu
+        // 4. Create Menu under "Manajemen Konten"
+        $parent = Menu::where('title', 'Manajemen Konten')->first();
         Menu::updateOrCreate(
             ['url' => '/posts'],
             [
-                'title' => 'Berita',
+                'title' => 'Berita & Artikel',
                 'icon' => 'fas fa-newspaper',
+                'parent_id' => $parent ? $parent->id : null,
                 'permission_slug' => 'posts_view',
-                'order' => 3
+                'order' => 1
             ]
         );
     }

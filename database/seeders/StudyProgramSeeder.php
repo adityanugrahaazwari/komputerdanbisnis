@@ -78,14 +78,16 @@ class StudyProgramSeeder extends Seeder
             $adminRole->permissions()->syncWithoutDetaching(Permission::whereIn('slug', array_column($permissions, 'slug'))->pluck('id'));
         }
 
-        // 4. Create Menu
+        // 4. Create Menu under "Manajemen Konten"
+        $parent = Menu::where('title', 'Manajemen Konten')->first();
         Menu::updateOrCreate(
             ['url' => '/study-programs'],
             [
                 'title' => 'Program Studi',
                 'icon' => 'fas fa-graduation-cap',
+                'parent_id' => $parent ? $parent->id : null,
                 'permission_slug' => 'study_programs_view',
-                'order' => 5
+                'order' => 2
             ]
         );
     }

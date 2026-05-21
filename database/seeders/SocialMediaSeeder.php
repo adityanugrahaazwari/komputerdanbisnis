@@ -75,14 +75,16 @@ class SocialMediaSeeder extends Seeder
             $adminRole->permissions()->syncWithoutDetaching(Permission::whereIn('slug', array_column($permissions, 'slug'))->pluck('id'));
         }
 
-        // 4. Create Menu
+        // 4. Create Menu under "Profil Lembaga"
+        $parent = Menu::where('title', 'Profil Lembaga')->first();
         Menu::updateOrCreate(
             ['url' => '/social-media'],
             [
-                'title' => 'Sosial Media',
+                'title' => 'Media Sosial',
                 'icon' => 'fas fa-share-alt',
+                'parent_id' => $parent ? $parent->id : null,
                 'permission_slug' => 'social_media_view',
-                'order' => 6
+                'order' => 3
             ]
         );
     }
