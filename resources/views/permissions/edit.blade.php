@@ -10,16 +10,12 @@
         
         <div>
             <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Group (Modul)</label>
-            <input type="text" name="group" value="{{ old('group', $permission->group) }}" list="groups" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium">
-            <datalist id="groups">
-                <option value="Dashboard">
-                <option value="User Management">
-                <option value="Access Control">
-                <option value="Navigation">
-                <option value="News">
-                <option value="Web Profile">
-                <option value="Study Program">
-            </datalist>
+            <select name="permission_group_id" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium">
+                <option value="">-- Pilih Grup --</option>
+                @foreach($groups as $group)
+                    <option value="{{ $group->id }}" {{ $permission->permission_group_id == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
+                @endforeach
+            </select>
         </div>
 
         <div>

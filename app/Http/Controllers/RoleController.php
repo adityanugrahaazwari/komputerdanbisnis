@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\Permission;
+use App\Models\PermissionGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,9 @@ class RoleController extends Controller
     public function create()
     {
         $this->authorizePermission('roles_create');
-        $permissions = Permission::all()->groupBy('group');
+        $permissions = Permission::with('group')->get()->groupBy(function($item) {
+            return $item->group ? $item->group->name : 'Lainnya';
+        });
         return view('roles.create', compact('permissions'));
     }
 
@@ -48,7 +51,9 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $this->authorizePermission('roles_edit');
-        $permissions = Permission::all()->groupBy('group');
+        $permissions = Permission::with('group')->get()->groupBy(function($item) {
+            return $item->group ? $item->group->name : 'Lainnya';
+        });
         $rolePermissions = $role->permissions->pluck('id')->toArray();
         return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }

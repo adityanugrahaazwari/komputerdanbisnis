@@ -9,7 +9,12 @@ class Permission extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'group'];
+    protected $fillable = ['name', 'slug', 'permission_group_id'];
+
+    public function group()
+    {
+        return $this->belongsTo(PermissionGroup::class, 'permission_group_id');
+    }
 
     public function roles()
     {

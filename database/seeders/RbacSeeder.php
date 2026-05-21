@@ -6,8 +6,10 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\Menu;
+use App\Models\PermissionGroup;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class RbacSeeder extends Seeder
 {
@@ -43,7 +45,18 @@ class RbacSeeder extends Seeder
         ];
 
         foreach ($permissions as $perm) {
-            Permission::updateOrCreate(['slug' => $perm['slug']], $perm);
+            $group = PermissionGroup::firstOrCreate(
+                ['name' => $perm['group']],
+                ['slug' => Str::slug($perm['group'])]
+            );
+
+            Permission::updateOrCreate(
+                ['slug' => $perm['slug']],
+                [
+                    'name' => $perm['name'],
+                    'permission_group_id' => $group->id
+                ]
+            );
         }
 
         // 2. Create Roles

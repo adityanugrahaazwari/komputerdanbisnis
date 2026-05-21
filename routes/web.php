@@ -34,10 +34,12 @@ Route::middleware('auth')->group(function () {
     // Granular permissions are handled inside controllers for cleaner routes
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
+    Route::resource('permission-groups', \App\Http\Controllers\PermissionGroupController::class)->names('permission-groups');
     Route::resource('permissions', PermissionController::class);
     Route::resource('menus', MenuController::class);
     Route::resource('posts', PostController::class);
     Route::resource('profiles', ProfileController::class)->only(['index', 'edit', 'update']);
+    Route::resource('organizational-structures', \App\Http\Controllers\OrganizationalStructureController::class)->names('organizational-structures');
     Route::resource('study-programs', StudyProgramController::class)->names('study_programs');
     Route::resource('social-media', SocialMediaController::class)->names('social_media');
 });

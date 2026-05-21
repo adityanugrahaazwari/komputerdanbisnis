@@ -5,8 +5,10 @@ namespace Database\Seeders;
 use App\Models\Profile;
 use App\Models\Role;
 use App\Models\Permission;
+use App\Models\PermissionGroup;
 use App\Models\Menu;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProfileSeeder extends Seeder
 {
@@ -47,7 +49,18 @@ class ProfileSeeder extends Seeder
         ];
 
         foreach ($permissions as $perm) {
-            Permission::updateOrCreate(['slug' => $perm['slug']], $perm);
+            $group = PermissionGroup::firstOrCreate(
+                ['name' => $perm['group']],
+                ['slug' => Str::slug($perm['group'])]
+            );
+
+            Permission::updateOrCreate(
+                ['slug' => $perm['slug']],
+                [
+                    'name' => $perm['name'],
+                    'permission_group_id' => $group->id
+                ]
+            );
         }
 
         // 3. Assign to Roles

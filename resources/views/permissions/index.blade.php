@@ -31,7 +31,7 @@
                 <tr class="hover:bg-red-50/30 dark:hover:bg-red-900/5 transition-colors group">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-[10px] font-black rounded-full uppercase tracking-tighter border border-red-200 dark:border-red-900/50">
-                            {{ $permission->group ?: 'Lainnya' }}
+                            {{ $permission->group ? $permission->group->name : 'Lainnya' }}
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
