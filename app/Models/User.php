@@ -47,4 +47,9 @@ class User extends Authenticatable
             $query->where('slug', $permissionSlug);
         })->exists();
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

@@ -69,6 +69,12 @@ class RbacSeeder extends Seeder
         );
         $opUser->roles()->sync([$operatorRole->id]);
 
+        $opUser2 = User::updateOrCreate(
+            ['email' => 'operator2@example.com'],
+            ['name' => 'Operator 2', 'password' => Hash::make('password')]
+        );
+        $opUser2->roles()->sync([$operatorRole->id]);
+
         // 5. Create Menus
         // Dashboard Menu
         Menu::updateOrCreate(

@@ -1,47 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - RBAC Admin</title>
+    <title>Login Staff - JKB POLITALA</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .login-gradient {
+            background: linear-gradient(135deg, #991b1b 0%, #450a0a 100%);
+        }
+    </style>
 </head>
-<body class="bg-gray-200 flex items-center justify-center h-screen">
+<body class="login-gradient flex items-center justify-center min-h-screen p-4">
 
-    <div class="bg-white p-8 rounded shadow-md w-96">
-        <h2 class="text-2xl font-bold mb-6 text-center">Login to Admin</h2>
+    <div class="max-w-md w-full">
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-2xl mb-6 transform -rotate-12">
+                <i class="fas fa-university text-4xl text-red-700"></i>
+            </div>
+            <h1 class="text-3xl font-black text-white tracking-tighter uppercase">JKB POLITALA</h1>
+            <p class="text-red-200 font-medium">Sistem Informasi Manajemen Jurusan</p>
+        </div>
 
-        @if($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>- {{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('login') }}" method="POST">
-            @csrf
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                <input type="email" name="email" value="admin@example.com" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-            </div>
-            <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                <input type="password" name="password" value="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-            </div>
-            <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
-                    Login
-                </button>
-            </div>
+        <div class="bg-white/95 backdrop-blur-md p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-red-600"></div>
             
-            <div class="mt-4 text-sm text-gray-600 text-center">
-                <p>Admin: admin@example.com / password</p>
-                <p>Operator: operator@example.com / password</p>
+            <h2 class="text-2xl font-black text-gray-900 mb-8">Login Staff</h2>
+
+            @if($errors->any())
+                <div class="bg-red-50 border-l-4 border-red-600 text-red-700 p-4 mb-8 rounded-r-lg" role="alert">
+                    <p class="font-bold text-sm uppercase mb-1">Gagal Login</p>
+                    <ul class="text-sm opacity-90">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('login') }}" method="POST" class="space-y-6">
+                @csrf
+                <div>
+                    <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2 ml-1">Alamat Email</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="email" name="email" value="admin@example.com" class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="nama@email.com" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2 ml-1">Kata Sandi</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" name="password" value="password" class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-black py-4 rounded-2xl transition transform active:scale-[0.98] shadow-xl shadow-red-200 uppercase tracking-widest">
+                    Masuk ke Sistem
+                </button>
+            </form>
+
+            <div class="mt-10 pt-8 border-t border-gray-100">
+                <div class="bg-red-50 p-4 rounded-2xl border border-red-100">
+                    <p class="text-[10px] font-black text-red-800 uppercase tracking-tighter mb-2">Akun Demo:</p>
+                    <div class="grid grid-cols-2 gap-4 text-[10px] text-red-700 font-bold uppercase tracking-tight">
+                        <div>
+                            <p class="opacity-60 mb-0.5">ADMIN:</p>
+                            <p>admin@example.com</p>
+                        </div>
+                        <div>
+                            <p class="opacity-60 mb-0.5">OPERATOR:</p>
+                            <p>operator@example.com</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
+        
+        <div class="text-center mt-8">
+            <a href="{{ url('/') }}" class="text-white/60 hover:text-white transition text-sm font-bold uppercase tracking-widest">
+                <i class="fas fa-arrow-left mr-2"></i> Kembali ke Beranda
+            </a>
+        </div>
     </div>
 
 </body>

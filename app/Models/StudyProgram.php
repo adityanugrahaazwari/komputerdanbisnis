@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
+#[Fillable(['name', 'slug', 'code', 'level', 'description', 'image', 'is_active'])]
+class StudyProgram extends Model
+{
+    use HasFactory;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($studyProgram) {
+            if (empty($studyProgram->slug)) {
+                $studyProgram->slug = Str::slug($studyProgram->name);
+            }
+        });
+
+        static::updating(function ($studyProgram) {
+            $studyProgram->slug = Str::slug($studyProgram->name);
+        });
+    }
+}

@@ -7,13 +7,15 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudyProgramController;
+use App\Http\Controllers\SocialMediaController;
+use App\Http\Controllers\LandingController;
 
-Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect('/dashboard');
-    }
-    return redirect('/login');
-});
+Route::get('/', [LandingController::class, 'index'])->name('home');
+Route::get('/berita', [LandingController::class, 'allPosts'])->name('landing.news');
+Route::get('/berita/{slug}', [LandingController::class, 'showPost'])->name('landing.post');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -27,4 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('menus', MenuController::class);
+    Route::resource('posts', PostController::class);
+    Route::resource('profiles', ProfileController::class)->only(['index', 'edit', 'update']);
+    Route::resource('study-programs', StudyProgramController::class)->names('study_programs');
+    Route::resource('social-media', SocialMediaController::class)->names('social_media');
 });

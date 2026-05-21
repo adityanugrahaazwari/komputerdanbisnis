@@ -17,6 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RbacSeeder::class,
+            PostRbacSeeder::class,
+            PostSeeder::class,
+            ProfileSeeder::class,
+            StudyProgramSeeder::class,
+            SocialMediaSeeder::class,
         ]);
     }
 }

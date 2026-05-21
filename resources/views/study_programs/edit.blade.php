@@ -1,0 +1,62 @@
+@extends('layouts.app')
+
+@section('header', 'Edit Program Studi')
+
+@section('content')
+<div class="bg-white rounded shadow p-6">
+    <form action="{{ route('study_programs.update', $studyProgram->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Nama Program Studi</label>
+                <input type="text" name="name" class="w-full border rounded px-3 py-2 @error('name') border-red-500 @enderror" value="{{ old('name', $studyProgram->name) }}" required>
+                @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Kode Prodi</label>
+                <input type="text" name="code" class="w-full border rounded px-3 py-2 @error('code') border-red-500 @enderror" value="{{ old('code', $studyProgram->code) }}">
+                @error('code') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Jenjang (Level)</label>
+                <select name="level" class="w-full border rounded px-3 py-2">
+                    <option value="D3" {{ $studyProgram->level == 'D3' ? 'selected' : '' }}>D3</option>
+                    <option value="D4" {{ $studyProgram->level == 'D4' ? 'selected' : '' }}>D4</option>
+                    <option value="S1" {{ $studyProgram->level == 'S1' ? 'selected' : '' }}>S1</option>
+                    <option value="S2" {{ $studyProgram->level == 'S2' ? 'selected' : '' }}>S2</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Gambar / Logo</label>
+                @if($studyProgram->image)
+                    <div class="mb-2">
+                        <img src="{{ asset('storage/' . $studyProgram->image) }}" class="h-20 object-contain rounded">
+                    </div>
+                @endif
+                <input type="file" name="image" class="w-full border rounded px-3 py-2">
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2">Deskripsi</label>
+            <textarea name="description" rows="5" class="w-full border rounded px-3 py-2">{{ old('description', $studyProgram->description) }}</textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="flex items-center">
+                <input type="checkbox" name="is_active" value="1" {{ $studyProgram->is_active ? 'checked' : '' }} class="mr-2">
+                <span class="text-gray-700 font-bold">Aktif</span>
+            </label>
+        </div>
+
+        <div class="flex items-center justify-between border-t pt-4">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded font-bold">Update</button>
+            <a href="{{ route('study_programs.index') }}" class="text-gray-600 hover:underline">Batal</a>
+        </div>
+    </form>
+</div>
+@endsection
