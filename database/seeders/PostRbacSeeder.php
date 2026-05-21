@@ -13,11 +13,11 @@ class PostRbacSeeder extends Seeder
     {
         // 1. Create Post Permissions
         $permissions = [
-            ['name' => 'View Posts', 'slug' => 'posts_view'],
-            ['name' => 'Create Post', 'slug' => 'posts_create'],
-            ['name' => 'Edit Post', 'slug' => 'posts_edit'],
-            ['name' => 'Delete Post', 'slug' => 'posts_delete'],
-            ['name' => 'Publish Post', 'slug' => 'posts_publish'],
+            ['name' => 'View Posts', 'slug' => 'posts_view', 'group' => 'News'],
+            ['name' => 'Create Post', 'slug' => 'posts_create', 'group' => 'News'],
+            ['name' => 'Edit Post', 'slug' => 'posts_edit', 'group' => 'News'],
+            ['name' => 'Delete Post', 'slug' => 'posts_delete', 'group' => 'News'],
+            ['name' => 'Publish Post', 'slug' => 'posts_publish', 'group' => 'News'],
         ];
 
         foreach ($permissions as $perm) {

@@ -13,6 +13,13 @@ use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\LandingController;
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['id', 'en'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
 Route::get('/', [LandingController::class, 'index'])->name('home');
 Route::get('/berita', [LandingController::class, 'allPosts'])->name('landing.news');
 Route::get('/berita/{slug}', [LandingController::class, 'showPost'])->name('landing.post');

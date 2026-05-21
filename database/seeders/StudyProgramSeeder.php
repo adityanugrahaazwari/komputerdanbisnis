@@ -50,10 +50,10 @@ class StudyProgramSeeder extends Seeder
 
         // 2. Create Permissions
         $permissions = [
-            ['name' => 'View Study Programs', 'slug' => 'study_programs_view'],
-            ['name' => 'Create Study Programs', 'slug' => 'study_programs_create'],
-            ['name' => 'Edit Study Programs', 'slug' => 'study_programs_edit'],
-            ['name' => 'Delete Study Programs', 'slug' => 'study_programs_delete'],
+            ['name' => 'View Study Programs', 'slug' => 'study_programs_view', 'group' => 'Study Program'],
+            ['name' => 'Create Study Programs', 'slug' => 'study_programs_create', 'group' => 'Study Program'],
+            ['name' => 'Edit Study Programs', 'slug' => 'study_programs_edit', 'group' => 'Study Program'],
+            ['name' => 'Delete Study Programs', 'slug' => 'study_programs_delete', 'group' => 'Study Program'],
         ];
 
         foreach ($permissions as $perm) {

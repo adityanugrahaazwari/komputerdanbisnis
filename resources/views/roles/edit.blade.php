@@ -3,33 +3,54 @@
 @section('header', 'Edit Role: ' . $role->name)
 
 @section('content')
-<div class="bg-white rounded shadow p-6 max-w-4xl mx-auto">
-    <form action="{{ route('roles.update', $role->id) }}" method="POST">
+<div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl p-8 md:p-10 max-w-5xl mx-auto border border-gray-100 dark:border-slate-800">
+    <form action="{{ route('roles.update', $role->id) }}" method="POST" class="space-y-8">
         @csrf
         @method('PUT')
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Role Name</label>
-            <input type="text" name="name" value="{{ $role->name }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Nama Peran (Role Name)</label>
+                <input type="text" name="name" value="{{ old('name', $role->name) }}" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Deskripsi Singkat</label>
+                <input type="text" name="description" value="{{ old('description', $role->description) }}" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium">
+            </div>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-            <textarea name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ $role->description }}</textarea>
-        </div>
-        <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Assign Permissions</label>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded border">
-                @foreach($permissions as $permission)
-                <label class="inline-flex items-center">
-                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }} class="form-checkbox h-5 w-5 text-green-600">
-                    <span class="ml-2 text-gray-700 text-sm">{{ $permission->name }}</span>
-                </label>
+
+        <div>
+            <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-6 ml-1 flex items-center">
+                <i class="fas fa-key mr-2 text-red-600"></i> Atur Izin Akses (Grouped Permissions)
+            </label>
+            
+            <div class="space-y-6">
+                @foreach($permissions as $group => $groupPerms)
+                    <div class="bg-gray-50 dark:bg-slate-800/50 rounded-3xl p-6 border border-gray-100 dark:border-slate-800">
+                        <h4 class="text-sm font-black text-red-700 dark:text-red-500 uppercase tracking-tighter mb-4 pb-2 border-b border-red-100 dark:border-red-900/30 flex justify-between items-center">
+                            <span><i class="fas fa-folder-open mr-2 opacity-50"></i> {{ $group ?: 'Lainnya' }}</span>
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            @foreach($groupPerms as $permission)
+                                <label class="flex items-center p-3 bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-700 hover:border-red-200 dark:hover:border-red-900 transition cursor-pointer group">
+                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" 
+                                           {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}
+                                           class="w-5 h-5 rounded-lg border-gray-300 dark:border-slate-600 text-red-600 focus:ring-red-500 transition duration-200">
+                                    <span class="ml-3 text-xs font-bold text-gray-700 dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-400 transition">{{ $permission->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
                 @endforeach
             </div>
         </div>
-        <div class="flex items-center justify-end">
-            <a href="{{ route('roles.index') }}" class="mr-4 text-gray-600 hover:underline">Cancel</a>
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Update Role
+
+        <div class="flex items-center justify-between pt-8 border-t border-gray-100 dark:border-slate-800">
+            <a href="{{ route('roles.index') }}" class="text-gray-500 dark:text-gray-400 hover:text-red-600 font-bold uppercase text-xs tracking-widest transition">
+                <i class="fas fa-arrow-left mr-2"></i> Batal
+            </a>
+            <button type="submit" class="bg-red-700 hover:bg-red-800 text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-red-200 dark:shadow-none uppercase tracking-widest text-sm transition transform active:scale-95">
+                <i class="fas fa-save mr-2"></i> Perbarui Peran
             </button>
         </div>
     </form>

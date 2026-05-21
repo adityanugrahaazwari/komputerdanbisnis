@@ -26,11 +26,13 @@ class PermissionController extends Controller
         $this->authorizePermission('permissions_create');
         $request->validate([
             'name' => 'required|string|max:255|unique:permissions,name',
+            'group' => 'nullable|string|max:255'
         ]);
 
         Permission::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name, '_'),
+            'group' => $request->group,
         ]);
 
         return redirect()->route('permissions.index')->with('success', 'Permission created successfully.');
@@ -47,11 +49,13 @@ class PermissionController extends Controller
         $this->authorizePermission('permissions_edit');
         $request->validate([
             'name' => 'required|string|max:255|unique:permissions,name,' . $permission->id,
+            'group' => 'nullable|string|max:255'
         ]);
 
         $permission->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name, '_'),
+            'group' => $request->group,
         ]);
 
         return redirect()->route('permissions.index')->with('success', 'Permission updated successfully.');

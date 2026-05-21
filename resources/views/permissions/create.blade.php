@@ -3,18 +3,37 @@
 @section('header', 'Create Permission')
 
 @section('content')
-<div class="bg-white rounded shadow p-6 max-w-lg mx-auto">
-    <form action="{{ route('permissions.store') }}" method="POST">
+<div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl p-8 md:p-10 max-w-2xl mx-auto border border-gray-100 dark:border-slate-800">
+    <form action="{{ route('permissions.store') }}" method="POST" class="space-y-8">
         @csrf
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Permission Name</label>
-            <input type="text" name="name" placeholder="e.g. Delete Posts" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-            <p class="text-gray-500 text-xs mt-1">Slug will be automatically generated (e.g. delete_posts)</p>
+        
+        <div>
+            <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Group (Modul)</label>
+            <input type="text" name="group" list="groups" placeholder="Contoh: News, User Management" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium">
+            <datalist id="groups">
+                <option value="Dashboard">
+                <option value="User Management">
+                <option value="Access Control">
+                <option value="Navigation">
+                <option value="News">
+                <option value="Web Profile">
+                <option value="Study Program">
+            </datalist>
+            <p class="text-gray-500 text-[10px] mt-2 ml-1 italic tracking-wide uppercase">Gunakan nama modul untuk mengelompokkan izin akses agar rapi.</p>
         </div>
-        <div class="flex items-center justify-end">
-            <a href="{{ route('permissions.index') }}" class="mr-4 text-gray-600 hover:underline">Cancel</a>
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Save Permission
+
+        <div>
+            <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Nama Izin (Permission Name)</label>
+            <input type="text" name="name" placeholder="e.g. Delete Posts" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium" required>
+            <p class="text-gray-500 text-[10px] mt-2 ml-1 italic tracking-wide uppercase">Slug sistem akan dibuat secara otomatis (contoh: delete_posts).</p>
+        </div>
+
+        <div class="flex items-center justify-between pt-8 border-t border-gray-100 dark:border-slate-800">
+            <a href="{{ route('permissions.index') }}" class="text-gray-500 dark:text-gray-400 hover:text-red-600 font-bold uppercase text-xs tracking-widest transition">
+                <i class="fas fa-arrow-left mr-2"></i> Batal
+            </a>
+            <button type="submit" class="bg-red-700 hover:bg-red-800 text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-red-200 dark:shadow-none uppercase tracking-widest text-sm transition transform active:scale-95">
+                <i class="fas fa-save mr-2"></i> Simpan Izin
             </button>
         </div>
     </form>

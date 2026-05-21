@@ -42,8 +42,8 @@ class ProfileSeeder extends Seeder
 
         // 2. Create Permissions
         $permissions = [
-            ['name' => 'View Profiles', 'slug' => 'profiles_view'],
-            ['name' => 'Edit Profiles', 'slug' => 'profiles_edit'],
+            ['name' => 'View Profiles', 'slug' => 'profiles_view', 'group' => 'Web Profile'],
+            ['name' => 'Edit Profiles', 'slug' => 'profiles_edit', 'group' => 'Web Profile'],
         ];
 
         foreach ($permissions as $perm) {

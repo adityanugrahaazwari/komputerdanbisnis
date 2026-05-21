@@ -15,31 +15,31 @@ class RbacSeeder extends Seeder
     {
         // 1. Create Granular Permissions
         $permissions = [
-            ['name' => 'View Dashboard', 'slug' => 'view_dashboard'],
+            ['name' => 'View Dashboard', 'slug' => 'view_dashboard', 'group' => 'Dashboard'],
             
             // User Permissions
-            ['name' => 'View Users', 'slug' => 'users_view'],
-            ['name' => 'Create User', 'slug' => 'users_create'],
-            ['name' => 'Edit User', 'slug' => 'users_edit'],
-            ['name' => 'Delete User', 'slug' => 'users_delete'],
+            ['name' => 'View Users', 'slug' => 'users_view', 'group' => 'User Management'],
+            ['name' => 'Create User', 'slug' => 'users_create', 'group' => 'User Management'],
+            ['name' => 'Edit User', 'slug' => 'users_edit', 'group' => 'User Management'],
+            ['name' => 'Delete User', 'slug' => 'users_delete', 'group' => 'User Management'],
             
             // Role Permissions
-            ['name' => 'View Roles', 'slug' => 'roles_view'],
-            ['name' => 'Create Role', 'slug' => 'roles_create'],
-            ['name' => 'Edit Role', 'slug' => 'roles_edit'],
-            ['name' => 'Delete Role', 'slug' => 'roles_delete'],
+            ['name' => 'View Roles', 'slug' => 'roles_view', 'group' => 'Access Control'],
+            ['name' => 'Create Role', 'slug' => 'roles_create', 'group' => 'Access Control'],
+            ['name' => 'Edit Role', 'slug' => 'roles_edit', 'group' => 'Access Control'],
+            ['name' => 'Delete Role', 'slug' => 'roles_delete', 'group' => 'Access Control'],
             
             // Permission Permissions
-            ['name' => 'View Permissions', 'slug' => 'permissions_view'],
-            ['name' => 'Create Permission', 'slug' => 'permissions_create'],
-            ['name' => 'Edit Permission', 'slug' => 'permissions_edit'],
-            ['name' => 'Delete Permission', 'slug' => 'permissions_delete'],
+            ['name' => 'View Permissions', 'slug' => 'permissions_view', 'group' => 'Access Control'],
+            ['name' => 'Create Permission', 'slug' => 'permissions_create', 'group' => 'Access Control'],
+            ['name' => 'Edit Permission', 'slug' => 'permissions_edit', 'group' => 'Access Control'],
+            ['name' => 'Delete Permission', 'slug' => 'permissions_delete', 'group' => 'Access Control'],
             
             // Menu Permissions
-            ['name' => 'View Menus', 'slug' => 'menus_view'],
-            ['name' => 'Create Menu', 'slug' => 'menus_create'],
-            ['name' => 'Edit Menu', 'slug' => 'menus_edit'],
-            ['name' => 'Delete Menu', 'slug' => 'menus_delete'],
+            ['name' => 'View Menus', 'slug' => 'menus_view', 'group' => 'Navigation'],
+            ['name' => 'Create Menu', 'slug' => 'menus_create', 'group' => 'Navigation'],
+            ['name' => 'Edit Menu', 'slug' => 'menus_edit', 'group' => 'Navigation'],
+            ['name' => 'Delete Menu', 'slug' => 'menus_delete', 'group' => 'Navigation'],
         ];
 
         foreach ($permissions as $perm) {

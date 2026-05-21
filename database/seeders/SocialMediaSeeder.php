@@ -46,10 +46,10 @@ class SocialMediaSeeder extends Seeder
 
         // 2. Create Permissions
         $permissions = [
-            ['name' => 'View Social Media', 'slug' => 'social_media_view'],
-            ['name' => 'Create Social Media', 'slug' => 'social_media_create'],
-            ['name' => 'Edit Social Media', 'slug' => 'social_media_edit'],
-            ['name' => 'Delete Social Media', 'slug' => 'social_media_delete'],
+            ['name' => 'View Social Media', 'slug' => 'social_media_view', 'group' => 'Web Profile'],
+            ['name' => 'Create Social Media', 'slug' => 'social_media_create', 'group' => 'Web Profile'],
+            ['name' => 'Edit Social Media', 'slug' => 'social_media_edit', 'group' => 'Web Profile'],
+            ['name' => 'Delete Social Media', 'slug' => 'social_media_delete', 'group' => 'Web Profile'],
         ];
 
         foreach ($permissions as $perm) {
