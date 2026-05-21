@@ -1,0 +1,51 @@
+<?php
+
+return [
+    'accepted' => ':attribute harus diterima.',
+    'active_url' => ':attribute bukan URL yang sah.',
+    'after' => ':attribute harus tanggal setelah :date.',
+    'alpha' => ':attribute hanya boleh berisi huruf.',
+    'alpha_dash' => ':attribute hanya boleh berisi huruf, angka, strip, dan garis bawah.',
+    'alpha_num' => ':attribute hanya boleh berisi huruf dan angka.',
+    'array' => ':attribute harus berupa array.',
+    'before' => ':attribute harus tanggal sebelum :date.',
+    'between' => [
+        'numeric' => ':attribute harus antara :min dan :max.',
+        'file' => ':attribute harus antara :min dan :max kilobita.',
+        'string' => ':attribute harus antara :min dan :max karakter.',
+        'array' => ':attribute harus antara :min dan :max item.',
+    ],
+    'boolean' => ':attribute harus bernilai true atau false.',
+    'confirmed' => 'Konfirmasi :attribute tidak cocok.',
+    'date' => ':attribute bukan tanggal yang sah.',
+    'email' => ':attribute harus berupa alamat email yang sah.',
+    'exists' => ':attribute yang dipilih tidak sah.',
+    'image' => ':attribute harus berupa gambar.',
+    'integer' => ':attribute harus berupa bilangan bulat.',
+    'max' => [
+        'numeric' => ':attribute tidak boleh lebih dari :max.',
+        'file' => ':attribute tidak boleh lebih dari :max kilobita.',
+        'string' => ':attribute tidak boleh lebih dari :max karakter.',
+        'array' => ':attribute tidak boleh lebih dari :max item.',
+    ],
+    'mimes' => ':attribute harus berupa file bertipe: :values.',
+    'min' => [
+        'numeric' => ':attribute harus minimal :min.',
+        'file' => ':attribute harus minimal :min kilobita.',
+        'string' => ':attribute harus minimal :min karakter.',
+        'array' => ':attribute harus minimal :min item.',
+    ],
+    'required' => ':attribute wajib diisi.',
+    'unique' => ':attribute sudah ada sebelumnya.',
+    'url' => 'Format :attribute tidak sah.',
+
+    'attributes' => [
+        'name' => 'Nama',
+        'email' => 'Email',
+        'password' => 'Kata Sandi',
+        'title' => 'Judul',
+        'content' => 'Konten',
+        'message' => 'Pesan',
+        'subject' => 'Subjek',
+    ],
+];

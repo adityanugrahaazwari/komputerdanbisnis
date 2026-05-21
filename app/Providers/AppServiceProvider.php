@@ -36,17 +36,39 @@ class AppServiceProvider extends ServiceProvider
             // Ignore exception if tables do not exist yet (e.g. during initial migration)
         }
 
-        // Share menus with all views
+        // Share menus and notification counts with all views
         View::composer('*', function ($view) {
             try {
-                $menus = Menu::whereNull('parent_id')
+                $menus = Menu::where('location', 'admin')
+                    ->whereNull('parent_id')
                     ->where('is_active', true)
                     ->with('children')
                     ->orderBy('order')
                     ->get();
-                $view->with('dynamicMenus', $menus);
+
+                $frontendMenus = Menu::where('location', 'frontend')
+                    ->whereNull('parent_id')
+                    ->where('is_active', true)
+                    ->with('children')
+                    ->orderBy('order')
+                    ->get();
+                
+                $notificationCounts = [
+                    'unread_contacts' => \App\Models\Contact::where('is_read', false)->count(),
+                    'pending_comments' => \App\Models\Comment::where('status', 'pending')->count(),
+                ];
+
+                $view->with([
+                    'dynamicMenus' => $menus,
+                    'frontendMenus' => $frontendMenus,
+                    'notifications' => $notificationCounts
+                ]);
             } catch (\Exception $e) {
-                $view->with('dynamicMenus', collect());
+                $view->with([
+                    'dynamicMenus' => collect(),
+                    'frontendMenus' => collect(),
+                    'notifications' => ['unread_contacts' => 0, 'pending_comments' => 0]
+                ]);
             }
         });
     }

@@ -29,6 +29,7 @@ class MenuController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'url' => 'nullable|string|max:255',
+            'location' => 'required|in:admin,frontend',
             'icon' => 'nullable|string|max:255',
             'parent_id' => 'nullable|exists:menus,id',
             'permission_slug' => 'nullable|string|max:255',
@@ -38,6 +39,7 @@ class MenuController extends Controller
         Menu::create([
             'title' => $request->title,
             'url' => $request->url,
+            'location' => $request->location,
             'icon' => $request->icon,
             'parent_id' => $request->parent_id,
             'permission_slug' => $request->permission_slug,
@@ -51,7 +53,7 @@ class MenuController extends Controller
     public function edit(Menu $menu)
     {
         $this->authorizePermission('menus_edit');
-        $parentMenus = Menu::whereNull('parent_id')->where('id', '!=', $menu->id)->get();
+        $parentMenus = Menu::whereNull('parent_id')->where('id', '!=', $menu->id)->where('location', $menu->location)->get();
         $permissions = Permission::all();
         return view('menus.edit', compact('menu', 'parentMenus', 'permissions'));
     }
@@ -62,6 +64,7 @@ class MenuController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'url' => 'nullable|string|max:255',
+            'location' => 'required|in:admin,frontend',
             'icon' => 'nullable|string|max:255',
             'parent_id' => 'nullable|exists:menus,id',
             'permission_slug' => 'nullable|string|max:255',
@@ -71,6 +74,7 @@ class MenuController extends Controller
         $menu->update([
             'title' => $request->title,
             'url' => $request->url,
+            'location' => $request->location,
             'icon' => $request->icon,
             'parent_id' => $request->parent_id,
             'permission_slug' => $request->permission_slug,

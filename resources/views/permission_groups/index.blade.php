@@ -45,16 +45,16 @@
                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                         <div class="flex justify-center gap-3">
                             @can('permission_groups_edit')
-                                <a href="{{ route('permission-groups.edit', $group->id) }}" class="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Edit">
-                                    <i class="fas fa-edit text-lg"></i>
+                                <a href="{{ route('permission-groups.edit', $group->id) }}" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit">
+                                    <i class="fas fa-edit text-xs"></i>
                                 </a>
                             @endcan
                             @can('permission_groups_delete')
                                 <form action="{{ route('permission-groups.destroy', $group->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus grup ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-gray-400 hover:text-red-600 dark:hover:text-red-500 transition-colors" title="Delete" {{ $group->permissions_count > 0 ? 'disabled' : '' }}>
-                                        <i class="fas fa-trash-alt text-lg {{ $group->permissions_count > 0 ? 'opacity-20 cursor-not-allowed' : '' }}"></i>
+                                    <button type="submit" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition shadow-sm" title="Delete" {{ $group->permissions_count > 0 ? 'disabled' : '' }}>
+                                        <i class="fas fa-trash-alt text-xs {{ $group->permissions_count > 0 ? 'opacity-20 cursor-not-allowed' : '' }}"></i>
                                     </button>
                                 </form>
                             @endcan

@@ -36,69 +36,77 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
-    <!-- Navbar -->
-    <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b-4 border-red-700 dark:border-red-900">
-        <div class="container mx-auto px-4 md:px-12 py-4 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-xl md:text-2xl font-black text-red-700 dark:text-red-500 flex items-center tracking-tighter">
-                <i class="fas fa-university mr-2 text-3xl"></i> JKB POLITALA
-            </a>
-            <div class="hidden lg:flex space-x-6 font-bold text-gray-700 dark:text-gray-300">
-                <a href="{{ url('/') }}#beranda" class="hover:text-red-600 dark:hover:text-red-400 transition-colors uppercase text-xs">{{ __('messages.home') }}</a>
-                <a href="{{ url('/') }}#profil" class="hover:text-red-600 dark:hover:text-red-400 transition-colors uppercase text-xs">{{ __('messages.profile') }}</a>
-                <a href="{{ url('/') }}#prodi" class="hover:text-red-600 dark:hover:text-red-400 transition-colors uppercase text-xs">{{ __('messages.study_programs') }}</a>
-                <a href="{{ url('/berita') }}" class="text-red-600 dark:text-red-400 font-bold uppercase text-xs">{{ __('messages.news') }}</a>
-            </div>
-            
-            <div class="flex items-center gap-2 md:gap-4">
-                <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-600 transition">
-                    <i class="fas" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
-                </button>
+@include('partials.navbar')
 
-                <div class="relative" x-data="{ langOpen: false }">
-                    <button @click="langOpen = !langOpen" class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold uppercase tracking-widest transition">
-                        <i class="fas fa-globe"></i>
-                        <span>{{ app()->getLocale() }}</span>
-                    </button>
-                    <div x-show="langOpen" @click.outside="langOpen = false" x-cloak class="absolute right-0 mt-2 w-32 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-100 dark:border-slate-700 overflow-hidden">
-                        <a href="{{ route('lang.switch', 'id') }}" class="block px-4 py-2 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-900/30 {{ app()->getLocale() == 'id' ? 'text-red-600' : '' }}">INDONESIA</a>
-                        <a href="{{ route('lang.switch', 'en') }}" class="block px-4 py-2 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-900/30 {{ app()->getLocale() == 'en' ? 'text-red-600' : '' }}">ENGLISH</a>
-                    </div>
-                </div>
-
-                <div class="hidden sm:block">
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="bg-red-700 text-white px-6 py-2 rounded-full font-bold hover:bg-red-800 transition text-xs">{{ __('messages.dashboard') }}</a>
-                    @else
-                        <a href="{{ route('login') }}" class="bg-gray-100 dark:bg-slate-800 text-red-700 dark:text-red-400 px-6 py-2 rounded-full font-bold hover:bg-red-50 dark:hover:bg-slate-700 transition border border-red-200 dark:border-slate-700 text-xs">{{ __('messages.login_staff') }}</a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
+    <!-- Header -->
 
     <!-- Header -->
     <header class="bg-gradient-to-r from-red-900 to-red-600 text-white py-16 md:py-24 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
         <div class="container mx-auto px-4 md:px-12 text-center relative z-10">
             <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase">{{ __('messages.all_news') }}</h1>
-            <p class="text-red-100 max-w-2xl mx-auto italic text-lg md:text-xl opacity-90">
-                Kumpulan kabar terkini, prestasi, dan pengumuman resmi dari Jurusan Komputer dan Bisnis POLITALA.
-            </p>
+            
+            <!-- Breadcrumbs -->
+            <nav class="flex justify-center mb-8 text-xs font-bold uppercase tracking-widest opacity-70">
+                <a href="{{ url('/') }}" class="hover:text-red-200 transition">{{ __('messages.home') }}</a>
+                <span class="mx-3">/</span>
+                <span class="text-red-200">{{ __('messages.news') }}</span>
+            </nav>
+
+            <!-- Search & Filter Bar -->
+            <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 shadow-2xl">
+                <form action="{{ route('landing.news') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-white/50"></i>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('messages.search_news') }}" class="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition">
+                    </div>
+                    <div class="md:w-64">
+                        <select name="category" class="w-full bg-white/10 border border-white/20 rounded-xl py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition appearance-none cursor-pointer">
+                            <option value="" class="bg-red-800">{{ __('messages.all_categories') }}</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->slug }}" class="bg-red-800" {{ request('category') == $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="bg-white text-red-700 px-8 py-3 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-red-50 transition shadow-lg">
+                        {{ __('messages.filter') }}
+                    </button>
+                </form>
+            </div>
         </div>
     </header>
 
     <!-- News List -->
     <main class="container mx-auto px-4 md:px-12 py-16 md:py-24">
+        @if(request('search') || request('category'))
+            <div class="mb-12 text-center">
+                <p class="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest text-xs">
+                    Hasil pencarian untuk: 
+                    @if(request('search')) <span class="text-red-600 dark:text-red-400">"{{ request('search') }}"</span> @endif
+                    @if(request('category')) <span class="ml-2 px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-[10px]">{{ request('category') }}</span> @endif
+                </p>
+            </div>
+        @endif
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 mb-16">
             @forelse($posts as $post)
             <article class="bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-xl dark:shadow-none flex flex-col hover:shadow-red-100 dark:hover:shadow-none transition-all duration-300 border-b-8 border-red-700 group border border-gray-100 dark:border-slate-800">
                 @if($post->image)
-                    <div class="h-56 md:h-64 overflow-hidden">
+                    <div class="h-56 md:h-64 overflow-hidden relative">
                         <img src="{{ asset('storage/' . $post->image) }}" class="h-full w-full object-cover group-hover:scale-110 transition duration-500">
+                        @if($post->category)
+                            <span class="absolute top-4 left-4 bg-red-700 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+                                {{ $post->category->name }}
+                            </span>
+                        @endif
                     </div>
                 @else
-                    <div class="h-56 md:h-64 w-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-200 dark:text-red-800">
+                    <div class="h-56 md:h-64 w-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-200 dark:text-red-800 relative">
                         <i class="fas fa-newspaper text-7xl md:text-8xl"></i>
+                        @if($post->category)
+                            <span class="absolute top-4 left-4 bg-red-700 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+                                {{ $post->category->name }}
+                            </span>
+                        @endif
                     </div>
                 @endif
                 <div class="p-6 md:p-8 flex-1 flex flex-col">

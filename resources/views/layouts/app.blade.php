@@ -71,11 +71,13 @@
                             @if($menu->url)
                                 <a href="{{ url($menu->url) }}" class="flex items-center text-gray-300 hover:text-white hover:bg-white/10 rounded-xl px-4 py-3 transition-all duration-200 group {{ Request::is(trim($menu->url, '/')) ? 'active-menu text-white bg-white/5' : '' }}">
                                     <i class="{{ $menu->icon }} mr-3 w-5 text-center text-lg transition-transform group-hover:scale-110"></i> 
-                                    <span class="font-bold text-sm uppercase tracking-wide">{{ $menu->title }}</span>
+                                    <span class="font-bold text-sm uppercase tracking-wide">
+                                        {{ Str::contains($menu->title, 'messages.') ? __($menu->title) : $menu->title }}
+                                    </span>
                                 </a>
                             @else
                                 <div class="text-red-400/50 text-[10px] font-black uppercase tracking-[0.2em] mt-6 mb-2 ml-2 flex items-center">
-                                    <span class="mr-2">{{ $menu->title }}</span>
+                                    <span class="mr-2">{{ Str::contains($menu->title, 'messages.') ? __($menu->title) : $menu->title }}</span>
                                     <div class="flex-1 h-px bg-white/10"></div>
                                 </div>
                                 @if($menu->children->count() > 0)
@@ -85,7 +87,20 @@
                                                 <li>
                                                     <a href="{{ url($child->url) }}" class="flex items-center text-gray-400 hover:text-white hover:bg-white/10 rounded-xl px-4 py-2.5 ml-2 transition-all duration-200 group {{ Request::is(trim($child->url, '/')) ? 'text-red-400 font-bold bg-white/5' : '' }}">
                                                         <i class="{{ $child->icon }} mr-3 w-4 text-center group-hover:text-red-500"></i> 
-                                                        <span class="text-xs font-bold uppercase tracking-wider">{{ $child->title }}</span>
+                                                        <span class="text-xs font-bold uppercase tracking-wider flex-1">
+                                                            {{ Str::contains($child->title, 'messages.') ? __($child->title) : $child->title }}
+                                                        </span>
+                                                        
+                                                        {{-- Notification Badges --}}
+                                                        @if($child->url == '/comments' && $notifications['pending_comments'] > 0)
+                                                            <span class="bg-red-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full animate-bounce shadow-lg shadow-red-900/50">
+                                                                {{ $notifications['pending_comments'] }}
+                                                            </span>
+                                                        @elseif($child->url == '/contacts' && $notifications['unread_contacts'] > 0)
+                                                            <span class="bg-blue-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full animate-pulse shadow-lg shadow-blue-900/50">
+                                                                {{ $notifications['unread_contacts'] }}
+                                                            </span>
+                                                        @endif
                                                     </a>
                                                 </li>
                                             @endif

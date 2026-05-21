@@ -6,6 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $post->title }} - JKB POLITALA</title>
+    @if($post->meta_description)
+        <meta name="description" content="{{ $post->meta_description }}">
+    @endif
+    @if($post->meta_keywords)
+        <meta name="keywords" content="{{ $post->meta_keywords }}">
+    @endif
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -35,26 +41,21 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
-    <!-- Navbar -->
-    <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b-4 border-red-700 dark:border-red-900">
-        <div class="container mx-auto px-4 md:px-12 py-4 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-xl md:text-2xl font-black text-red-700 dark:text-red-500 flex items-center tracking-tighter">
-                <i class="fas fa-university mr-2 text-3xl"></i> JKB POLITALA
-            </a>
-            
-            <div class="flex items-center gap-2 md:gap-4">
-                <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-600 transition">
-                    <i class="fas" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
-                </button>
-                <a href="{{ url('/') }}" class="bg-gray-100 dark:bg-slate-800 text-red-700 dark:text-red-400 px-6 py-2 rounded-full font-bold hover:bg-red-50 dark:hover:bg-slate-700 transition border border-red-200 dark:border-slate-700 text-xs">
-                    <i class="fas fa-arrow-left mr-2"></i> {{ __('messages.back_to_home') }}
-                </a>
-            </div>
-        </div>
-    </nav>
+@include('partials.navbar')
+
+    <!-- Post Content -->
 
     <!-- Post Content -->
     <main class="container mx-auto px-4 md:px-12 py-16">
+        <!-- Breadcrumbs -->
+        <nav class="flex mb-8 text-xs font-bold uppercase tracking-widest text-gray-400">
+            <a href="{{ url('/') }}" class="hover:text-red-600 transition">Home</a>
+            <span class="mx-3">/</span>
+            <a href="{{ route('landing.news') }}" class="hover:text-red-600 transition">Berita</a>
+            <span class="mx-3">/</span>
+            <span class="text-gray-900 dark:text-white truncate max-w-xs">{{ $post->title }}</span>
+        </nav>
+
         <div class="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl dark:shadow-none overflow-hidden border-b-[12px] border-red-700 border border-gray-100 dark:border-slate-800">
             @if($post->image)
                 <div class="relative h-[400px] md:h-[600px]">
@@ -62,7 +63,11 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                     <div class="absolute bottom-10 left-10 right-10 text-white">
                         <div class="flex items-center text-sm font-bold uppercase tracking-widest mb-4">
-                            <span class="bg-red-600 px-3 py-1 rounded-md mr-4 italic">News & Update</span>
+                            @if($post->category)
+                                <span class="bg-red-600 px-3 py-1 rounded-md mr-4 italic shadow-lg">{{ $post->category->name }}</span>
+                            @else
+                                <span class="bg-red-600 px-3 py-1 rounded-md mr-4 italic">News & Update</span>
+                            @endif
                             <span>{{ $post->created_at->format('d M Y') }}</span>
                         </div>
                         <h1 class="text-3xl md:text-5xl font-black leading-tight">{{ $post->title }}</h1>
@@ -71,7 +76,11 @@
             @else
                 <div class="p-10 md:p-20 bg-gradient-to-br from-red-900 to-red-600 text-white">
                     <div class="flex items-center text-sm font-bold uppercase tracking-widest mb-6">
-                         <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-md mr-4 italic border border-white/30">News & Update</span>
+                         @if($post->category)
+                            <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-md mr-4 italic border border-white/30">{{ $post->category->name }}</span>
+                         @else
+                            <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-md mr-4 italic border border-white/30">News & Update</span>
+                         @endif
                          <span>{{ $post->created_at->format('d M Y') }}</span>
                     </div>
                     <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight">{{ $post->title }}</h1>
@@ -87,7 +96,67 @@
                     {!! nl2br(e($post->content)) !!}
                 </div>
 
-                <div class="mt-20 pt-10 border-t-2 border-gray-50 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-8">
+                <!-- Comments Section -->
+                <div class="mt-20">
+                    <h3 class="text-3xl font-black text-gray-900 dark:text-white mb-10 uppercase tracking-tight">
+                        Komentar ({{ $post->approvedComments->count() }})
+                    </h3>
+
+                    @if(session('success'))
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-8">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <div class="space-y-8 mb-16">
+                        @forelse($post->approvedComments as $comment)
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-6 md:p-8 rounded-3xl border border-gray-100 dark:border-slate-800">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-black text-gray-900 dark:text-white uppercase text-sm tracking-widest">{{ $comment->user_name }}</h4>
+                                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ $comment->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <div class="text-red-600/20 dark:text-red-500/10">
+                                        <i class="fas fa-quote-right text-4xl"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                    {{ $comment->comment }}
+                                </p>
+                            </div>
+                        @empty
+                            <p class="text-gray-400 italic">Belum ada komentar. Jadilah yang pertama!</p>
+                        @endforelse
+                    </div>
+
+                    <!-- Comment Form -->
+                    <div class="bg-white dark:bg-slate-800 p-8 md:p-12 rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-slate-700">
+                        <h4 class="text-xl font-black text-gray-900 dark:text-white mb-8 uppercase tracking-widest">Tinggalkan Komentar</h4>
+                        <form action="{{ route('comments.store', $post->id) }}" method="POST" class="space-y-6">
+                            @csrf
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Nama Lengkap</label>
+                                    <input type="text" name="user_name" required class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Email (Tidak akan dipublikasikan)</label>
+                                    <input type="email" name="user_email" required class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Komentar Anda</label>
+                                <textarea name="comment" rows="5" required class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm"></textarea>
+                            </div>
+                            <button type="submit" class="bg-red-700 text-white px-10 py-4 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-red-800 transition shadow-lg shadow-red-200 dark:shadow-none">
+                                Kirim Komentar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-20 pt-10
+ border-t-2 border-gray-50 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-8">
                     <div class="flex items-center space-x-6">
                         <span class="text-gray-900 dark:text-white font-black uppercase tracking-widest text-sm">{{ __('messages.share') }}:</span>
                         <div class="flex space-x-4">

@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Gallery;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
+class GalleryController extends Controller
+{
+    public function index()
+    {
+        $this->authorizePermission('galleries_view');
+        $galleries = Gallery::orderBy('order')->paginate(12);
+        return view('galleries.index', compact('galleries'));
+    }
+
+    public function create()
+    {
+        $this->authorizePermission('galleries_create');
+        return view('galleries.create');
+    }
+
+    public function store(Request $request)
+    {
+        $this->authorizePermission('galleries_create');
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'order' => 'nullable|integer',
+            'description' => 'nullable|string'
+        ]);
+
+        $data = $request->only(['title', 'description', 'order']);
+        $data['image'] = $request->file('image')->store('gallery', 'public');
+
+        Gallery::create($data);
+
+        return redirect()->route('galleries.index')->with('success', 'Image added to gallery.');
+    }
+
+    public function edit(Gallery $gallery)
+    {
+        $this->authorizePermission('galleries_edit');
+        return view('galleries.edit', compact('gallery'));
+    }
+
+    public function update(Request $request, Gallery $gallery)
+    {
+        $this->authorizePermission('galleries_edit');
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'order' => 'nullable|integer',
+            'description' => 'nullable|string'
+        ]);
+
+        $data = $request->only(['title', 'description', 'order', 'is_active']);
+        
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($gallery->image);
+            $data['image'] = $request->file('image')->store('gallery', 'public');
+        }
+
+        $gallery->update($data);
+
+        return redirect()->route('galleries.index')->with('success', 'Gallery item updated.');
+    }
+
+    public function destroy(Gallery $gallery)
+    {
+        $this->authorizePermission('galleries_delete');
+        Storage::disk('public')->delete($gallery->image);
+        $gallery->delete();
+        return redirect()->route('galleries.index')->with('success', 'Gallery item deleted.');
+    }
+
+    protected function authorizePermission($permission)
+    {
+        if (!auth()->user()->can($permission)) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
+}

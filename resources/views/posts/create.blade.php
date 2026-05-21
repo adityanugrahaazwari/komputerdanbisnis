@@ -13,9 +13,34 @@
         </div>
 
         <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2">Category</label>
+            <select name="category_id" class="w-full border rounded px-3 py-2 @error('category_id') border-red-500 @enderror">
+                <option value="">No Category</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                @endforeach
+            </select>
+            @error('category_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2">Content</label>
             <textarea name="content" rows="10" class="w-full border rounded px-3 py-2 @error('content') border-red-500 @enderror" required>{{ old('content') }}</textarea>
             @error('content') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="mb-4 p-4 bg-gray-50 rounded border border-gray-200">
+            <h4 class="font-bold mb-2 text-gray-600 uppercase text-xs">SEO Metadata</h4>
+            <div class="mb-3">
+                <label class="block text-gray-700 text-sm mb-1">Meta Description (Max 160 chars)</label>
+                <input type="text" name="meta_description" class="w-full border rounded px-3 py-2 text-sm @error('meta_description') border-red-500 @enderror" value="{{ old('meta_description') }}" maxlength="160">
+                @error('meta_description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm mb-1">Meta Keywords (Comma separated)</label>
+                <input type="text" name="meta_keywords" class="w-full border rounded px-3 py-2 text-sm @error('meta_keywords') border-red-500 @enderror" value="{{ old('meta_keywords') }}">
+                @error('meta_keywords') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+            </div>
         </div>
 
         <div class="mb-4">

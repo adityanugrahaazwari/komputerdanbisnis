@@ -45,76 +45,7 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
-    <!-- Navbar -->
-    <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b-4 border-red-700 dark:border-red-900">
-        <div class="container mx-auto px-4 md:px-12 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl md:text-2xl font-black text-red-700 dark:text-red-500 flex items-center tracking-tighter">
-                <i class="fas fa-university mr-2 text-3xl"></i> JKB POLITALA
-            </a>
-            
-            <!-- Desktop Menu -->
-            <div class="hidden lg:flex space-x-6 font-bold text-gray-700 dark:text-gray-300">
-                <a href="#beranda" class="hover:text-red-600 dark:hover:text-red-400 transition-colors uppercase text-xs">{{ __('messages.home') }}</a>
-                <a href="#profil" class="hover:text-red-600 dark:hover:text-red-400 transition-colors uppercase text-xs">{{ __('messages.profile') }}</a>
-                <a href="#prodi" class="hover:text-red-600 dark:hover:text-red-400 transition-colors uppercase text-xs">{{ __('messages.study_programs') }}</a>
-                <a href="{{ route('landing.news') }}" class="hover:text-red-600 dark:hover:text-red-400 transition-colors uppercase text-xs">{{ __('messages.news') }}</a>
-            </div>
-
-            <div class="flex items-center gap-2 md:gap-4">
-                <!-- Dark Mode Toggle -->
-                <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-600 transition">
-                    <i class="fas" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
-                </button>
-
-                <!-- Language Switcher -->
-                <div class="relative" x-data="{ langOpen: false }">
-                    <button @click="langOpen = !langOpen" class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold uppercase tracking-widest transition">
-                        <i class="fas fa-globe"></i>
-                        <span>{{ app()->getLocale() }}</span>
-                    </button>
-                    <div x-show="langOpen" @click.outside="langOpen = false" x-cloak class="absolute right-0 mt-2 w-32 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-100 dark:border-slate-700 overflow-hidden">
-                        <a href="{{ route('lang.switch', 'id') }}" class="block px-4 py-2 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-900/30 {{ app()->getLocale() == 'id' ? 'text-red-600' : '' }}">INDONESIA</a>
-                        <a href="{{ route('lang.switch', 'en') }}" class="block px-4 py-2 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-900/30 {{ app()->getLocale() == 'en' ? 'text-red-600' : '' }}">ENGLISH</a>
-                    </div>
-                </div>
-
-                <div class="hidden sm:block">
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="bg-red-700 text-white px-6 py-2 rounded-full font-bold hover:bg-red-800 transition shadow-lg shadow-red-200 dark:shadow-none text-xs">{{ __('messages.dashboard') }}</a>
-                    @else
-                        <a href="{{ route('login') }}" class="bg-gray-100 dark:bg-slate-800 text-red-700 dark:text-red-400 px-6 py-2 rounded-full font-bold hover:bg-red-50 dark:hover:bg-slate-700 transition border border-red-200 dark:border-slate-700 text-xs">{{ __('messages.login_staff') }}</a>
-                    @endauth
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800">
-                    <i class="fas" :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'" class="text-xl"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div x-show="mobileMenuOpen" 
-             x-cloak
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 -translate-y-4"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             class="lg:hidden bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 absolute w-full shadow-xl">
-            <div class="flex flex-col p-4 space-y-2 font-bold text-gray-700 dark:text-gray-300">
-                <a href="#beranda" @click="mobileMenuOpen = false" class="p-3 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 rounded-xl transition">{{ __('messages.home') }}</a>
-                <a href="#profil" @click="mobileMenuOpen = false" class="p-3 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 rounded-xl transition">{{ __('messages.profile') }}</a>
-                <a href="#prodi" @click="mobileMenuOpen = false" class="p-3 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 rounded-xl transition">{{ __('messages.study_programs') }}</a>
-                <a href="{{ route('landing.news') }}" class="p-3 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 rounded-xl transition">{{ __('messages.news') }}</a>
-                <div class="pt-4 sm:hidden">
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="block text-center bg-red-700 text-white px-6 py-3 rounded-xl font-bold">{{ __('messages.dashboard') }}</a>
-                    @else
-                        <a href="{{ route('login') }}" class="block text-center bg-gray-100 dark:bg-slate-800 text-red-700 dark:text-red-400 px-6 py-3 rounded-xl font-bold border border-red-200 dark:border-slate-700">{{ __('messages.login_staff') }}</a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
+@include('partials.navbar')
 
     <!-- Hero Section -->
     <header id="beranda" class="hero-gradient text-white py-20 md:py-40 relative overflow-hidden">
@@ -139,7 +70,7 @@
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
                     <a href="#prodi" class="bg-white text-red-700 px-10 py-4 rounded-xl font-black hover:bg-red-50 transition transform hover:-translate-y-1 shadow-2xl uppercase tracking-wider text-sm">{{ __('messages.study_programs') }}</a>
-                    <a href="#profil" class="bg-red-800/40 border-2 border-white/50 text-white px-10 py-4 rounded-xl font-black hover:bg-red-800 transition transform hover:-translate-y-1 backdrop-blur-md uppercase tracking-wider text-sm">{{ __('messages.profile') }}</a>
+                    <a href="{{ route('landing.profile') }}" class="bg-red-800/40 border-2 border-white/50 text-white px-10 py-4 rounded-xl font-black hover:bg-red-800 transition transform hover:-translate-y-1 backdrop-blur-md uppercase tracking-wider text-sm">{{ __('messages.profile') }}</a>
                 </div>
             </div>
             <div class="md:w-2/5 flex justify-center relative hidden md:flex">
@@ -150,114 +81,75 @@
         <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-50 dark:from-slate-950 to-transparent"></div>
     </header>
 
-    <!-- History Section -->
-    <section id="profil" class="py-20 md:py-32 bg-slate-50 dark:bg-slate-950">
+    <!-- Short Profile Section -->
+    <section class="py-20 md:py-32 bg-white dark:bg-slate-900 transition-colors duration-300">
         <div class="container mx-auto px-4 md:px-12">
-            <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                <div class="md:w-1/2 order-2 md:order-1 text-center md:text-left">
-                    <h2 class="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-8 flex flex-col md:flex-row items-center">
-                        <span class="hidden md:block w-12 h-1.5 bg-red-600 mr-4 rounded-full"></span>
-                        {{ $profiles['history']->title ?? __('messages.history') }}
-                        <span class="md:hidden w-16 h-1 bg-red-600 mt-2 rounded-full"></span>
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg md:text-xl mb-8">
-                        {{ $profiles['history']->content ?? 'Jurusan Komputer dan Bisnis Politala berkomitmen untuk memberikan pendidikan vokasi terbaik.' }}
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
-                        <div class="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl dark:shadow-none border-b-8 border-red-600 transform hover:scale-105 transition border border-gray-100 dark:border-slate-800">
-                            <div class="text-4xl md:text-5xl font-black text-red-700 dark:text-red-500 mb-2">14+</div>
-                            <div class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400 uppercase font-bold tracking-widest">Tahun Mengabdi</div>
-                        </div>
-                        <div class="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl dark:shadow-none border-b-8 border-red-600 transform hover:scale-105 transition border border-gray-100 dark:border-slate-800">
-                            <div class="text-4xl md:text-5xl font-black text-red-700 dark:text-red-500 mb-2">1K+</div>
-                            <div class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400 uppercase font-bold tracking-widest">Alumni Sukses</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-1/2 order-1 md:order-2 relative">
-                    <div class="absolute -top-4 -left-4 w-20 md:w-24 h-20 md:h-24 bg-red-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-                    @if(isset($profiles['history']->image))
-                        <img src="{{ asset('storage/' . $profiles['history']->image) }}" class="rounded-[2rem] shadow-2xl relative z-10 border-4 md:border-8 border-white dark:border-slate-800 w-full">
-                    @else
-                        <div class="bg-red-700 aspect-video rounded-[2rem] flex items-center justify-center text-white shadow-2xl relative z-10 border-4 md:border-8 border-white dark:border-slate-800 overflow-hidden">
-                             <i class="fas fa-university text-7xl md:text-9xl opacity-20 absolute -right-4 -bottom-4"></i>
-                             <span class="text-xl md:text-2xl font-black italic tracking-widest">POLITALA</span>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Vision & Mission -->
-    <section class="py-20 md:py-32 bg-gray-900 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-red-700 rounded-full blur-[120px] opacity-20"></div>
-        <div class="container mx-auto px-4 md:px-12 relative z-10">
-            <div class="grid md:grid-cols-2 gap-8 md:gap-10">
-                <div class="bg-white/5 backdrop-blur-lg p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 hover:bg-white/10 transition">
-                    <div class="w-12 h-12 md:w-16 md:h-16 bg-red-600 rounded-2xl flex items-center justify-center mb-6 md:mb-8 shadow-lg shadow-red-600/30">
-                        <i class="fas fa-eye text-2xl md:text-3xl text-white"></i>
-                    </div>
-                    <h3 class="text-2xl md:text-3xl font-black text-white mb-4 md:mb-6 uppercase tracking-tight">{{ $profiles['vision']->title ?? __('messages.vision') }}</h3>
-                    <p class="text-gray-400 leading-relaxed text-base md:text-lg italic">
-                        "{{ $profiles['vision']->content ?? 'Menjadi pusat unggulan teknologi dan bisnis.' }}"
-                    </p>
-                </div>
-                <div class="bg-white/5 backdrop-blur-lg p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 hover:bg-white/10 transition">
-                    <div class="w-12 h-12 md:w-16 md:h-16 bg-red-600 rounded-2xl flex items-center justify-center mb-6 md:mb-8 shadow-lg shadow-red-600/30">
-                        <i class="fas fa-bullseye text-2xl md:text-3xl text-white"></i>
-                    </div>
-                    <h3 class="text-2xl md:text-3xl font-black text-white mb-4 md:mb-6 uppercase tracking-tight">{{ $profiles['mission']->title ?? __('messages.mission') }}</h3>
-                    <div class="text-gray-400 leading-relaxed text-base md:text-lg space-y-4">
-                        {!! nl2br(e($profiles['mission']->content ?? 'Mengembangkan SDM berkualitas.')) !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Study Programs -->
-    <section id="prodi" class="py-20 md:py-32 bg-white dark:bg-slate-900 relative transition-colors duration-300">
-        <div class="container mx-auto px-4 md:px-12">
-            <div class="text-center mb-16 md:mb-24">
-                <span class="text-red-600 font-black tracking-[0.2em] uppercase text-[10px] md:text-sm mb-4 block">Academic Programs</span>
-                <h2 class="text-3xl md:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight">{{ __('messages.study_programs') }}</h2>
-                <div class="h-1.5 md:h-2 w-20 md:w-24 bg-red-600 mx-auto rounded-full"></div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                @forelse($studyPrograms as $prodi)
-                <div class="group bg-white dark:bg-slate-800 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-red-200 dark:hover:shadow-none transition-all duration-500 border border-gray-100 dark:border-slate-700 flex flex-col transform hover:-translate-y-2">
-                    <div class="h-56 md:h-64 bg-gray-200 dark:bg-slate-700 relative overflow-hidden">
-                        @if($prodi->image)
-                            <img src="{{ asset('storage/' . $prodi->image) }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+            <div class="flex flex-col lg:flex-row items-center gap-12 md:gap-24">
+                <div class="lg:w-1/2">
+                    <div class="relative group">
+                        <div class="absolute -top-10 -left-10 w-40 h-40 bg-red-700/10 rounded-full blur-3xl group-hover:scale-150 transition duration-700"></div>
+                        @if(isset($profiles['history']->image))
+                            <div class="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl border-4 border-slate-50 dark:border-slate-800">
+                                <img src="{{ asset('storage/' . $profiles['history']->image) }}" class="w-full aspect-[4/3] object-cover transform group-hover:scale-110 transition duration-1000">
+                            </div>
                         @else
-                            <div class="w-full h-full flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-200 dark:text-red-800">
-                                <i class="fas fa-graduation-cap text-6xl md:text-8xl"></i>
+                            <div class="bg-red-700 aspect-[4/3] rounded-[3rem] flex items-center justify-center text-white shadow-2xl relative z-10 border-8 border-slate-50 dark:border-slate-800 overflow-hidden">
+                                <i class="fas fa-university text-[10rem] opacity-10 absolute"></i>
+                                <span class="text-3xl font-black tracking-widest italic opacity-50 uppercase">JKB PROFILE</span>
                             </div>
                         @endif
-                        <div class="absolute inset-0 bg-gradient-to-t from-red-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6 md:p-8">
-                             <span class="text-white font-bold text-sm md:text-base">Lihat Selengkapnya <i class="fas fa-arrow-right ml-2"></i></span>
-                        </div>
-                        <div class="absolute top-4 md:top-6 left-4 md:left-6 bg-red-700 text-white text-[10px] md:text-xs font-black px-3 md:px-4 py-1 md:py-1.5 rounded-full uppercase tracking-widest shadow-lg">
-                            {{ $prodi->level }}
-                        </div>
-                    </div>
-                    <div class="p-8 md:p-10 flex-1 flex flex-col">
-                        <h4 class="text-xl md:text-2xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">{{ $prodi->name }}</h4>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm md:text-base leading-relaxed mb-6 md:mb-8 flex-1 line-clamp-4">
-                            {{ $prodi->description }}
-                        </p>
-                        <div class="flex items-center justify-between pt-6 border-t border-gray-100 dark:border-slate-700">
-                            <span class="text-red-700 dark:text-red-400 font-black text-[10px] md:text-sm uppercase tracking-widest">KODE: {{ $prodi->code }}</span>
-                            <div class="w-8 h-8 md:w-10 md:h-10 bg-red-50 dark:bg-red-900/30 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 group-hover:bg-red-700 dark:group-hover:bg-red-500 group-hover:text-white transition">
-                                <i class="fas fa-chevron-right text-xs"></i>
-                            </div>
+                        <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-slate-900 dark:bg-red-800 rounded-3xl z-20 flex flex-col items-center justify-center text-white shadow-xl transform rotate-12 group-hover:rotate-0 transition duration-500">
+                            <p class="text-3xl font-black">14+</p>
+                            <p class="text-[8px] font-bold uppercase tracking-widest opacity-60">Years Excellence</p>
                         </div>
                     </div>
                 </div>
-                @empty
-                    <p class="text-center text-gray-400 col-span-full py-10 italic">{{ __('messages.no_data') }}</p>
-                @endforelse
+                <div class="lg:w-1/2">
+                    <span class="text-red-600 font-black tracking-[0.3em] uppercase text-xs mb-4 block">Brief Introduction</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-gray-900 dark:text-white mb-8 tracking-tight uppercase leading-tight">
+                        {{ $profiles['history']->title ?? __('messages.profile') }}
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg md:text-xl leading-relaxed italic mb-10">
+                        {{ Str::limit(strip_tags($profiles['history']->content ?? 'Jurusan Komputer dan Bisnis Politala berkomitmen untuk memberikan pendidikan vokasi terbaik bagi putra-putri daerah.'), 250) }}
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 shrink-0 bg-red-50 dark:bg-red-900/30 rounded-xl flex items-center justify-center text-red-600">
+                                <i class="fas fa-eye text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-gray-900 dark:text-white text-xs uppercase tracking-widest mb-1">{{ __('messages.vision') }}</h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 italic">"{{ Str::limit($profiles['vision']->content ?? 'Menjadi pusat unggulan teknologi.', 60) }}"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 shrink-0 bg-red-50 dark:bg-red-900/30 rounded-xl flex items-center justify-center text-red-600">
+                                <i class="fas fa-bullseye text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-gray-900 dark:text-white text-xs uppercase tracking-widest mb-1">{{ __('messages.mission') }}</h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 italic">Misi kami berfokus pada pengembangan SDM yang kompeten.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-6 mb-12">
+                        <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Follow Us:</span>
+                        <div class="flex gap-4">
+                            @foreach($socialMedia as $social)
+                                <a href="{{ $social->url }}" target="_blank" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-red-700 hover:text-white transition-all transform hover:scale-110" title="{{ $social->platform }}">
+                                    <i class="{{ $social->icon }} text-xs"></i>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <a href="{{ route('landing.profile') }}" class="inline-flex items-center gap-4 bg-gray-900 dark:bg-red-700 text-white px-10 py-4 rounded-2xl font-black uppercase text-xs tracking-[0.2em] hover:bg-red-700 dark:hover:bg-red-800 transition shadow-xl group">
+                        {{ __('messages.read_more') }}
+                        <i class="fas fa-arrow-right transform group-hover:translate-x-2 transition-transform"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -304,23 +196,79 @@
         </div>
     </section>
 
-    <!-- Organizational Structure -->
-    <section class="py-20 md:py-32 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <!-- Contact Form Section -->
+    <section id="kontak" class="py-20 md:py-32 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
         <div class="container mx-auto px-4 md:px-12">
-            <div class="max-w-6xl mx-auto bg-slate-900 dark:bg-black rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-24 text-center relative overflow-hidden border border-white/5">
-                <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                <h2 class="text-2xl md:text-5xl font-black text-white mb-10 md:mb-16 relative z-10 tracking-tight uppercase">{{ $profiles['structure']->title ?? __('messages.structure') }}</h2>
-                <div class="flex justify-center relative z-10">
-                    @if(isset($profiles['structure']->image))
-                        <div class="bg-white p-2 md:p-6 rounded-xl md:rounded-[2rem] shadow-2xl shadow-red-900/50">
-                            <img src="{{ asset('storage/' . $profiles['structure']->image) }}" class="max-w-full h-auto rounded-lg md:rounded-xl">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="lg:w-1/2">
+                    <h2 class="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-8 tracking-tight uppercase leading-none">{{ __('messages.contact') }} <span class="text-red-700">Kami</span></h2>
+                    <p class="text-lg text-gray-500 dark:text-gray-400 mb-12 leading-relaxed">{{ __('messages.contact_desc') }}</p>
+                    
+                    <div class="space-y-8">
+                        <div class="flex items-start">
+                            <div class="w-14 h-14 bg-white dark:bg-slate-900 rounded-2xl shadow-lg flex items-center justify-center text-red-700 text-2xl mr-6 border border-gray-100 dark:border-slate-800">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-gray-900 dark:text-white uppercase text-xs tracking-widest mb-2">{{ __('messages.location') }}</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Jl. Ahmad Yani KM.06, Pelaihari, Tanah Laut.</p>
+                            </div>
                         </div>
-                    @else
-                        <div class="bg-white/5 backdrop-blur-md p-10 md:p-16 rounded-[2rem] md:rounded-[3rem] border-2 border-dashed border-white/20 w-full">
-                            <i class="fas fa-sitemap text-5xl md:text-7xl text-red-600 mb-6"></i>
-                            <p class="text-gray-400 text-lg md:text-xl">{{ $profiles['structure']->content ?? 'Diagram struktur organisasi belum diunggah.' }}</p>
+                        <div class="flex items-start">
+                            <div class="w-14 h-14 bg-white dark:bg-slate-900 rounded-2xl shadow-lg flex items-center justify-center text-red-700 text-2xl mr-6 border border-gray-100 dark:border-slate-800">
+                                <i class="fas fa-envelope-open-text"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-gray-900 dark:text-white uppercase text-xs tracking-widest mb-2">{{ __('messages.email') }}</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">jkb@politala.ac.id</p>
+                            </div>
                         </div>
-                    @endif
+                    </div>
+
+                    <div class="mt-12">
+                        <h4 class="font-black text-gray-900 dark:text-white uppercase text-xs tracking-[0.3em] mb-6">Connect with us</h4>
+                        <div class="flex flex-wrap gap-4">
+                            @foreach($socialMedia as $social)
+                                <a href="{{ $social->url }}" target="_blank" class="flex items-center gap-3 bg-white dark:bg-slate-900 px-6 py-3 rounded-2xl shadow-md border border-gray-50 dark:border-slate-800 hover:border-red-500 transition group">
+                                    <i class="{{ $social->icon }} text-red-600 group-hover:scale-125 transition"></i>
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-700 dark:text-gray-300">{{ $social->platform }}</span>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 w-full">
+                    <div class="bg-white dark:bg-slate-900 p-8 md:p-12 rounded-[3rem] shadow-2xl border border-gray-100 dark:border-slate-800">
+                        @if(session('success'))
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-8">
+                                {{ __('messages.success_message') }}
+                            </div>
+                        @endif
+                        <form action="{{ route('contacts.store') }}" method="POST" class="space-y-6">
+                            @csrf
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.full_name') }}</label>
+                                    <input type="text" name="name" required class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.email') }}</label>
+                                    <input type="email" name="email" required class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.subject') }}</label>
+                                <input type="text" name="subject" required class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.message') }}</label>
+                                <textarea name="message" rows="5" required class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-red-700 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] hover:bg-red-800 transition shadow-xl shadow-red-200 dark:shadow-none">
+                                {{ __('messages.send_message') }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -352,6 +300,7 @@
                         <li><a href="#profil" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.profile') }}</a></li>
                         <li><a href="#prodi" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.study_programs') }}</a></li>
                         <li><a href="{{ route('landing.news') }}" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.news') }}</a></li>
+                        <li><a href="#kontak" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.contact_us') }}</a></li>
                     </ul>
                 </div>
                 <div class="w-full lg:w-1/3 text-center md:text-left">
@@ -373,7 +322,7 @@
                 </div>
             </div>
             <div class="border-t border-white/5 mt-16 md:mt-20 pt-10 text-center text-[10px] md:text-sm font-bold tracking-widest uppercase">
-                &copy; {{ date('Y') }} JURUSAN KOMPUTER DAN BISNIS POLITALA. ALL RIGHTS RESERVED.
+                &copy; {{ date('Y') }} {{ __('messages.copyright') }}
             </div>
         </div>
     </footer>

@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
+    use \App\Traits\LogsActivity;
+
     public function index()
     {
         $this->authorizePermission('posts_view');
         
-        $query = Post::with('user')->latest();
+        $query = Post::with(['user', 'category'])->latest();
         
         if (!auth()->user()->can('posts_publish')) {
             $query->where('user_id', auth()->id());
@@ -28,7 +30,8 @@ class PostController extends Controller
     public function create()
     {
         $this->authorizePermission('posts_create');
-        return view('posts.create');
+        $categories = \App\Models\Category::all();
+        return view('posts.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -44,12 +47,15 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required',
+            'category_id' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:' . implode(',', $allowedStatuses),
+            'meta_description' => 'nullable|string|max:160',
+            'meta_keywords' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:1000'
         ]);
 
-        $data = $request->only(['title', 'content', 'status']);
+        $data = $request->only(['title', 'content', 'status', 'category_id', 'meta_description', 'meta_keywords']);
         $data['user_id'] = auth()->id();
         $data['slug'] = Str::slug($request->title);
 
@@ -58,6 +64,8 @@ class PostController extends Controller
         }
 
         $post = Post::create($data);
+
+        $this->logActivity('create', $post, 'Created post: ' . $post->title);
 
         // Record submission log
         PostSubmission::create([
@@ -85,7 +93,8 @@ class PostController extends Controller
             abort(403);
         }
 
-        return view('posts.edit', compact('post'));
+        $categories = \App\Models\Category::all();
+        return view('posts.edit', compact('post', 'categories'));
     }
 
     public function update(Request $request, Post $post)
@@ -105,13 +114,16 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required',
+            'category_id' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:' . implode(',', $allowedStatuses),
+            'meta_description' => 'nullable|string|max:160',
+            'meta_keywords' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:1000'
         ]);
 
         $oldStatus = $post->status;
-        $data = $request->only(['title', 'content', 'status']);
+        $data = $request->only(['title', 'content', 'status', 'category_id', 'meta_description', 'meta_keywords']);
         $data['slug'] = Str::slug($request->title);
 
         if ($request->hasFile('image')) {
@@ -122,6 +134,8 @@ class PostController extends Controller
         }
 
         $post->update($data);
+
+        $this->logActivity('update', $post, 'Updated post: ' . $post->title);
 
         // Record log if status changed or notes provided
         if ($oldStatus !== $post->status || $request->filled('notes')) {
