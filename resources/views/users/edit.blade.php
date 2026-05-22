@@ -34,10 +34,15 @@
                 @endforeach
             </div>
         </div>
-        <div class="flex items-center justify-end">
-            <a href="{{ route('users.index') }}" class="mr-4 text-gray-600 hover:underline">Cancel</a>
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Update User
+        <div class="mt-12 flex justify-end gap-4">
+            <a href="{{ route('users.index') }}" 
+               class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center">
+                Batal
+            </a>
+            <button type="submit" 
+                    class="bg-gray-900 dark:bg-red-700 text-white px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-all shadow-xl flex items-center justify-center group">
+                <span>Perbarui User</span>
+                <i class="fas fa-save ml-3 group-hover:translate-x-1 transition-transform"></i>
             </button>
         </div>
     </form>

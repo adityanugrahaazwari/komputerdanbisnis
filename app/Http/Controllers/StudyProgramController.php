@@ -30,6 +30,7 @@ class StudyProgramController extends Controller
             'code' => 'nullable|string|max:50|unique:study_programs',
             'level' => 'nullable|string|max:50',
             'description' => 'nullable|string',
+            'website_url' => 'nullable|url|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -59,6 +60,7 @@ class StudyProgramController extends Controller
             'code' => 'nullable|string|max:50|unique:study_programs,code,' . $studyProgram->id,
             'level' => 'nullable|string|max:50',
             'description' => 'nullable|string',
+            'website_url' => 'nullable|url|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 

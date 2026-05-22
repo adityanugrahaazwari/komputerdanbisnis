@@ -38,12 +38,15 @@
             </div>
         </div>
 
-        <div class="flex items-center justify-between pt-8 border-t border-gray-100 dark:border-slate-800">
-            <a href="{{ route('organizational-structures.index') }}" class="text-gray-500 dark:text-gray-400 hover:text-red-600 font-bold uppercase text-xs tracking-widest transition">
-                <i class="fas fa-arrow-left mr-2"></i> Batal
+        <div class="mt-12 flex justify-end gap-4">
+            <a href="{{ route('organizational-structures.index') }}" 
+               class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center">
+                Batal
             </a>
-            <button type="submit" class="bg-red-700 hover:bg-red-800 text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-red-200 dark:shadow-none uppercase tracking-widest text-sm transition transform active:scale-95">
-                <i class="fas fa-save mr-2"></i> Simpan Struktur
+            <button type="submit" 
+                    class="bg-gray-900 dark:bg-red-700 text-white px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-all shadow-xl flex items-center justify-center group">
+                <span>Simpan Struktur</span>
+                <i class="fas fa-save ml-3 group-hover:translate-x-1 transition-transform"></i>
             </button>
         </div>
     </form>

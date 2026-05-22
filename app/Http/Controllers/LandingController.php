@@ -109,9 +109,19 @@ class LandingController extends Controller
 
     public function gallery()
     {
-        $galleries = \App\Models\Gallery::where('is_active', true)->orderBy('order')->paginate(12);
+        $galleryGroups = \App\Models\GalleryGroup::where('is_active', true)
+            ->with(['galleries' => function($q) {
+                $q->where('is_active', true)->orderBy('order');
+            }])
+            ->get();
+            
+        $ungroupedGalleries = \App\Models\Gallery::where('is_active', true)
+            ->whereNull('gallery_group_id')
+            ->orderBy('order')
+            ->paginate(12);
+
         $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
-        return view('gallery-index', compact('galleries', 'socialMedia'));
+        return view('gallery-index', compact('galleryGroups', 'ungroupedGalleries', 'socialMedia'));
     }
 
     public function downloads()

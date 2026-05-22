@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
             OrganizationalStructureRbacSeeder::class,
             StudyProgramSeeder::class,
             SocialMediaSeeder::class,
+            AccountMenuSeeder::class,
+            AnnouncementRbacSeeder::class,
+            DashboardSettingSeeder::class,
         ]);
     }
 }

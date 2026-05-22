@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     public function hasRole($roleSlug)
     {
-        return clone $this->roles()->where('slug', $roleSlug)->exists();
+        return $this->roles()->where('slug', $roleSlug)->exists();
     }
 
     public function hasPermission($permissionSlug)

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-#[Fillable(['name', 'slug', 'code', 'level', 'description', 'image', 'is_active'])]
+#[Fillable(['name', 'slug', 'code', 'level', 'description', 'image', 'is_active', 'website_url'])]
 class StudyProgram extends Model
 {
     use HasFactory;

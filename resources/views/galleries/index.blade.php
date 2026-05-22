@@ -44,6 +44,13 @@
                         <span class="bg-slate-100 text-[10px] font-black px-2 py-0.5 rounded text-gray-500">#{{ $gallery->order ?? 0 }}</span>
                     </div>
                     <p class="text-xs text-gray-500 line-clamp-2 mb-3">{{ $gallery->description ?? 'Tidak ada deskripsi.' }}</p>
+                    @if($gallery->group)
+                        <div class="mb-3">
+                            <span class="inline-block bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md">
+                                <i class="fas fa-folder-open mr-1"></i> {{ $gallery->group->name }}
+                            </span>
+                        </div>
+                    @endif
                     <div class="flex items-center justify-between">
                         <span class="text-[10px] font-bold uppercase tracking-widest {{ $gallery->is_active ? 'text-green-600' : 'text-red-600' }}">
                             {{ $gallery->is_active ? 'Aktif' : 'Non-aktif' }}

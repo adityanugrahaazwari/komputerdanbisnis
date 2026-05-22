@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gallery;
+use App\Models\GalleryGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,27 +12,29 @@ class GalleryController extends Controller
     public function index()
     {
         $this->authorizePermission('galleries_view');
-        $galleries = Gallery::orderBy('order')->paginate(12);
+        $galleries = Gallery::with('group')->orderBy('order')->paginate(12);
         return view('galleries.index', compact('galleries'));
     }
 
     public function create()
     {
         $this->authorizePermission('galleries_create');
-        return view('galleries.create');
+        $groups = GalleryGroup::where('is_active', true)->get();
+        return view('galleries.create', compact('groups'));
     }
 
     public function store(Request $request)
     {
         $this->authorizePermission('galleries_create');
         $request->validate([
+            'gallery_group_id' => 'nullable|exists:gallery_groups,id',
             'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
             'order' => 'nullable|integer',
             'description' => 'nullable|string'
         ]);
 
-        $data = $request->only(['title', 'description', 'order']);
+        $data = $request->only(['gallery_group_id', 'title', 'description', 'order']);
         $data['image'] = $request->file('image')->store('gallery', 'public');
 
         Gallery::create($data);
@@ -42,20 +45,23 @@ class GalleryController extends Controller
     public function edit(Gallery $gallery)
     {
         $this->authorizePermission('galleries_edit');
-        return view('galleries.edit', compact('gallery'));
+        $groups = GalleryGroup::where('is_active', true)->get();
+        return view('galleries.edit', compact('gallery', 'groups'));
     }
 
     public function update(Request $request, Gallery $gallery)
     {
         $this->authorizePermission('galleries_edit');
         $request->validate([
+            'gallery_group_id' => 'nullable|exists:gallery_groups,id',
             'title' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'order' => 'nullable|integer',
             'description' => 'nullable|string'
         ]);
 
-        $data = $request->only(['title', 'description', 'order', 'is_active']);
+        $data = $request->only(['gallery_group_id', 'title', 'description', 'order', 'is_active']);
+
         
         if ($request->hasFile('image')) {
             Storage::disk('public')->delete($gallery->image);

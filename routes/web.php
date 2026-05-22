@@ -22,6 +22,12 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PermissionGroupController;
 use App\Http\Controllers\OrganizationalStructureController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\DashboardSettingController;
+use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\BackupController;
+use App\Http\Controllers\ManualBookController;
 
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['id', 'en'])) {
@@ -57,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('menus', MenuController::class);
     Route::resource('posts', PostController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('gallery-groups', \App\Http\Controllers\GalleryGroupController::class)->names('gallery-groups');
     Route::resource('galleries', GalleryController::class);
     Route::resource('documents', DocumentController::class);
     Route::resource('services', ServiceController::class);
@@ -76,4 +83,25 @@ Route::middleware('auth')->group(function () {
     Route::resource('organizational-structures', OrganizationalStructureController::class)->names('organizational-structures');
     Route::resource('study-programs', StudyProgramController::class)->names('study_programs');
     Route::resource('social-media', SocialMediaController::class)->names('social_media');
+    Route::resource('announcements', AnnouncementController::class)->except(['show', 'edit', 'update']);
+    Route::post('/announcements/{announcement}/toggle', [AnnouncementController::class, 'toggle'])->name('announcements.toggle');
+
+    Route::get('/dashboard-settings', [DashboardSettingController::class, 'index'])->name('dashboard-settings.index');
+    Route::put('/dashboard-settings', [DashboardSettingController::class, 'update'])->name('dashboard-settings.update');
+
+    Route::get('/site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
+    Route::put('/site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
+
+    Route::get('/backups', [BackupController::class, 'index'])->name('backups.index');
+    Route::post('/backups', [BackupController::class, 'create'])->name('backups.create');
+    Route::get('/backups/{filename}/download', [BackupController::class, 'download'])->name('backups.download');
+    Route::delete('/backups/{filename}', [BackupController::class, 'destroy'])->name('backups.destroy');
+
+    Route::get('/manual-book', [ManualBookController::class, 'index'])->name('manual-book.index');
+
+    // Account routes
+    Route::get('/account/profile', [AccountController::class, 'edit'])->name('account.profile.edit');
+    Route::put('/account/profile', [AccountController::class, 'updateProfile'])->name('account.profile.update');
+    Route::get('/account/password', [AccountController::class, 'password'])->name('account.password');
+    Route::put('/account/password', [AccountController::class, 'updatePassword'])->name('account.password.update');
 });

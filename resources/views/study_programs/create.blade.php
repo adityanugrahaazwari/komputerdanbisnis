@@ -33,6 +33,12 @@
                 <label class="block text-gray-700 font-bold mb-2">Gambar / Logo</label>
                 <input type="file" name="image" class="w-full border rounded px-3 py-2">
             </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Website Program Studi (URL)</label>
+                <input type="url" name="website_url" class="w-full border rounded px-3 py-2 @error('website_url') border-red-500 @enderror" value="{{ old('website_url') }}" placeholder="https://prodi.politala.ac.id">
+                @error('website_url') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
         </div>
 
         <div class="mb-4">
@@ -47,9 +53,14 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-between border-t pt-4">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded font-bold">Simpan</button>
-            <a href="{{ route('study_programs.index') }}" class="text-gray-600 hover:underline">Batal</a>
+        <div class="mt-12 flex justify-end gap-4">
+            <a href="{{ route('study_programs.index') }}" class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center">
+                Batal
+            </a>
+            <button type="submit" class="bg-gray-900 dark:bg-red-700 text-white px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-all shadow-xl flex items-center justify-center group">
+                <i class="fas fa-save mr-3 group-hover:rotate-12 transition-transform"></i>
+                Simpan Program Studi
+            </button>
         </div>
     </form>
 </div>

@@ -173,27 +173,7 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-gray-400 py-16 md:py-24 border-t-8 border-red-700 dark:border-red-900">
-        <div class="container mx-auto px-4 md:px-12 text-center">
-             <div class="mb-10">
-                <a href="{{ url('/') }}" class="text-3xl font-black text-white flex items-center justify-center mb-6 tracking-tighter">
-                    <i class="fas fa-university mr-3 text-red-600"></i> JKB POLITALA
-                </a>
-                <p class="max-w-xl mx-auto italic">Terimakasih telah mengunjungi portal informasi resmi Jurusan Komputer dan Bisnis Politeknik Negeri Tanah Laut.</p>
-             </div>
-             <div class="flex justify-center space-x-8 text-3xl mb-12">
-                    @foreach($socialMedia as $social)
-                        <a href="{{ $social->url }}" target="_blank" class="text-gray-600 hover:text-red-500 transition-colors" title="{{ $social->platform }}">
-                            <i class="{{ $social->icon }}"></i>
-                        </a>
-                    @endforeach
-                </div>
-            <div class="text-sm font-bold tracking-widest opacity-50 uppercase">
-                &copy; {{ date('Y') }} JURUSAN KOMPUTER DAN BISNIS POLITALA.
-            </div>
-        </div>
-    </footer>
+@include('partials.footer')
 
 </body>
 </html>

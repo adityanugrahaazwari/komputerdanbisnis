@@ -20,6 +20,18 @@
                     @error('title') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror
                 </div>
 
+                <div class="md:col-span-2">
+                    <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Grup (Album)</label>
+                    <select name="gallery_group_id" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none">
+                        <option value="">-- Tanpa Grup --</option>
+                        @if(isset($groups))
+                            @foreach($groups as $group)
+                                <option value="{{ $group->id }}" {{ old('gallery_group_id', $gallery->gallery_group_id) == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+
                 <div>
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Urutan Tampilan</label>
                     <input type="number" name="order" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none" value="{{ old('order', $gallery->order) }}">
@@ -48,13 +60,16 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-4 border-t border-gray-50 pt-8">
-                <button type="submit" class="bg-red-700 text-white px-8 py-3 rounded-2xl font-bold text-sm hover:bg-red-800 transition shadow-lg shadow-red-200">
-                    Update Foto
-                </button>
-                <a href="{{ route('galleries.index') }}" class="text-gray-500 font-bold text-sm hover:text-gray-900 transition">
+            <div class="mt-12 flex justify-end gap-4">
+                <a href="{{ route('galleries.index') }}" 
+                   class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center">
                     Batal
                 </a>
+                <button type="submit" 
+                        class="bg-gray-900 dark:bg-red-700 text-white px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-all shadow-xl flex items-center justify-center group">
+                    <span>Perbarui Galeri</span>
+                    <i class="fas fa-save ml-3 group-hover:translate-x-1 transition-transform"></i>
+                </button>
             </div>
         </form>
     </div>

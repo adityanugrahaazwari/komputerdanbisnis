@@ -6,7 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jurusan Komputer dan Bisnis - Politeknik Negeri Tanah Laut</title>
+    <title>{{ $siteSettings['name'] }} - Politeknik Negeri Tanah Laut</title>
+    @if(isset($siteSettings['favicon']) && $siteSettings['favicon'])
+        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $siteSettings['favicon']) }}">
+    @endif
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -61,16 +64,26 @@
         </div>
         <div class="container mx-auto px-4 md:px-12 flex flex-col md:flex-row items-center relative z-10">
             <div class="md:w-3/5 mb-12 md:mb-0 text-center md:text-left">
-                <span class="inline-block px-4 py-1 bg-red-800/50 rounded-full text-xs md:text-sm font-bold mb-4 backdrop-blur-sm border border-red-400/30">POLITEKNIK NEGERI TANAH LAUT</span>
+                <span class="inline-block px-4 py-1 bg-red-800/50 rounded-full text-xs md:text-sm font-bold mb-4 backdrop-blur-sm border border-red-400/30">{{ $siteSettings['hero_badge'] }}</span>
                 <h1 class="text-4xl md:text-7xl font-black leading-none mb-6 drop-shadow-md uppercase">
-                    {{ __('messages.excellent') }} <br><span class="text-red-200">{{ __('messages.innovative') }}</span> <br>{{ __('messages.professional') }}
+                    @php
+                        $titleWords = explode(' ', $siteSettings['hero_title']);
+                        $wordCount = count($titleWords);
+                    @endphp
+                    @foreach($titleWords as $index => $word)
+                        @if($index == 1) <br><span class="text-red-200">{{ $word }}</span> @elseif($index > 1) <br>{{ $word }} @else {{ $word }} @endif
+                    @endforeach
                 </h1>
                 <p class="text-lg md:text-2xl text-red-50 mb-10 max-w-2xl font-medium leading-relaxed opacity-90 mx-auto md:mx-0">
-                    Mencetak tenaga kerja handal di bidang teknologi informasi dan manajemen bisnis yang siap bersaing di kancah nasional dan global.
+                    {{ $siteSettings['hero_subtitle'] }}
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-                    <a href="#prodi" class="bg-white text-red-700 px-10 py-4 rounded-xl font-black hover:bg-red-50 transition transform hover:-translate-y-1 shadow-2xl uppercase tracking-wider text-sm">{{ __('messages.study_programs') }}</a>
-                    <a href="{{ route('landing.profile') }}" class="bg-red-800/40 border-2 border-white/50 text-white px-10 py-4 rounded-xl font-black hover:bg-red-800 transition transform hover:-translate-y-1 backdrop-blur-md uppercase tracking-wider text-sm">{{ __('messages.profile') }}</a>
+                    @if($siteSettings['hero_btn1_text'])
+                        <a href="{{ $siteSettings['hero_btn1_url'] }}" class="bg-white text-red-700 px-10 py-4 rounded-xl font-black hover:bg-red-50 transition transform hover:-translate-y-1 shadow-2xl uppercase tracking-wider text-sm">{{ $siteSettings['hero_btn1_text'] }}</a>
+                    @endif
+                    @if($siteSettings['hero_btn2_text'])
+                        <a href="{{ Str::startsWith($siteSettings['hero_btn2_url'], '/') ? url($siteSettings['hero_btn2_url']) : $siteSettings['hero_btn2_url'] }}" class="bg-red-800/40 border-2 border-white/50 text-white px-10 py-4 rounded-xl font-black hover:bg-red-800 transition transform hover:-translate-y-1 backdrop-blur-md uppercase tracking-wider text-sm">{{ $siteSettings['hero_btn2_text'] }}</a>
+                    @endif
                 </div>
             </div>
             <div class="md:w-2/5 flex justify-center relative hidden md:flex">
@@ -201,8 +214,17 @@
         <div class="container mx-auto px-4 md:px-12">
             <div class="flex flex-col lg:flex-row gap-16 items-center">
                 <div class="lg:w-1/2">
-                    <h2 class="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-8 tracking-tight uppercase leading-none">{{ __('messages.contact') }} <span class="text-red-700">Kami</span></h2>
-                    <p class="text-lg text-gray-500 dark:text-gray-400 mb-12 leading-relaxed">{{ __('messages.contact_desc') }}</p>
+                    <h2 class="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-8 tracking-tight uppercase leading-none">
+                        @php
+                            $titleParts = explode(' ', $siteSettings['contact_title'] ?? 'Kontak Kami');
+                            $lastWord = array_pop($titleParts);
+                            $firstPart = implode(' ', $titleParts);
+                        @endphp
+                        {{ $firstPart }} <span class="text-red-700">{{ $lastWord }}</span>
+                    </h2>
+                    <p class="text-lg text-gray-500 dark:text-gray-400 mb-12 leading-relaxed">
+                        {{ $siteSettings['contact_description'] }}
+                    </p>
                     
                     <div class="space-y-8">
                         <div class="flex items-start">
@@ -211,7 +233,7 @@
                             </div>
                             <div>
                                 <h4 class="font-black text-gray-900 dark:text-white uppercase text-xs tracking-widest mb-2">{{ __('messages.location') }}</h4>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm">Jl. Ahmad Yani KM.06, Pelaihari, Tanah Laut.</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $siteSettings['address'] }}</p>
                             </div>
                         </div>
                         <div class="flex items-start">
@@ -220,7 +242,7 @@
                             </div>
                             <div>
                                 <h4 class="font-black text-gray-900 dark:text-white uppercase text-xs tracking-widest mb-2">{{ __('messages.email') }}</h4>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm">jkb@politala.ac.id</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $siteSettings['email'] }}</p>
                             </div>
                         </div>
                     </div>
@@ -274,58 +296,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-gray-400 py-16 md:py-24 border-t-8 border-red-700 dark:border-red-900">
-        <div class="container mx-auto px-4 md:px-12">
-            <div class="flex flex-col lg:flex-row justify-between items-start gap-12 md:gap-16">
-                <div class="w-full lg:w-1/3 text-center md:text-left">
-                    <a href="#" class="text-2xl md:text-3xl font-black text-white flex items-center justify-center md:justify-start mb-6 md:mb-8 tracking-tighter">
-                        <i class="fas fa-university mr-3 text-red-600"></i> JKB POLITALA
-                    </a>
-                    <p class="text-base md:text-lg leading-relaxed mb-8">
-                        Jurusan Komputer dan Bisnis - Politeknik Negeri Tanah Laut. Menghasilkan lulusan yang unggul, profesional, dan berjiwa wirausaha.
-                    </p>
-                    <div class="flex justify-center md:justify-start space-x-6 text-2xl md:text-3xl">
-                        @foreach($socialMedia as $social)
-                            <a href="{{ $social->url }}" target="_blank" class="text-gray-500 hover:text-red-500 transition-colors" title="{{ $social->platform }}">
-                                <i class="{{ $social->icon }}"></i>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="w-full lg:w-1/4 text-center md:text-left">
-                    <h5 class="text-white font-black uppercase tracking-widest mb-6 md:mb-8 border-b-2 border-red-700 inline-block">{{ __('messages.quick_links') }}</h5>
-                    <ul class="space-y-3 md:space-y-4 font-bold text-xs md:text-sm">
-                        <li><a href="#beranda" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.home') }}</a></li>
-                        <li><a href="#profil" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.profile') }}</a></li>
-                        <li><a href="#prodi" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.study_programs') }}</a></li>
-                        <li><a href="{{ route('landing.news') }}" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.news') }}</a></li>
-                        <li><a href="#kontak" class="hover:text-red-500 transition-colors uppercase">{{ __('messages.contact_us') }}</a></li>
-                    </ul>
-                </div>
-                <div class="w-full lg:w-1/3 text-center md:text-left">
-                    <h5 class="text-white font-black uppercase tracking-widest mb-6 md:mb-8 border-b-2 border-red-700 inline-block">{{ __('messages.contact_us') }}</h5>
-                    <ul class="space-y-4 md:space-y-6 text-sm md:text-base">
-                        <li class="flex flex-col md:flex-row items-center md:items-start">
-                            <i class="fas fa-map-marker-alt mb-2 md:mt-1.5 md:mr-4 text-red-600"></i>
-                            <span>Jl. Ahmad Yani KM.06, Desa Panggung, Pelaihari, Tanah Laut, Kalimantan Selatan.</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-phone-alt mr-4 text-red-600"></i>
-                            <span>(0512) 2021065</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-envelope mr-4 text-red-600"></i>
-                            <span>jkb@politala.ac.id</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-white/5 mt-16 md:mt-20 pt-10 text-center text-[10px] md:text-sm font-bold tracking-widest uppercase">
-                &copy; {{ date('Y') }} {{ __('messages.copyright') }}
-            </div>
-        </div>
-    </footer>
+@include('partials.footer')
 
 </body>
 </html>

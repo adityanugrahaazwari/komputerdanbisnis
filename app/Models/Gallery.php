@@ -9,5 +9,10 @@ class Gallery extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'image', 'description', 'order', 'is_active'];
+    protected $fillable = ['gallery_group_id', 'title', 'image', 'description', 'order', 'is_active'];
+
+    public function group()
+    {
+        return $this->belongsTo(GalleryGroup::class, 'gallery_group_id');
+    }
 }

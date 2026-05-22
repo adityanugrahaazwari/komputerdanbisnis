@@ -6,7 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('header', 'Dashboard') - JKB Admin</title>
+    <title>@yield('header', 'Dashboard') - {{ $siteSettings['name'] }} Admin</title>
+    @if(isset($siteSettings['favicon']) && $siteSettings['favicon'])
+        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $siteSettings['favicon']) }}">
+    @endif
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -54,8 +57,12 @@
         
         <div class="p-6 bg-black/20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <i class="fas fa-university text-2xl text-red-500"></i>
-                <span class="text-white font-black tracking-tighter text-xl">JKB ADMIN</span>
+                @if(isset($siteSettings['logo']) && $siteSettings['logo'])
+                    <img src="{{ asset('storage/' . $siteSettings['logo']) }}" alt="Logo" class="h-8">
+                @else
+                    <i class="fas fa-university text-2xl text-red-500"></i>
+                @endif
+                <span class="text-white font-black tracking-tighter text-xl truncate">{{ $siteSettings['name'] }}</span>
             </div>
             <button @click="sidebarOpen = false" class="lg:hidden text-white/50 hover:text-white">
                 <i class="fas fa-times text-xl"></i>

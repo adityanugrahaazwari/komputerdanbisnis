@@ -24,7 +24,48 @@
     </div>
 </div>
 
+<!-- Announcements Section -->
+@if($announcements->count() > 0 && (!$settings || $settings->show_announcements))
+<div class="space-y-4 mb-10">
+    @foreach($announcements as $announcement)
+        <div class="rounded-3xl p-6 flex gap-6 items-start relative overflow-hidden group border
+            @if($announcement->type == 'info') bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800 text-blue-800 dark:text-blue-300
+            @elseif($announcement->type == 'success') bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800 text-green-800 dark:text-green-300
+            @elseif($announcement->type == 'warning') bg-amber-50 dark:bg-amber-900/20 border-amber-100 dark:border-amber-800 text-amber-800 dark:text-amber-300
+            @elseif($announcement->type == 'danger') bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800 text-red-800 dark:text-red-300
+            @endif">
+            
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-lg 
+                @if($announcement->type == 'info') bg-blue-600 text-white
+                @elseif($announcement->type == 'success') bg-green-600 text-white
+                @elseif($announcement->type == 'warning') bg-amber-600 text-white
+                @elseif($announcement->type == 'danger') bg-red-600 text-white
+                @endif">
+                <i class="fas @if($announcement->type == 'info') fa-info-circle @elseif($announcement->type == 'success') fa-check-circle @elseif($announcement->type == 'warning') fa-exclamation-triangle @elseif($announcement->type == 'danger') fa-exclamation-circle @endif text-xl"></i>
+            </div>
+            
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <h4 class="text-sm font-black uppercase tracking-tight">{{ $announcement->title }}</h4>
+                    <span class="text-[10px] font-bold opacity-60">{{ $announcement->created_at->diffForHumans() }}</span>
+                </div>
+                <p class="text-sm leading-relaxed font-medium opacity-80">{{ $announcement->message }}</p>
+                <div class="mt-2 flex items-center gap-2">
+                    <div class="w-4 h-4 rounded-full bg-black/10 flex items-center justify-center">
+                        <i class="fas fa-user text-[8px]"></i>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest opacity-60">Admin: {{ $announcement->user->name }}</span>
+                </div>
+            </div>
+
+            <i class="fas fa-bullhorn absolute -bottom-4 -right-4 text-6xl opacity-10 group-hover:scale-110 transition-transform"></i>
+        </div>
+    @endforeach
+</div>
+@endif
+
 <!-- Stats Grid -->
+@if(!$settings || $settings->show_stats)
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
     <!-- Stat Card: Berita -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-slate-800 group hover:shadow-xl transition-all duration-300">
@@ -78,11 +119,13 @@
         <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ $stats['galleries'] }}</h3>
     </div>
 </div>
+@endif
 
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
     <!-- Recent Content (Left/Center Column) -->
     <div class="xl:col-span-2 space-y-8">
         <!-- Recent Posts -->
+        @if(!$settings || $settings->show_recent_posts)
         <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
             <div class="flex items-center justify-between mb-6">
                 <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Berita Terbaru</h4>
@@ -119,8 +162,10 @@
                 @endforeach
             </div>
         </div>
+        @endif
 
         <!-- Recent Interactions (Comments & Contacts) -->
+        @if(!$settings || $settings->show_recent_interactions)
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Recent Comments -->
             <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
@@ -165,11 +210,13 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 
     <!-- Sidebar Info (Right Column) -->
     <div class="space-y-8">
         <!-- Quick Stats -->
+        @if(!$settings || $settings->show_academic_info)
         <div class="bg-red-700 rounded-[2.5rem] p-8 text-white shadow-xl shadow-red-100 dark:shadow-none relative overflow-hidden">
             <i class="fas fa-university absolute -bottom-10 -right-10 text-9xl text-white/10"></i>
             <h4 class="text-xs font-black uppercase tracking-[0.2em] mb-6 opacity-60">Info Akademik</h4>
@@ -190,8 +237,10 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <!-- System Logs -->
+        @if(!$settings || $settings->show_system_logs)
         <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
             <div class="flex items-center justify-between mb-6">
                 <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Log Aktivitas</h4>
@@ -215,6 +264,37 @@
             </div>
             <a href="{{ route('logs.index') }}" class="block text-center mt-6 py-3 bg-gray-50 dark:bg-slate-800 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-red-700 transition">Lihat Semua Log</a>
         </div>
+        @endif
+
+        @if(!$settings || $settings->show_my_activity)
+        <!-- My Recent Activity -->
+        <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-6">
+                <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Aktivitas Saya</h4>
+                <i class="fas fa-user-edit text-gray-300"></i>
+            </div>
+            <div class="space-y-4">
+                @php
+                    $myLogs = \App\Models\ActivityLog::where('user_id', auth()->id())->latest()->take(5)->get();
+                @endphp
+                @forelse($myLogs as $log)
+                    <div class="flex gap-3">
+                        <div class="shrink-0 mt-1">
+                            <div class="w-2 h-2 rounded-full bg-blue-600"></div>
+                        </div>
+                        <div>
+                            <p class="text-[11px] text-gray-700 dark:text-gray-300">
+                                {{ $log->description }}
+                            </p>
+                            <p class="text-[9px] text-gray-400 italic mt-0.5">{{ $log->created_at->diffForHumans() }}</p>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-xs text-gray-400 italic text-center py-4">Belum ada aktivitas.</p>
+                @endforelse
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

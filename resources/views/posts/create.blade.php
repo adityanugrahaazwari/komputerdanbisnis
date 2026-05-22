@@ -68,9 +68,14 @@
             @error('notes') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
-        <div class="flex items-center justify-between">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Create Post</button>
-            <a href="{{ route('posts.index') }}" class="text-gray-600 hover:underline">Cancel</a>
+        <div class="mt-12 flex justify-end gap-4">
+            <a href="{{ route('posts.index') }}" class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center">
+                Batal
+            </a>
+            <button type="submit" class="bg-gray-900 dark:bg-red-700 text-white px-8 py-4 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-all shadow-xl flex items-center justify-center group">
+                <i class="fas fa-save mr-3 group-hover:rotate-12 transition-transform"></i>
+                Simpan Post
+            </button>
         </div>
     </form>
 </div>

@@ -63,9 +63,15 @@
                         </div>
                         <div class="flex items-center justify-between pt-8 border-t border-gray-100 dark:border-slate-700">
                             <span class="text-red-700 dark:text-red-400 font-black text-sm uppercase tracking-widest">KODE: {{ $prodi->code }}</span>
-                            <div class="w-10 h-10 bg-red-50 dark:bg-red-900/30 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 group-hover:bg-red-700 group-hover:text-white transition">
-                                <i class="fas fa-chevron-right text-xs"></i>
-                            </div>
+                            @if($prodi->website_url)
+                                <a href="{{ $prodi->website_url }}" target="_blank" class="flex items-center gap-3 bg-red-700 text-white px-6 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-800 transition shadow-lg shadow-red-200 dark:shadow-none">
+                                    Website <i class="fas fa-external-link-alt text-[8px]"></i>
+                                </a>
+                            @else
+                                <div class="w-10 h-10 bg-red-50 dark:bg-red-900/30 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 group-hover:bg-red-700 group-hover:text-white transition">
+                                    <i class="fas fa-chevron-right text-xs"></i>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -77,19 +83,7 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-gray-400 py-16 border-t-8 border-red-700 dark:border-red-900 text-center">
-        <div class="container mx-auto px-4 md:px-12">
-            <div class="flex justify-center space-x-6 text-2xl mb-8">
-                @foreach($socialMedia as $social)
-                    <a href="{{ $social->url }}" target="_blank" class="text-gray-600 hover:text-red-500 transition-colors" title="{{ $social->platform }}">
-                        <i class="{{ $social->icon }}"></i>
-                    </a>
-                @endforeach
-            </div>
-            <p class="text-sm font-bold tracking-widest uppercase">&copy; {{ date('Y') }} {{ __('messages.copyright') }}</p>
-        </div>
-    </footer>
+@include('partials.footer')
 
 </body>
 </html>
