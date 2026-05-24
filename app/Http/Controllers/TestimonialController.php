@@ -30,6 +30,7 @@ class TestimonialController extends Controller
             'company' => 'nullable|string|max:255',
             'quote' => 'required|string',
             'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
+            'order' => 'nullable|integer',
             'is_active' => 'boolean',
         ]);
 
@@ -60,6 +61,7 @@ class TestimonialController extends Controller
             'company' => 'nullable|string|max:255',
             'quote' => 'required|string',
             'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
+            'order' => 'nullable|integer',
             'is_active' => 'boolean',
         ]);
 

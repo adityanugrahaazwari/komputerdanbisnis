@@ -84,7 +84,7 @@
                             {{ $profiles['history']->title ?? __('messages.history') }}
                         </h2>
                         <div class="prose dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-gray-400 leading-relaxed text-lg italic">
-                            {!! nl2br(e($profiles['history']->content ?? 'Jurusan Komputer dan Bisnis Politala berkomitmen untuk memberikan pendidikan vokasi terbaik.')) !!}
+                            {!! $profiles['history']->content ?? 'Jurusan Komputer dan Bisnis Politala berkomitmen untuk memberikan pendidikan vokasi terbaik.' !!}
                         </div>
                         
                         <div class="grid grid-cols-2 gap-6 mt-12">
@@ -154,22 +154,22 @@
                             @foreach($structures as $root)
                                 <div class="flex flex-col items-center w-full">
                                     {{-- Level 1 Card --}}
-                                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-2xl border-2 border-red-600 dark:border-red-900 w-full max-w-sm text-center relative z-10 transform hover:scale-105 transition duration-500">
-                                        <div class="w-32 h-32 mx-auto mb-6 rounded-3xl overflow-hidden border-4 border-red-50 dark:border-slate-700 shadow-xl">
+                                    <div class="bg-white dark:bg-slate-800 p-6 rounded-[2rem] shadow-xl border-2 border-red-600 dark:border-red-900 w-full max-w-[280px] text-center relative z-10 transform hover:scale-105 transition duration-500">
+                                        <div class="w-24 h-24 mx-auto mb-4 rounded-2xl overflow-hidden border-4 border-red-50 dark:border-slate-700 shadow-lg">
                                             @if($root->image)
                                                 <img src="{{ asset('storage/' . $root->image) }}" class="w-full h-full object-cover">
                                             @else
                                                 <div class="w-full h-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-600">
-                                                    <i class="fas fa-user text-5xl"></i>
+                                                    <i class="fas fa-user text-4xl"></i>
                                                 </div>
                                             @endif
                                         </div>
-                                        <h3 class="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $root->name }}</h3>
-                                        <p class="text-red-600 dark:text-red-500 font-black text-xs uppercase tracking-[0.3em] mt-3">{{ $root->position }}</p>
+                                        <h3 class="text-lg font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $root->name }}</h3>
+                                        <p class="text-red-600 dark:text-red-500 font-black text-[10px] uppercase tracking-[0.2em] mt-2">{{ $root->position }}</p>
                                     </div>
 
                                     @if($root->children->count() > 0)
-                                        <div class="w-px h-16 bg-red-600/30"></div>
+                                        <div class="w-px h-12 bg-red-600/30"></div>
                                         
                                         {{-- Children Grid --}}
                                         <div class="grid grid-cols-1 md:grid-cols-{{ min($root->children->count(), 4) }} gap-12 w-full relative">
@@ -180,29 +180,29 @@
 
                                             @foreach($root->children as $child)
                                                 <div class="flex flex-col items-center">
-                                                    <div class="w-px h-10 bg-red-600/30"></div>
-                                                    <div class="bg-white dark:bg-slate-800 p-6 rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-slate-700 w-full max-w-[280px] text-center hover:border-red-400 transition group duration-500">
-                                                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl overflow-hidden border-2 border-slate-50 dark:border-slate-700 grayscale group-hover:grayscale-0 transition duration-700">
+                                                    <div class="w-px h-6 bg-red-600/30"></div>
+                                                    <div class="bg-white dark:bg-slate-800 p-4 rounded-[1.5rem] shadow-lg border border-gray-100 dark:border-slate-700 w-full max-w-[220px] text-center hover:border-red-400 transition group duration-500">
+                                                        <div class="w-16 h-16 mx-auto mb-3 rounded-2xl overflow-hidden border-2 border-slate-50 dark:border-slate-700 grayscale group-hover:grayscale-0 transition duration-700">
                                                             @if($child->image)
                                                                 <img src="{{ asset('storage/' . $child->image) }}" class="w-full h-full object-cover">
                                                             @else
                                                                 <div class="w-full h-full bg-slate-50 dark:bg-slate-900 flex items-center justify-center text-slate-400">
-                                                                    <i class="fas fa-user text-3xl"></i>
+                                                                    <i class="fas fa-user text-2xl"></i>
                                                                 </div>
                                                             @endif
                                                         </div>
-                                                        <h4 class="text-base font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $child->name }}</h4>
-                                                        <p class="text-gray-500 dark:text-gray-400 font-bold text-[10px] uppercase tracking-widest mt-2">{{ $child->position }}</p>
+                                                        <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight leading-tight">{{ $child->name }}</h4>
+                                                        <p class="text-gray-500 dark:text-gray-400 font-bold text-[9px] uppercase tracking-widest mt-1.5">{{ $child->position }}</p>
                                                     </div>
 
                                                     {{-- Level 3 recursive --}}
                                                     @if($child->children->count() > 0)
-                                                        <div class="w-px h-8 bg-red-600/20"></div>
-                                                        <div class="flex flex-col gap-4 w-full items-center">
+                                                        <div class="w-px h-6 bg-red-600/20"></div>
+                                                        <div class="flex flex-col gap-3 w-full items-center">
                                                             @foreach($child->children as $subChild)
-                                                                <div class="bg-slate-100/50 dark:bg-slate-900/50 px-6 py-3 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 w-full max-w-[220px] text-center hover:bg-white dark:hover:bg-slate-800 transition duration-300">
-                                                                    <p class="text-xs font-black text-gray-800 dark:text-gray-200">{{ $subChild->name }}</p>
-                                                                    <p class="text-[9px] text-gray-500 uppercase font-bold mt-1 tracking-tighter">{{ $subChild->position }}</p>
+                                                                <div class="bg-slate-100/50 dark:bg-slate-900/50 px-4 py-2 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 w-full max-w-[180px] text-center hover:bg-white dark:hover:bg-slate-800 transition duration-300">
+                                                                    <p class="text-[10px] font-black text-gray-800 dark:text-gray-200 leading-tight">{{ $subChild->name }}</p>
+                                                                    <p class="text-[8px] text-gray-500 uppercase font-bold mt-1 tracking-tighter">{{ $subChild->position }}</p>
                                                                 </div>
                                                             @endforeach
                                                         </div>

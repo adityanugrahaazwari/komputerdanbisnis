@@ -87,7 +87,7 @@
                 </div>
                 
                 <div class="prose prose-xl max-w-none text-gray-700 dark:text-gray-300 leading-relaxed space-y-6">
-                    {!! nl2br(e($post->content)) !!}
+                    {!! $post->content !!}
                 </div>
 
                 <!-- Comments Section -->

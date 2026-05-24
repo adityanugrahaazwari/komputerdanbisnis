@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b-4 border-red-700 dark:border-red-900">
+<nav x-data="{ mobileMenuOpen: false }" class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b-4 border-red-700 dark:border-red-900">
     <div class="container mx-auto px-4 md:px-12 py-4 flex justify-between items-center">
         <a href="{{ url('/') }}" class="text-xl md:text-2xl font-black text-red-700 dark:text-red-500 flex items-center tracking-tighter">
             @if(isset($siteSettings['logo']) && $siteSettings['logo'])

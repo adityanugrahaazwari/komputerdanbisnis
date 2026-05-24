@@ -16,6 +16,7 @@ trait LogsActivity
             'description' => $description,
             'properties' => $properties,
             'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
         ]);
     }
 }

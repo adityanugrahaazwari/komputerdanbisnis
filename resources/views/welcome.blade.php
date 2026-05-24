@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth" x-data="{ 
-    darkMode: localStorage.getItem('darkMode') === 'true',
-    mobileMenuOpen: false 
+    darkMode: localStorage.getItem('darkMode') === 'true'
 }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">

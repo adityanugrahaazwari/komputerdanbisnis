@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             ProfileSeeder::class,
             OrganizationalStructureRbacSeeder::class,
+            OrganizationalStructureSeeder::class,
             StudyProgramSeeder::class,
             SocialMediaSeeder::class,
             AccountMenuSeeder::class,
@@ -29,6 +30,14 @@ class DatabaseSeeder extends Seeder
             DashboardSettingSeeder::class,
             TestimonialRbacSeeder::class,
             MediaManagerRbacSeeder::class,
+            EventRbacSeeder::class,
+            EventSeeder::class,
+            LecturerRbacSeeder::class,
+            LecturerSeeder::class,
+            ServiceRbacSeeder::class,
+            SiteSettingSeeder::class,
+            FrontendMenusSeeder::class,
+            DemoDataSeeder::class,
         ]);
     }
 }

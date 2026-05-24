@@ -32,6 +32,7 @@ class ProfileController extends Controller
         ]);
 
         $data = $request->only(['title', 'content']);
+        $data['content'] = clean($request->content);
 
         if ($request->hasFile('image')) {
             if ($profile->image) {

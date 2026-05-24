@@ -33,6 +33,8 @@ return [
     'excellent' => 'UNGGUL',
 
     // New Translations
+    'academic' => 'Akademik',
+    'information' => 'Informasi',
     'integrated_services' => 'Layanan Terintegrasi',
     'integrated_services_desc' => 'Akses cepat ke berbagai platform layanan akademik dan pendukung lainnya.',
     'leadership' => 'Pimpinan',

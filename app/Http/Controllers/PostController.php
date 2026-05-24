@@ -56,6 +56,7 @@ class PostController extends Controller
         ]);
 
         $data = $request->only(['title', 'content', 'status', 'category_id', 'meta_description', 'meta_keywords']);
+        $data['content'] = clean($request->content);
         $data['user_id'] = auth()->id();
         $data['slug'] = Str::slug($request->title);
 
@@ -126,6 +127,7 @@ class PostController extends Controller
 
         $oldStatus = $post->status;
         $data = $request->only(['title', 'content', 'status', 'category_id', 'meta_description', 'meta_keywords']);
+        $data['content'] = clean($request->content);
         $data['slug'] = Str::slug($request->title);
 
         if ($request->hasFile('image')) {

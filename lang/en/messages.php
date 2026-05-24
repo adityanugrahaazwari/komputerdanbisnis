@@ -33,6 +33,8 @@ return [
     'excellent' => 'EXCELLENT',
     
     // New Translations
+    'academic' => 'Academic',
+    'information' => 'Information',
     'integrated_services' => 'Integrated Services',
     'integrated_services_desc' => 'Quick access to various academic platforms and other supporting services.',
     'leadership' => 'Leadership',
