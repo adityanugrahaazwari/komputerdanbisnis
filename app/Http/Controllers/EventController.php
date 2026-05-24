@@ -35,7 +35,7 @@ class EventController extends Controller
             'color' => 'required|string|max:20',
             'location' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
             'is_active' => 'boolean'
         ]);
 
@@ -44,7 +44,9 @@ class EventController extends Controller
         $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('events', 'public');
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('events', $filename, 'public');
         }
 
         $event = Event::create($data);
@@ -71,7 +73,7 @@ class EventController extends Controller
             'color' => 'required|string|max:20',
             'location' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
             'is_active' => 'boolean'
         ]);
 
@@ -83,7 +85,9 @@ class EventController extends Controller
             if ($event->image) {
                 Storage::disk('public')->delete($event->image);
             }
-            $data['image'] = $request->file('image')->store('events', 'public');
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('events', $filename, 'public');
         }
 
         $event->update($data);

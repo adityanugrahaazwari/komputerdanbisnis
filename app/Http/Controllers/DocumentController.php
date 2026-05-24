@@ -26,13 +26,15 @@ class DocumentController extends Controller
         $this->authorizePermission('documents_create');
         $request->validate([
             'title' => 'required|string|max:255',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip|max:10240',
+            'file' => 'required|file|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/zip|max:10240',
             'category' => 'nullable|string|max:100',
             'description' => 'nullable|string'
         ]);
 
         $data = $request->only(['title', 'category', 'description']);
-        $data['file_path'] = $request->file('file')->store('documents', 'public');
+        $file = $request->file('file');
+        $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $data['file_path'] = $file->storeAs('documents', $filename, 'public');
 
         Document::create($data);
 
@@ -50,7 +52,7 @@ class DocumentController extends Controller
         $this->authorizePermission('documents_edit');
         $request->validate([
             'title' => 'required|string|max:255',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip|max:10240',
+            'file' => 'nullable|file|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/zip|max:10240',
             'category' => 'nullable|string|max:100',
             'description' => 'nullable|string'
         ]);
@@ -58,8 +60,12 @@ class DocumentController extends Controller
         $data = $request->only(['title', 'category', 'description', 'is_active']);
 
         if ($request->hasFile('file')) {
-            Storage::disk('public')->delete($document->file_path);
-            $data['file_path'] = $request->file('file')->store('documents', 'public');
+            if ($document->file_path) {
+                Storage::disk('public')->delete($document->file_path);
+            }
+            $file = $request->file('file');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['file_path'] = $file->storeAs('documents', $filename, 'public');
         }
 
         $document->update($data);

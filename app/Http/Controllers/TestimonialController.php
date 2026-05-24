@@ -29,14 +29,16 @@ class TestimonialController extends Controller
             'role' => 'nullable|string|max:255',
             'company' => 'nullable|string|max:255',
             'quote' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
             'is_active' => 'boolean',
         ]);
 
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('testimonials', 'public');
+            $file = $request->file('image');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('testimonials', $filename, 'public');
         }
 
         Testimonial::create($data);
@@ -57,7 +59,7 @@ class TestimonialController extends Controller
             'role' => 'nullable|string|max:255',
             'company' => 'nullable|string|max:255',
             'quote' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
             'is_active' => 'boolean',
         ]);
 
@@ -68,7 +70,9 @@ class TestimonialController extends Controller
             if ($testimonial->image) {
                 Storage::disk('public')->delete($testimonial->image);
             }
-            $data['image'] = $request->file('image')->store('testimonials', 'public');
+            $file = $request->file('image');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('testimonials', $filename, 'public');
         }
 
         $testimonial->update($data);

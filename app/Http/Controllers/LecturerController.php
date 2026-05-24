@@ -39,7 +39,7 @@ class LecturerController extends Controller
             'google_scholar_url' => 'nullable|url|max:255',
             'sinta_url' => 'nullable|url|max:255',
             'study_program_id' => 'nullable|exists:study_programs,id',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
             'order' => 'nullable|integer',
             'is_active' => 'boolean'
         ]);
@@ -49,7 +49,9 @@ class LecturerController extends Controller
         $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('lecturers', 'public');
+            $file = $request->file('photo');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['photo'] = $file->storeAs('lecturers', $filename, 'public');
         }
 
         $lecturer = Lecturer::create($data);
@@ -79,7 +81,7 @@ class LecturerController extends Controller
             'google_scholar_url' => 'nullable|url|max:255',
             'sinta_url' => 'nullable|url|max:255',
             'study_program_id' => 'nullable|exists:study_programs,id',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
             'order' => 'nullable|integer',
             'is_active' => 'boolean'
         ]);
@@ -92,7 +94,9 @@ class LecturerController extends Controller
             if ($lecturer->photo) {
                 Storage::disk('public')->delete($lecturer->photo);
             }
-            $data['photo'] = $request->file('photo')->store('lecturers', 'public');
+            $file = $request->file('photo');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['photo'] = $file->storeAs('lecturers', $filename, 'public');
         }
 
         $lecturer->update($data);

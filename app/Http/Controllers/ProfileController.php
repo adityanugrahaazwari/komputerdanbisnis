@@ -28,7 +28,7 @@ class ProfileController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120' // 5MB for structure images
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png,image/gif|max:5120' // 5MB for structure images
         ]);
 
         $data = $request->only(['title', 'content']);
@@ -37,7 +37,9 @@ class ProfileController extends Controller
             if ($profile->image) {
                 Storage::disk('public')->delete($profile->image);
             }
-            $data['image'] = $request->file('image')->store('profiles', 'public');
+            $file = $request->file('image');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('profiles', $filename, 'public');
         }
 
         $profile->update($data);

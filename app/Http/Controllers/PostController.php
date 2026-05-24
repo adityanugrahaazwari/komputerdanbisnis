@@ -48,7 +48,7 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png,image/gif|max:2048',
             'status' => 'required|in:' . implode(',', $allowedStatuses),
             'meta_description' => 'nullable|string|max:160',
             'meta_keywords' => 'nullable|string|max:255',
@@ -60,7 +60,9 @@ class PostController extends Controller
         $data['slug'] = Str::slug($request->title);
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('posts', 'public');
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('posts', $filename, 'public');
         }
 
         $post = Post::create($data);
@@ -115,7 +117,7 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png,image/gif|max:2048',
             'status' => 'required|in:' . implode(',', $allowedStatuses),
             'meta_description' => 'nullable|string|max:160',
             'meta_keywords' => 'nullable|string|max:255',
@@ -130,7 +132,9 @@ class PostController extends Controller
             if ($post->image) {
                 Storage::disk('public')->delete($post->image);
             }
-            $data['image'] = $request->file('image')->store('posts', 'public');
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('posts', $filename, 'public');
         }
 
         $post->update($data);

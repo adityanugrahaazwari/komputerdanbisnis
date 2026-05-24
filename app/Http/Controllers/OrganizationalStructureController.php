@@ -35,12 +35,14 @@ class OrganizationalStructureController extends Controller
             'position' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:organizational_structures,id',
             'order' => 'integer',
-            'image' => 'nullable|image|max:2048'
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048'
         ]);
 
         $data = $request->all();
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('organizational', 'public');
+            $file = $request->file('image');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('organizational', $filename, 'public');
         }
 
         OrganizationalStructure::create($data);
@@ -63,7 +65,7 @@ class OrganizationalStructureController extends Controller
             'position' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:organizational_structures,id',
             'order' => 'integer',
-            'image' => 'nullable|image|max:2048'
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048'
         ]);
 
         $data = $request->all();
@@ -71,7 +73,9 @@ class OrganizationalStructureController extends Controller
             if ($organizationalStructure->image) {
                 Storage::disk('public')->delete($organizationalStructure->image);
             }
-            $data['image'] = $request->file('image')->store('organizational', 'public');
+            $file = $request->file('image');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('organizational', $filename, 'public');
         }
 
         $organizationalStructure->update($data);

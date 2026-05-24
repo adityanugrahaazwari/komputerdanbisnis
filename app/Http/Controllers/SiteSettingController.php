@@ -42,8 +42,8 @@ class SiteSettingController extends Controller
         $request->validate([
             'site_name' => 'nullable|string|max:255',
             'site_description' => 'nullable|string',
-            'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'site_favicon' => 'nullable|image|mimes:ico,png,jpg|max:1024',
+            'site_logo' => 'nullable|image|mimetypes:image/jpeg,image/png,image/svg+xml|max:2048',
+            'site_favicon' => 'nullable|mimetypes:image/x-icon,image/png,image/jpeg|max:1024',
             'site_address' => 'nullable|string',
             'site_phone' => 'nullable|string|max:20',
             'site_email' => 'nullable|email|max:255',
@@ -67,7 +67,9 @@ class SiteSettingController extends Controller
             if ($oldLogo) {
                 Storage::disk('public')->delete($oldLogo);
             }
-            $path = $request->file('site_logo')->store('settings', 'public');
+            $file = $request->file('site_logo');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('settings', $filename, 'public');
             SiteSetting::set('site_logo', $path);
         }
 
@@ -76,7 +78,9 @@ class SiteSettingController extends Controller
             if ($oldFavicon) {
                 Storage::disk('public')->delete($oldFavicon);
             }
-            $path = $request->file('site_favicon')->store('settings', 'public');
+            $file = $request->file('site_favicon');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('settings', $filename, 'public');
             SiteSetting::set('site_favicon', $path);
         }
 

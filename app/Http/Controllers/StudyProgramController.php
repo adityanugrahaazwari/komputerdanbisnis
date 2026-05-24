@@ -31,14 +31,16 @@ class StudyProgramController extends Controller
             'level' => 'nullable|string|max:50',
             'description' => 'nullable|string',
             'website_url' => 'nullable|url|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
         ]);
 
         $data = $request->all();
         $data['slug'] = Str::slug($request->name);
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('study_programs', 'public');
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('study_programs', $filename, 'public');
         }
 
         StudyProgram::create($data);
@@ -61,7 +63,7 @@ class StudyProgramController extends Controller
             'level' => 'nullable|string|max:50',
             'description' => 'nullable|string',
             'website_url' => 'nullable|url|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
         ]);
 
         $data = $request->all();
@@ -71,7 +73,9 @@ class StudyProgramController extends Controller
             if ($studyProgram->image) {
                 Storage::disk('public')->delete($studyProgram->image);
             }
-            $data['image'] = $request->file('image')->store('study_programs', 'public');
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('study_programs', $filename, 'public');
         }
 
         $studyProgram->update($data);

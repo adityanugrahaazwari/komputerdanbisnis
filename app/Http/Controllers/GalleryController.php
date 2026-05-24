@@ -29,13 +29,15 @@ class GalleryController extends Controller
         $request->validate([
             'gallery_group_id' => 'nullable|exists:gallery_groups,id',
             'title' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'image' => 'required|image|mimetypes:image/jpeg,image/png,image/gif|max:5120',
             'order' => 'nullable|integer',
             'description' => 'nullable|string'
         ]);
 
         $data = $request->only(['gallery_group_id', 'title', 'description', 'order']);
-        $data['image'] = $request->file('image')->store('gallery', 'public');
+        $file = $request->file('image');
+        $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $data['image'] = $file->storeAs('gallery', $filename, 'public');
 
         Gallery::create($data);
 
@@ -55,7 +57,7 @@ class GalleryController extends Controller
         $request->validate([
             'gallery_group_id' => 'nullable|exists:gallery_groups,id',
             'title' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'image' => 'nullable|image|mimetypes:image/jpeg,image/png,image/gif|max:5120',
             'order' => 'nullable|integer',
             'description' => 'nullable|string'
         ]);
@@ -64,8 +66,12 @@ class GalleryController extends Controller
 
         
         if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($gallery->image);
-            $data['image'] = $request->file('image')->store('gallery', 'public');
+            if ($gallery->image) {
+                Storage::disk('public')->delete($gallery->image);
+            }
+            $file = $request->file('image');
+            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('gallery', $filename, 'public');
         }
 
         $gallery->update($data);
