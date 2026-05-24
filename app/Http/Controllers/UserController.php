@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,15 +24,9 @@ class UserController extends Controller
         return view('users.create', compact('roles'));
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         $this->authorizePermission('users_create');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'string', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
-            'roles' => 'array'
-        ]);
 
         $user = User::create([
             'name' => $request->name,
@@ -54,15 +49,9 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'roles', 'userRoles'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
         $this->authorizePermission('users_edit');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => ['nullable', 'string', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
-            'roles' => 'array'
-        ]);
 
         $user->update([
             'name' => $request->name,
@@ -86,12 +75,5 @@ class UserController extends Controller
         }
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->hasPermission($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

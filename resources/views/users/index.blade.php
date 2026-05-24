@@ -10,9 +10,9 @@
             <p class="text-gray-500 text-sm">Kelola akun pengguna dan akses sistem.</p>
         </div>
         @can('users_create')
-            <a href="{{ route('users.create') }}" class="bg-red-700 text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-red-800 transition flex items-center shadow-lg shadow-red-200">
+            <x-admin.button href="{{ route('users.create') }}">
                 <i class="fas fa-user-plus mr-2"></i> Tambah User
-            </a>
+            </x-admin.button>
         @endcan
     </div>
 
@@ -37,27 +37,23 @@
                     <td class="py-4 px-4 text-center">
                         <div class="flex flex-wrap justify-center gap-1">
                             @foreach($user->roles as $role)
-                                <span class="bg-slate-100 text-slate-600 text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-tighter border border-slate-200">
+                                <x-admin.badge variant="slate">
                                     {{ $role->name }}
-                                </span>
+                                </x-admin.badge>
                             @endforeach
                         </div>
                     </td>
                     <td class="py-4 px-4 text-right">
                         <div class="flex justify-end items-center gap-2">
                             @can('users_edit')
-                                <a href="{{ route('users.edit', $user->id) }}" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit">
-                                    <i class="fas fa-edit text-xs"></i>
-                                </a>
+                                <x-admin.action-button variant="edit" href="{{ route('users.edit', $user->id) }}" title="Edit" />
                             @endcan
                             @can('users_delete')
                                 @if($user->id !== auth()->id())
                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus user ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition shadow-sm" title="Hapus">
-                                        <i class="fas fa-trash text-xs"></i>
-                                    </button>
+                                    <x-admin.action-button type="button" variant="delete" title="Hapus" />
                                 </form>
                                 @endif
                             @endcan

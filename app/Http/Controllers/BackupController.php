@@ -117,11 +117,4 @@ class BackupController extends Controller
 
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
-    }
 }

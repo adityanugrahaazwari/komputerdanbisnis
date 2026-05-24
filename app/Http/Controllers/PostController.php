@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\PostSubmission;
+use App\Http\Requests\PostRequest;
+use App\Traits\UploadsFiles;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -11,7 +14,7 @@ use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
-    use \App\Traits\LogsActivity;
+    use LogsActivity, UploadsFiles;
 
     public function index()
     {
@@ -34,36 +37,17 @@ class PostController extends Controller
         return view('posts.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         $this->authorizePermission('posts_create');
         
-        $allowedStatuses = ['draft', 'pending'];
-        if (auth()->user()->can('posts_publish')) {
-            $allowedStatuses[] = 'published';
-            $allowedStatuses[] = 'rejected';
-        }
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required',
-            'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png,image/gif|max:2048',
-            'status' => 'required|in:' . implode(',', $allowedStatuses),
-            'meta_description' => 'nullable|string|max:160',
-            'meta_keywords' => 'nullable|string|max:255',
-            'notes' => 'nullable|string|max:1000'
-        ]);
-
         $data = $request->only(['title', 'content', 'status', 'category_id', 'meta_description', 'meta_keywords']);
         $data['content'] = clean($request->content);
         $data['user_id'] = auth()->id();
         $data['slug'] = Str::slug($request->title);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('posts', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'posts');
         }
 
         $post = Post::create($data);
@@ -100,7 +84,7 @@ class PostController extends Controller
         return view('posts.edit', compact('post', 'categories'));
     }
 
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         $this->authorizePermission('posts_edit');
         
@@ -108,35 +92,13 @@ class PostController extends Controller
             abort(403);
         }
 
-        $allowedStatuses = ['draft', 'pending'];
-        if (auth()->user()->can('posts_publish')) {
-            $allowedStatuses[] = 'published';
-            $allowedStatuses[] = 'rejected';
-        }
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required',
-            'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png,image/gif|max:2048',
-            'status' => 'required|in:' . implode(',', $allowedStatuses),
-            'meta_description' => 'nullable|string|max:160',
-            'meta_keywords' => 'nullable|string|max:255',
-            'notes' => 'nullable|string|max:1000'
-        ]);
-
         $oldStatus = $post->status;
         $data = $request->only(['title', 'content', 'status', 'category_id', 'meta_description', 'meta_keywords']);
         $data['content'] = clean($request->content);
         $data['slug'] = Str::slug($request->title);
 
         if ($request->hasFile('image')) {
-            if ($post->image) {
-                Storage::disk('public')->delete($post->image);
-            }
-            $file = $request->file('image');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('posts', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'posts', $post->image);
         }
 
         $post->update($data);
@@ -164,17 +126,8 @@ class PostController extends Controller
             abort(403);
         }
 
-        if ($post->image) {
-            Storage::disk('public')->delete($post->image);
-        }
+        $this->deleteFile($post->image);
         $post->delete();
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\PermissionGroup;
+use App\Http\Requests\RoleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -26,14 +27,9 @@ class RoleController extends Controller
         return view('roles.create', compact('permissions'));
     }
 
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         $this->authorizePermission('roles_create');
-        $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name',
-            'description' => 'nullable|string',
-            'permissions' => 'array'
-        ]);
 
         $role = Role::create([
             'name' => $request->name,
@@ -58,14 +54,9 @@ class RoleController extends Controller
         return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }
 
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
         $this->authorizePermission('roles_edit');
-        $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
-            'description' => 'nullable|string',
-            'permissions' => 'array'
-        ]);
 
         $role->update([
             'name' => $request->name,
@@ -86,12 +77,5 @@ class RoleController extends Controller
         }
         $role->delete();
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->hasPermission($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

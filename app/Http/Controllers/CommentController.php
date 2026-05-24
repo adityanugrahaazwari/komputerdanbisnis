@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -9,18 +10,14 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     // Public: Store comment
-    public function store(Request $request, Post $post)
+    public function store(CommentRequest $request, Post $post)
     {
-        $request->validate([
-            'user_name' => 'required|string|max:255',
-            'user_email' => 'required|email|max:255',
-            'comment' => 'required|string',
-        ]);
+        $validated = $request->validated();
 
         $post->comments()->create([
-            'user_name' => $request->user_name,
-            'user_email' => $request->user_email,
-            'comment' => $request->comment,
+            'user_name' => $validated['user_name'],
+            'user_email' => $validated['user_email'],
+            'comment' => $validated['comment'],
             'status' => 'pending' // Default to pending for moderation
         ]);
 
@@ -65,12 +62,5 @@ class CommentController extends Controller
         $this->authorizePermission('comments_delete');
         $comment->delete();
         return redirect()->back()->with('success', 'Comment deleted.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

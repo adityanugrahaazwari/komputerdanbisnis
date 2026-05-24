@@ -17,6 +17,16 @@ class Lecturer extends Model
         return $this->belongsTo(StudyProgram::class);
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc');
+    }
+
     protected static function boot()
     {
         parent::boot();

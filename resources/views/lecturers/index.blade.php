@@ -10,9 +10,9 @@
             <p class="text-gray-500 text-sm">Kelola data pengajar dan staf kependidikan.</p>
         </div>
         @can('lecturers_create')
-            <a href="{{ route('lecturers.create') }}" class="bg-red-700 text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-red-800 transition flex items-center shadow-lg shadow-red-200">
+            <x-admin.button href="{{ route('lecturers.create') }}">
                 <i class="fas fa-plus mr-2"></i> Tambah Dosen/Staf
-            </a>
+            </x-admin.button>
         @endcan
     </div>
 
@@ -54,24 +54,20 @@
                         <span class="text-xs font-medium text-gray-600">{{ $lecturer->studyProgram->name ?? 'Semua Prodi' }}</span>
                     </td>
                     <td class="py-4 px-4 text-center">
-                        <span class="{{ $lecturer->is_active ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600' }} rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest border border-black/5">
+                        <x-admin.badge :variant="$lecturer->is_active ? 'green' : 'red'">
                             {{ $lecturer->is_active ? 'Aktif' : 'Nonaktif' }}
-                        </span>
+                        </x-admin.badge>
                     </td>
                     <td class="py-4 px-4 text-right">
                         <div class="flex justify-end items-center gap-2">
                             @can('lecturers_edit')
-                                <a href="{{ route('lecturers.edit', $lecturer->id) }}" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit">
-                                    <i class="fas fa-edit text-xs"></i>
-                                </a>
+                                <x-admin.action-button variant="edit" href="{{ route('lecturers.edit', $lecturer->id) }}" title="Edit" />
                             @endcan
                             @can('lecturers_delete')
                                 <form action="{{ route('lecturers.destroy', $lecturer->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus data ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition shadow-sm" title="Hapus">
-                                        <i class="fas fa-trash text-xs"></i>
-                                    </button>
+                                    <x-admin.action-button type="button" variant="delete" title="Hapus" />
                                 </form>
                             @endcan
                         </div>

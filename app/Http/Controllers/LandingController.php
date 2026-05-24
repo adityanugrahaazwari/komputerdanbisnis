@@ -20,16 +20,16 @@ class LandingController extends Controller
         $profiles = Profile::all()->keyBy('key');
         
         // Fetch active study programs
-        $studyPrograms = StudyProgram::where('is_active', true)->get();
+        $studyPrograms = StudyProgram::active()->get();
         
         // Fetch hierarchical organizational structure
         $structures = OrganizationalStructure::whereNull('parent_id')
             ->with('children')
-            ->orderBy('order')
+            ->ordered()
             ->get();
 
         // Fetch active external services
-        $services = Service::where('is_active', true)->orderBy('order')->get();
+        $services = Service::active()->ordered()->get();
         
         // Fetch 3 latest published news posts
         $latestPosts = Post::where('status', 'published')
@@ -39,10 +39,10 @@ class LandingController extends Controller
             ->get();
 
         // Fetch active social media
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
 
         // Fetch active testimonials
-        $testimonials = Testimonial::where('is_active', true)->orderBy('order')->get();
+        $testimonials = Testimonial::active()->ordered()->get();
 
         // Fetch total unique visitor count
         $visitorCount = Visitor::count();
@@ -55,24 +55,24 @@ class LandingController extends Controller
         $profiles = Profile::all()->keyBy('key');
         $structures = OrganizationalStructure::whereNull('parent_id')
             ->with('children')
-            ->orderBy('order')
+            ->ordered()
             ->get();
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
 
         return view('profile', compact('profiles', 'structures', 'socialMedia'));
     }
 
     public function studyPrograms()
     {
-        $studyPrograms = StudyProgram::where('is_active', true)->get();
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $studyPrograms = StudyProgram::active()->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
         return view('study-programs-landing', compact('studyPrograms', 'socialMedia'));
     }
 
     public function services()
     {
-        $services = Service::where('is_active', true)->orderBy('order')->get();
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $services = Service::active()->ordered()->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
         return view('services-landing', compact('services', 'socialMedia'));
     }
 
@@ -83,7 +83,7 @@ class LandingController extends Controller
             ->with(['user', 'category', 'approvedComments'])
             ->firstOrFail();
             
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
         return view('post-detail', compact('post', 'socialMedia'));
     }
 
@@ -110,38 +110,38 @@ class LandingController extends Controller
         $posts = $query->paginate(9)->withQueryString();
         
         $categories = \App\Models\Category::all();
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
         
         return view('news-index', compact('posts', 'socialMedia', 'categories'));
     }
 
     public function gallery()
     {
-        $galleryGroups = \App\Models\GalleryGroup::where('is_active', true)
+        $galleryGroups = \App\Models\GalleryGroup::active()
             ->with(['galleries' => function($q) {
-                $q->where('is_active', true)->orderBy('order');
+                $q->active()->ordered();
             }])
             ->get();
             
-        $ungroupedGalleries = \App\Models\Gallery::where('is_active', true)
+        $ungroupedGalleries = \App\Models\Gallery::active()
             ->whereNull('gallery_group_id')
-            ->orderBy('order')
+            ->ordered()
             ->paginate(12);
 
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
         return view('gallery-index', compact('galleryGroups', 'ungroupedGalleries', 'socialMedia'));
     }
 
     public function downloads()
     {
-        $documents = \App\Models\Document::where('is_active', true)->latest()->get()->groupBy('category');
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $documents = \App\Models\Document::active()->latest()->get()->groupBy('category');
+        $socialMedia = SocialMedia::active()->ordered()->get();
         return view('downloads-index', compact('documents', 'socialMedia'));
     }
 
     public function lecturers(Request $request)
     {
-        $query = \App\Models\Lecturer::where('is_active', true)->with('studyProgram')->orderBy('order');
+        $query = \App\Models\Lecturer::active()->with('studyProgram')->ordered();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -160,15 +160,15 @@ class LandingController extends Controller
 
         $lecturers = $query->paginate(12)->withQueryString();
         $studyPrograms = StudyProgram::all();
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
 
         return view('lecturer-index', compact('lecturers', 'studyPrograms', 'socialMedia'));
     }
 
     public function calendar()
     {
-        $events = \App\Models\Event::where('is_active', true)->orderBy('start_date')->get();
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $events = \App\Models\Event::active()->orderBy('start_date')->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
         return view('calendar-index', compact('events', 'socialMedia'));
     }
 }

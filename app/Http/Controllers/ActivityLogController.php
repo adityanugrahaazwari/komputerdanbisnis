@@ -13,11 +13,4 @@ class ActivityLogController extends Controller
         $logs = ActivityLog::with('user')->latest()->paginate(20);
         return view('logs.index', compact('logs'));
     }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
-    }
 }

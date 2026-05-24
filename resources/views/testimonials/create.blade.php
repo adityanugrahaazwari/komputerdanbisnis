@@ -15,7 +15,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="md:col-span-2">
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Nama Lengkap</label>
-                    <input type="text" name="name" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('name') border-red-500 @enderror" value="{{ old('name') }}" placeholder="Contoh: John Doe, S.Kom" required>
+                    <input type="text" name="name" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('name') border-red-500 @enderror" value="{{ old('name') }}" placeholder="Contoh: John Doe, S.Kom">
                     @error('name') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror
                 </div>
 
@@ -31,7 +31,7 @@
 
                 <div class="md:col-span-2">
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Isi Testimoni</label>
-                    <textarea name="quote" rows="5" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('quote') border-red-500 @enderror" placeholder="Berikan kutipan testimoni..." required>{{ old('quote') }}</textarea>
+                    <textarea name="quote" rows="5" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('quote') border-red-500 @enderror" placeholder="Berikan kutipan testimoni...">{{ old('quote') }}</textarea>
                     @error('quote') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror
                 </div>
 

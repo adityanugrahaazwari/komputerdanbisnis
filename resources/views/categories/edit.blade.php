@@ -9,7 +9,7 @@
         @method('PUT')
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
-            <input type="text" name="name" class="w-full border rounded px-3 py-2 @error('name') border-red-500 @enderror" value="{{ old('name', $category->name) }}" required>
+            <input type="text" name="name" class="w-full border rounded px-3 py-2 @error('name') border-red-500 @enderror" value="{{ old('name', $category->name) }}">
             @error('name')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror

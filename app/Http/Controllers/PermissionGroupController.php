@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PermissionGroup;
+use App\Http\Requests\PermissionGroupRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -21,12 +22,9 @@ class PermissionGroupController extends Controller
         return view('permission_groups.create');
     }
 
-    public function store(Request $request)
+    public function store(PermissionGroupRequest $request)
     {
         $this->authorizePermission('permission_groups_create');
-        $request->validate([
-            'name' => 'required|string|max:255|unique:permission_groups,name',
-        ]);
 
         PermissionGroup::create([
             'name' => $request->name,
@@ -42,12 +40,9 @@ class PermissionGroupController extends Controller
         return view('permission_groups.edit', compact('permissionGroup'));
     }
 
-    public function update(Request $request, PermissionGroup $permissionGroup)
+    public function update(PermissionGroupRequest $request, PermissionGroup $permissionGroup)
     {
         $this->authorizePermission('permission_groups_edit');
-        $request->validate([
-            'name' => 'required|string|max:255|unique:permission_groups,name,' . $permissionGroup->id,
-        ]);
 
         $permissionGroup->update([
             'name' => $request->name,
@@ -67,12 +62,5 @@ class PermissionGroupController extends Controller
 
         $permissionGroup->delete();
         return redirect()->route('permission-groups.index')->with('success', 'Permission group deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->hasPermission($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

@@ -15,13 +15,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="md:col-span-2">
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Judul Layanan</label>
-                    <input type="text" name="title" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('title') border-red-500 @enderror" value="{{ old('title') }}" placeholder="Contoh: SIAKAD POLITALA" required>
+                    <input type="text" name="title" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('title') border-red-500 @enderror" value="{{ old('title') }}" placeholder="Contoh: SIAKAD POLITALA">
                     @error('title') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="md:col-span-2">
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">URL Website</label>
-                    <input type="url" name="url" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('url') border-red-500 @enderror" value="{{ old('url') }}" placeholder="https://siakad.politala.ac.id" required>
+                    <input type="url" name="url" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('url') border-red-500 @enderror" value="{{ old('url') }}" placeholder="https://siakad.politala.ac.id">
                     @error('url') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror
                 </div>
 

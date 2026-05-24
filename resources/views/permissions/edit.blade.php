@@ -20,7 +20,7 @@
 
         <div>
             <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Nama Izin (Permission Name)</label>
-            <input type="text" name="name" value="{{ old('name', $permission->name) }}" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium" required>
+            <input type="text" name="name" value="{{ old('name', $permission->name) }}" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium">
         </div>
 
         <div class="flex items-center justify-between pt-8 border-t border-gray-100 dark:border-slate-800">

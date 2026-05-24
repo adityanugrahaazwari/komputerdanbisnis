@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
     // Public: Store contact message
-    public function store(Request $request)
+    public function store(ContactRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
-        ]);
+        $validated = $request->validated();
 
-        Contact::create($request->all());
+        Contact::create($validated);
 
         return redirect()->back()->with('success', 'Pesan Anda telah terkirim. Terima kasih!');
     }
@@ -44,12 +40,5 @@ class ContactController extends Controller
         $this->authorizePermission('contacts_delete');
         $contact->delete();
         return redirect()->route('contacts.index')->with('success', 'Message deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

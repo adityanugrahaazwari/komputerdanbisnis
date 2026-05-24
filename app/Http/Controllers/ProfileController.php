@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Http\Requests\ProfileRequest;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    use UploadsFiles;
+
     public function index()
     {
         $this->authorizePermission('profiles_view');
@@ -21,37 +25,19 @@ class ProfileController extends Controller
         return view('profiles.edit', compact('profile'));
     }
 
-    public function update(Request $request, Profile $profile)
+    public function update(ProfileRequest $request, Profile $profile)
     {
         $this->authorizePermission('profiles_edit');
         
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'nullable|string',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png,image/gif|max:5120' // 5MB for structure images
-        ]);
-
         $data = $request->only(['title', 'content']);
         $data['content'] = clean($request->content);
 
         if ($request->hasFile('image')) {
-            if ($profile->image) {
-                Storage::disk('public')->delete($profile->image);
-            }
-            $file = $request->file('image');
-            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('profiles', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'profiles', $profile->image);
         }
 
         $profile->update($data);
 
         return redirect()->route('profiles.index')->with('success', $profile->title . ' updated successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

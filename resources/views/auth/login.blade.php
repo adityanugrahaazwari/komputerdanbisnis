@@ -47,7 +47,7 @@
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
                             <i class="fas fa-envelope"></i>
                         </span>
-                        <input type="email" name="email" value="admin@example.com" class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="nama@email.com" required>
+                        <input type="email" name="email" value="admin@example.com" class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="nama@email.com">
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
                             <i class="fas fa-lock"></i>
                         </span>
-                        <input type="password" name="password" value="password" class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="••••••••" required>
+                        <input type="password" name="password" value="password" class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="••••••••">
                     </div>
                 </div>
 

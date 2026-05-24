@@ -71,16 +71,16 @@ class AppServiceProvider extends ServiceProvider
 
                 $menus = Menu::where('location', 'admin')
                     ->whereNull('parent_id')
-                    ->where('is_active', true)
+                    ->active()
                     ->with('children')
-                    ->orderBy('order')
+                    ->ordered()
                     ->get();
 
                 $frontendMenus = Menu::where('location', 'frontend')
                     ->whereNull('parent_id')
-                    ->where('is_active', true)
+                    ->active()
                     ->with('children')
-                    ->orderBy('order')
+                    ->ordered()
                     ->get();
 
                 $notificationCounts = [

@@ -18,6 +18,11 @@ class OrganizationalStructure extends Model
 
     public function children()
     {
-        return $this->hasMany(OrganizationalStructure::class, 'parent_id')->orderBy('order');
+        return $this->hasMany(OrganizationalStructure::class, 'parent_id')->ordered();
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc');
     }
 }

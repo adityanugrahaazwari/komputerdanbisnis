@@ -28,14 +28,14 @@ class SearchController extends Controller
                 ->latest()
                 ->get();
 
-            $results['documents'] = Document::where('is_active', true)
+            $results['documents'] = Document::active()
                 ->where(function($q) use ($query) {
                     $q->where('title', 'like', "%{$query}%")
                       ->orWhere('description', 'like', "%{$query}%");
                 })
                 ->get();
 
-            $results['study_programs'] = StudyProgram::where('is_active', true)
+            $results['study_programs'] = StudyProgram::active()
                 ->where(function($q) use ($query) {
                     $q->where('name', 'like', "%{$query}%")
                       ->orWhere('description', 'like', "%{$query}%");
@@ -44,7 +44,7 @@ class SearchController extends Controller
         }
 
         $totalCount = $results['posts']->count() + $results['documents']->count() + $results['study_programs']->count();
-        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        $socialMedia = SocialMedia::active()->ordered()->get();
 
         return view('search-results', compact('results', 'query', 'totalCount', 'socialMedia'));
     }

@@ -14,4 +14,14 @@ class Testimonial extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc');
+    }
 }

@@ -47,11 +47,4 @@ class DashboardSettingController extends Controller
 
         return back()->with('success', 'Dashboard settings updated successfully.');
     }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->hasPermission($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
-    }
 }

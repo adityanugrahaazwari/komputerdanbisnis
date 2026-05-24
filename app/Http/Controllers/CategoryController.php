@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -21,18 +22,16 @@ class CategoryController extends Controller
         return view('categories.create');
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $this->authorizePermission('categories_create');
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories',
-            'description' => 'nullable|string'
-        ]);
+        
+        $validated = $request->validated();
 
         Category::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'description' => $validated['description']
         ]);
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
@@ -44,18 +43,16 @@ class CategoryController extends Controller
         return view('categories.edit', compact('category'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
         $this->authorizePermission('categories_edit');
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'description' => 'nullable|string'
-        ]);
+        
+        $validated = $request->validated();
 
         $category->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'description' => $validated['description']
         ]);
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
@@ -66,12 +63,5 @@ class CategoryController extends Controller
         $this->authorizePermission('categories_delete');
         $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteSetting;
+use App\Http\Requests\SiteSettingRequest;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class SiteSettingController extends Controller
 {
+    use UploadsFiles;
+
     public function index()
     {
         $this->authorizePermission('site_settings_edit');
@@ -35,20 +39,9 @@ class SiteSettingController extends Controller
         return view('site_settings.index', compact('settings'));
     }
 
-    public function update(Request $request)
+    public function update(SiteSettingRequest $request)
     {
         $this->authorizePermission('site_settings_edit');
-
-        $request->validate([
-            'site_name' => 'nullable|string|max:255',
-            'site_description' => 'nullable|string',
-            'site_logo' => 'nullable|image|mimetypes:image/jpeg,image/png,image/svg+xml|max:2048',
-            'site_favicon' => 'nullable|mimetypes:image/x-icon,image/png,image/jpeg|max:1024',
-            'site_address' => 'nullable|string',
-            'site_phone' => 'nullable|string|max:20',
-            'site_email' => 'nullable|email|max:255',
-            'footer_text' => 'nullable|string|max:255',
-        ]);
 
         $fields = [
             'site_name', 'site_description', 'site_address', 'site_phone', 'site_email', 
@@ -63,34 +56,15 @@ class SiteSettingController extends Controller
         }
 
         if ($request->hasFile('site_logo')) {
-            $oldLogo = SiteSetting::get('site_logo');
-            if ($oldLogo) {
-                Storage::disk('public')->delete($oldLogo);
-            }
-            $file = $request->file('site_logo');
-            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('settings', $filename, 'public');
+            $path = $this->uploadFile($request->file('site_logo'), 'settings', SiteSetting::get('site_logo'));
             SiteSetting::set('site_logo', $path);
         }
 
         if ($request->hasFile('site_favicon')) {
-            $oldFavicon = SiteSetting::get('site_favicon');
-            if ($oldFavicon) {
-                Storage::disk('public')->delete($oldFavicon);
-            }
-            $file = $request->file('site_favicon');
-            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('settings', $filename, 'public');
+            $path = $this->uploadFile($request->file('site_favicon'), 'settings', SiteSetting::get('site_favicon'));
             SiteSetting::set('site_favicon', $path);
         }
 
         return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

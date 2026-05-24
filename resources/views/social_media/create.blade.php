@@ -9,19 +9,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Platform</label>
-                <input type="text" name="platform" class="w-full border rounded px-3 py-2 @error('platform') border-red-500 @enderror" value="{{ old('platform') }}" placeholder="Contoh: Facebook, Instagram" required>
+                <input type="text" name="platform" class="w-full border rounded px-3 py-2 @error('platform') border-red-500 @enderror" value="{{ old('platform') }}" placeholder="Contoh: Facebook, Instagram">
                 @error('platform') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">URL</label>
-                <input type="url" name="url" class="w-full border rounded px-3 py-2 @error('url') border-red-500 @enderror" value="{{ old('url') }}" placeholder="https://..." required>
+                <input type="url" name="url" class="w-full border rounded px-3 py-2 @error('url') border-red-500 @enderror" value="{{ old('url') }}" placeholder="https://...">
                 @error('url') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">FontAwesome Icon Class</label>
-                <input type="text" name="icon" class="w-full border rounded px-3 py-2 @error('icon') border-red-500 @enderror" value="{{ old('icon') }}" placeholder="Contoh: fab fa-facebook" required>
+                <input type="text" name="icon" class="w-full border rounded px-3 py-2 @error('icon') border-red-500 @enderror" value="{{ old('icon') }}" placeholder="Contoh: fab fa-facebook">
                 <p class="text-xs text-gray-500 mt-1">Cari di <a href="https://fontawesome.com/icons" target="_blank" class="text-blue-500 underline">FontAwesome</a></p>
                 @error('icon') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>

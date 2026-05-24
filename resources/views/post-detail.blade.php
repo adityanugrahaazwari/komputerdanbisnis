@@ -131,16 +131,16 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Nama Lengkap</label>
-                                    <input type="text" name="user_name" required class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm">
+                                    <input type="text" name="user_name" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Email (Tidak akan dipublikasikan)</label>
-                                    <input type="email" name="user_email" required class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm">
+                                    <input type="email" name="user_email" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm">
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Komentar Anda</label>
-                                <textarea name="comment" rows="5" required class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm"></textarea>
+                                <textarea name="comment" rows="5" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm"></textarea>
                             </div>
                             <button type="submit" class="bg-red-700 text-white px-10 py-4 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-red-800 transition shadow-lg shadow-red-200 dark:shadow-none">
                                 Kirim Komentar

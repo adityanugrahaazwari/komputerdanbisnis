@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Testimonial;
+use App\Http\Requests\TestimonialRequest;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class TestimonialController extends Controller
 {
+    use UploadsFiles;
+
     public function index()
     {
         $this->authorizePermission('testimonials_view');
@@ -21,25 +25,14 @@ class TestimonialController extends Controller
         return view('testimonials.create');
     }
 
-    public function store(Request $request)
+    public function store(TestimonialRequest $request)
     {
         $this->authorizePermission('testimonials_create');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'role' => 'nullable|string|max:255',
-            'company' => 'nullable|string|max:255',
-            'quote' => 'required|string',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
-            'order' => 'nullable|integer',
-            'is_active' => 'boolean',
-        ]);
 
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('testimonials', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'testimonials');
         }
 
         Testimonial::create($data);
@@ -52,29 +45,15 @@ class TestimonialController extends Controller
         return view('testimonials.edit', compact('testimonial'));
     }
 
-    public function update(Request $request, Testimonial $testimonial)
+    public function update(TestimonialRequest $request, Testimonial $testimonial)
     {
         $this->authorizePermission('testimonials_edit');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'role' => 'nullable|string|max:255',
-            'company' => 'nullable|string|max:255',
-            'quote' => 'required|string',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
-            'order' => 'nullable|integer',
-            'is_active' => 'boolean',
-        ]);
 
         $data = $request->all();
         $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
-            if ($testimonial->image) {
-                Storage::disk('public')->delete($testimonial->image);
-            }
-            $file = $request->file('image');
-            $filename = \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('testimonials', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'testimonials', $testimonial->image);
         }
 
         $testimonial->update($data);
@@ -84,17 +63,8 @@ class TestimonialController extends Controller
     public function destroy(Testimonial $testimonial)
     {
         $this->authorizePermission('testimonials_delete');
-        if ($testimonial->image) {
-            Storage::disk('public')->delete($testimonial->image);
-        }
+        $this->deleteFile($testimonial->image);
         $testimonial->delete();
         return redirect()->route('testimonials.index')->with('success', 'Testimoni berhasil dihapus.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

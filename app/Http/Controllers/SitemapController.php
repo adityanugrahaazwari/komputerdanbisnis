@@ -11,7 +11,7 @@ class SitemapController extends Controller
     public function index()
     {
         $posts = Post::where('status', 'published')->latest()->get();
-        $studyPrograms = StudyProgram::where('is_active', true)->get();
+        $studyPrograms = StudyProgram::active()->get();
         
         return response()->view('sitemap', compact('posts', 'studyPrograms'))
             ->header('Content-Type', 'text/xml');

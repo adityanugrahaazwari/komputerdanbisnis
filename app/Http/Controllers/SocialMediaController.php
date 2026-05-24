@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SocialMedia;
+use App\Http\Requests\SocialMediaRequest;
 use Illuminate\Http\Request;
 
 class SocialMediaController extends Controller
@@ -10,7 +11,7 @@ class SocialMediaController extends Controller
     public function index()
     {
         $this->authorizePermission('social_media_view');
-        $socials = SocialMedia::orderBy('order')->get();
+        $socials = SocialMedia::ordered()->get();
         return view('social_media.index', compact('socials'));
     }
 
@@ -20,15 +21,9 @@ class SocialMediaController extends Controller
         return view('social_media.create');
     }
 
-    public function store(Request $request)
+    public function store(SocialMediaRequest $request)
     {
         $this->authorizePermission('social_media_create');
-        $request->validate([
-            'platform' => 'required|string|max:255',
-            'url' => 'required|url',
-            'icon' => 'required|string|max:255',
-            'order' => 'nullable|integer',
-        ]);
 
         SocialMedia::create($request->all());
 
@@ -41,15 +36,9 @@ class SocialMediaController extends Controller
         return view('social_media.edit', compact('socialMedia'));
     }
 
-    public function update(Request $request, SocialMedia $socialMedia)
+    public function update(SocialMediaRequest $request, SocialMedia $socialMedia)
     {
         $this->authorizePermission('social_media_edit');
-        $request->validate([
-            'platform' => 'required|string|max:255',
-            'url' => 'required|url',
-            'icon' => 'required|string|max:255',
-            'order' => 'nullable|integer',
-        ]);
 
         $socialMedia->update($request->all());
 
@@ -61,12 +50,5 @@ class SocialMediaController extends Controller
         $this->authorizePermission('social_media_delete');
         $socialMedia->delete();
         return redirect()->route('social_media.index')->with('success', 'Sosial Media berhasil dihapus.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

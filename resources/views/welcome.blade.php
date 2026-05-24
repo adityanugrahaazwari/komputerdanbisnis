@@ -396,20 +396,20 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.full_name') }}</label>
-                                    <input type="text" name="name" required class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                                    <input type="text" name="name" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.email') }}</label>
-                                    <input type="email" name="email" required class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                                    <input type="email" name="email" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.subject') }}</label>
-                                <input type="text" name="subject" required class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                                <input type="text" name="subject" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.message') }}</label>
-                                <textarea name="message" rows="5" required class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white"></textarea>
+                                <textarea name="message" rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white"></textarea>
                             </div>
                             <button type="submit" class="w-full bg-red-700 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] hover:bg-red-800 transition shadow-xl shadow-red-200 dark:shadow-none">
                                 {{ __('messages.send_message') }}

@@ -10,4 +10,9 @@ class Document extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'file_path', 'category', 'description', 'is_active'];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

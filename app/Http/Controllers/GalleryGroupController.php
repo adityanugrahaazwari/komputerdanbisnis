@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GalleryGroupRequest;
 use App\Models\GalleryGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -21,16 +22,14 @@ class GalleryGroupController extends Controller
         return view('gallery_groups.create');
     }
 
-    public function store(Request $request)
+    public function store(GalleryGroupRequest $request)
     {
         $this->authorizePermission('galleries_create');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        
+        $validated = $request->validated();
 
         $data = $request->only(['name', 'description']);
-        $data['slug'] = Str::slug($request->name);
+        $data['slug'] = Str::slug($validated['name']);
 
         GalleryGroup::create($data);
 
@@ -43,16 +42,14 @@ class GalleryGroupController extends Controller
         return view('gallery_groups.edit', compact('galleryGroup'));
     }
 
-    public function update(Request $request, GalleryGroup $galleryGroup)
+    public function update(GalleryGroupRequest $request, GalleryGroup $galleryGroup)
     {
         $this->authorizePermission('galleries_edit');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        
+        $validated = $request->validated();
 
         $data = $request->only(['name', 'description', 'is_active']);
-        $data['slug'] = Str::slug($request->name);
+        $data['slug'] = Str::slug($validated['name']);
 
         $galleryGroup->update($data);
 
@@ -64,12 +61,5 @@ class GalleryGroupController extends Controller
         $this->authorizePermission('galleries_delete');
         $galleryGroup->delete();
         return redirect()->route('gallery-groups.index')->with('success', 'Grup Galeri berhasil dihapus.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

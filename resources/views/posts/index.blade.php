@@ -10,9 +10,9 @@
             <p class="text-gray-500 text-sm">Kelola konten berita dan publikasi artikel website.</p>
         </div>
         @can('posts_create')
-            <a href="{{ route('posts.create') }}" class="bg-red-700 text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-red-800 transition flex items-center shadow-lg shadow-red-200">
+            <x-admin.button href="{{ route('posts.create') }}">
                 <i class="fas fa-plus mr-2"></i> Tambah Berita
-            </a>
+            </x-admin.button>
         @endcan
     </div>
 
@@ -45,36 +45,30 @@
                     </td>
                     <td class="py-4 px-4 text-center">
                         @php
-                            $statusClasses = [
-                                'draft' => 'bg-gray-100 text-gray-600',
-                                'pending' => 'bg-yellow-50 text-yellow-600',
-                                'published' => 'bg-green-50 text-green-600',
-                                'rejected' => 'bg-red-50 text-red-600',
+                            $variants = [
+                                'draft' => 'gray',
+                                'pending' => 'yellow',
+                                'published' => 'green',
+                                'rejected' => 'red',
                             ];
                         @endphp
-                        <span class="{{ $statusClasses[$post->status] ?? 'bg-gray-100' }} rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest border border-black/5">
+                        <x-admin.badge :variant="$variants[$post->status] ?? 'gray'">
                             {{ $post->status }}
-                        </span>
+                        </x-admin.badge>
                     </td>
                     <td class="py-4 px-4 text-right">
                         <div class="flex justify-end items-center gap-2">
-                            <a href="{{ route('posts.show', $post->id) }}" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-green-600 hover:bg-green-600 hover:text-white transition shadow-sm" title="Lihat">
-                                <i class="fas fa-eye text-xs"></i>
-                            </a>
+                            <x-admin.action-button variant="view" href="{{ route('posts.show', $post->id) }}" title="Lihat" />
                             @can('posts_edit')
                                 @if(auth()->user()->can('posts_publish') || $post->user_id === auth()->id())
-                                    <a href="{{ route('posts.edit', $post->id) }}" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit">
-                                        <i class="fas fa-edit text-xs"></i>
-                                    </a>
+                                    <x-admin.action-button variant="edit" href="{{ route('posts.edit', $post->id) }}" title="Edit" />
                                 @endif
                             @endcan
                             @can('posts_delete')
                                 <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus berita ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition shadow-sm" title="Hapus">
-                                        <i class="fas fa-trash text-xs"></i>
-                                    </button>
+                                    <x-admin.action-button type="button" variant="delete" title="Hapus" />
                                 </form>
                             @endcan
                         </div>

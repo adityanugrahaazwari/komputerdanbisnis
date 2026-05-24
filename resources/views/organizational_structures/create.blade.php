@@ -19,12 +19,12 @@
 
         <div>
             <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Nama Lengkap</label>
-            <input type="text" name="name" placeholder="e.g. Dr. John Doe, M.Kom" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium" required>
+            <input type="text" name="name" placeholder="e.g. Dr. John Doe, M.Kom" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium">
         </div>
 
         <div>
             <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Jabatan</label>
-            <input type="text" name="position" placeholder="e.g. Ketua Program Studi" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium" required>
+            <input type="text" name="position" placeholder="e.g. Ketua Program Studi" class="w-full px-4 py-4 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium">
         </div>
 
         <div class="grid grid-cols-2 gap-6">

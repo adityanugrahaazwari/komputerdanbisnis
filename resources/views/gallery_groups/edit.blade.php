@@ -16,7 +16,7 @@
         <div class="space-y-6">
             <div class="space-y-2">
                 <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-4">Nama Grup</label>
-                <input type="text" name="name" class="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-red-600 transition-all font-bold text-gray-900 dark:text-white" value="{{ old('name', $galleryGroup->name) }}" required>
+                <input type="text" name="name" class="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-red-600 transition-all font-bold text-gray-900 dark:text-white" value="{{ old('name', $galleryGroup->name) }}">
                 @error('name') <span class="text-red-500 text-xs ml-4">{{ $message }}</span> @enderror
             </div>
 

@@ -9,7 +9,7 @@
         @method('PUT')
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2">Title</label>
-            <input type="text" name="title" class="w-full border rounded px-3 py-2 @error('title') border-red-500 @enderror" value="{{ old('title', $post->title) }}" required>
+            <input type="text" name="title" class="w-full border rounded px-3 py-2 @error('title') border-red-500 @enderror" value="{{ old('title', $post->title) }}">
             @error('title') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
@@ -26,7 +26,7 @@
 
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2">Content</label>
-            <textarea name="content" rows="10" class="w-full border rounded px-3 py-2 @error('content') border-red-500 @enderror" required>{{ old('content', $post->content) }}</textarea>
+            <textarea name="content" rows="10" class="w-full border rounded px-3 py-2 @error('content') border-red-500 @enderror">{{ old('content', $post->content) }}</textarea>
             @error('content') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 

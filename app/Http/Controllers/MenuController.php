@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\Permission;
-use Illuminate\Http\Request;
+use App\Http\Requests\MenuRequest;
 
 class MenuController extends Controller
 {
     public function index()
     {
         $this->authorizePermission('menus_view');
-        $menus = Menu::with('parent')->orderBy('order')->paginate(15);
+        $menus = Menu::with('parent')->ordered()->paginate(15);
         return view('menus.index', compact('menus'));
     }
 
@@ -23,18 +23,9 @@ class MenuController extends Controller
         return view('menus.create', compact('parentMenus', 'permissions'));
     }
 
-    public function store(Request $request)
+    public function store(MenuRequest $request)
     {
         $this->authorizePermission('menus_create');
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'url' => 'nullable|string|max:255',
-            'location' => 'required|in:admin,frontend',
-            'icon' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:menus,id',
-            'permission_slug' => 'nullable|string|max:255',
-            'order' => 'required|integer',
-        ]);
 
         Menu::create([
             'title' => $request->title,
@@ -58,18 +49,9 @@ class MenuController extends Controller
         return view('menus.edit', compact('menu', 'parentMenus', 'permissions'));
     }
 
-    public function update(Request $request, Menu $menu)
+    public function update(MenuRequest $request, Menu $menu)
     {
         $this->authorizePermission('menus_edit');
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'url' => 'nullable|string|max:255',
-            'location' => 'required|in:admin,frontend',
-            'icon' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:menus,id',
-            'permission_slug' => 'nullable|string|max:255',
-            'order' => 'required|integer',
-        ]);
 
         $menu->update([
             'title' => $request->title,
@@ -90,12 +72,5 @@ class MenuController extends Controller
         $this->authorizePermission('menus_delete');
         $menu->delete();
         return redirect()->route('menus.index')->with('success', 'Menu deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->hasPermission($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

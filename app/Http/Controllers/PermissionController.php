@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Permission;
 use App\Models\PermissionGroup;
+use App\Http\Requests\PermissionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -23,13 +24,9 @@ class PermissionController extends Controller
         return view('permissions.create', compact('groups'));
     }
 
-    public function store(Request $request)
+    public function store(PermissionRequest $request)
     {
         $this->authorizePermission('permissions_create');
-        $request->validate([
-            'name' => 'required|string|max:255|unique:permissions,name',
-            'permission_group_id' => 'nullable|exists:permission_groups,id'
-        ]);
 
         Permission::create([
             'name' => $request->name,
@@ -47,13 +44,9 @@ class PermissionController extends Controller
         return view('permissions.edit', compact('permission', 'groups'));
     }
 
-    public function update(Request $request, Permission $permission)
+    public function update(PermissionRequest $request, Permission $permission)
     {
         $this->authorizePermission('permissions_edit');
-        $request->validate([
-            'name' => 'required|string|max:255|unique:permissions,name,' . $permission->id,
-            'permission_group_id' => 'nullable|exists:permission_groups,id'
-        ]);
 
         $permission->update([
             'name' => $request->name,
@@ -69,12 +62,5 @@ class PermissionController extends Controller
         $this->authorizePermission('permissions_delete');
         $permission->delete();
         return redirect()->route('permissions.index')->with('success', 'Permission deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->hasPermission($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

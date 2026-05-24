@@ -14,7 +14,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wide">Nama Lengkap</label>
-                <input type="text" name="name" class="w-full border-gray-200 rounded-2xl px-4 py-3 focus:ring-red-500 focus:border-red-500 @error('name') border-red-500 @enderror" value="{{ old('name') }}" required placeholder="Contoh: Dr. John Doe, M.Kom">
+                <input type="text" name="name" class="w-full border-gray-200 rounded-2xl px-4 py-3 focus:ring-red-500 focus:border-red-500 @error('name') border-red-500 @enderror" value="{{ old('name') }}" placeholder="Contoh: Dr. John Doe, M.Kom">
                 @error('name') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 

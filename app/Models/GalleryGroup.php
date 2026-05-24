@@ -31,4 +31,9 @@ class GalleryGroup extends Model
     {
         return $this->hasMany(Gallery::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

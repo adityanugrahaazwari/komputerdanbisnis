@@ -26,4 +26,9 @@ class StudyProgram extends Model
             $studyProgram->slug = Str::slug($studyProgram->name);
         });
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

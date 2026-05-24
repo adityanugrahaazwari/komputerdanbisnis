@@ -10,7 +10,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Nama Program Studi</label>
-                <input type="text" name="name" class="w-full border rounded px-3 py-2 @error('name') border-red-500 @enderror" value="{{ old('name', $studyProgram->name) }}" required>
+                <input type="text" name="name" class="w-full border rounded px-3 py-2 @error('name') border-red-500 @enderror" value="{{ old('name', $studyProgram->name) }}">
                 @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 

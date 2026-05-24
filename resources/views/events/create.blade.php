@@ -14,13 +14,13 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="md:col-span-2">
                 <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wide">Judul Kegiatan</label>
-                <input type="text" name="title" class="w-full border-gray-200 rounded-2xl px-4 py-3 focus:ring-red-500 focus:border-red-500 @error('title') border-red-500 @enderror" value="{{ old('title') }}" required placeholder="Contoh: Webinar Cyber Security">
+                <input type="text" name="title" class="w-full border-gray-200 rounded-2xl px-4 py-3 focus:ring-red-500 focus:border-red-500 @error('title') border-red-500 @enderror" value="{{ old('title') }}" placeholder="Contoh: Webinar Cyber Security">
                 @error('title') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wide">Tanggal Mulai</label>
-                <input type="datetime-local" name="start_date" class="w-full border-gray-200 rounded-2xl px-4 py-3 focus:ring-red-500 focus:border-red-500 @error('start_date') border-red-500 @enderror" value="{{ old('start_date') }}" required>
+                <input type="datetime-local" name="start_date" class="w-full border-gray-200 rounded-2xl px-4 py-3 focus:ring-red-500 focus:border-red-500 @error('start_date') border-red-500 @enderror" value="{{ old('start_date') }}">
                 @error('start_date') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 

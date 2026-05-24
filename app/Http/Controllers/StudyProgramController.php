@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\StudyProgram;
+use App\Http\Requests\StudyProgramRequest;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class StudyProgramController extends Controller
 {
+    use UploadsFiles;
+
     public function index()
     {
         $this->authorizePermission('study_programs_view');
@@ -22,25 +26,15 @@ class StudyProgramController extends Controller
         return view('study_programs.create');
     }
 
-    public function store(Request $request)
+    public function store(StudyProgramRequest $request)
     {
         $this->authorizePermission('study_programs_create');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'nullable|string|max:50|unique:study_programs',
-            'level' => 'nullable|string|max:50',
-            'description' => 'nullable|string',
-            'website_url' => 'nullable|url|max:255',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
-        ]);
 
         $data = $request->all();
         $data['slug'] = Str::slug($request->name);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('study_programs', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'study_programs');
         }
 
         StudyProgram::create($data);
@@ -54,28 +48,15 @@ class StudyProgramController extends Controller
         return view('study_programs.edit', compact('studyProgram'));
     }
 
-    public function update(Request $request, StudyProgram $studyProgram)
+    public function update(StudyProgramRequest $request, StudyProgram $studyProgram)
     {
         $this->authorizePermission('study_programs_edit');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'nullable|string|max:50|unique:study_programs,code,' . $studyProgram->id,
-            'level' => 'nullable|string|max:50',
-            'description' => 'nullable|string',
-            'website_url' => 'nullable|url|max:255',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
-        ]);
 
         $data = $request->all();
         $data['slug'] = Str::slug($request->name);
 
         if ($request->hasFile('image')) {
-            if ($studyProgram->image) {
-                Storage::disk('public')->delete($studyProgram->image);
-            }
-            $file = $request->file('image');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('study_programs', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'study_programs', $studyProgram->image);
         }
 
         $studyProgram->update($data);
@@ -86,17 +67,8 @@ class StudyProgramController extends Controller
     public function destroy(StudyProgram $studyProgram)
     {
         $this->authorizePermission('study_programs_delete');
-        if ($studyProgram->image) {
-            Storage::disk('public')->delete($studyProgram->image);
-        }
+        $this->deleteFile($studyProgram->image);
         $studyProgram->delete();
         return redirect()->route('study_programs.index')->with('success', 'Program Studi berhasil dihapus.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

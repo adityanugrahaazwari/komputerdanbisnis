@@ -12,7 +12,7 @@
                 <label for="title" class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Judul Pengumuman</label>
                 <input type="text" name="title" id="title" value="{{ old('title') }}" 
                        class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold" 
-                       placeholder="Contoh: Pemeliharaan Sistem Mendatang" required>
+                       placeholder="Contoh: Pemeliharaan Sistem Mendatang">
                 @error('title') <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p> @enderror
             </div>
 
@@ -31,7 +31,7 @@
                 <label for="message" class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Isi Pesan</label>
                 <textarea name="message" id="message" rows="5" 
                           class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold" 
-                          placeholder="Tuliskan detail pengumuman di sini..." required>{{ old('message') }}</textarea>
+                          placeholder="Tuliskan detail pengumuman di sini...">{{ old('message') }}</textarea>
                 @error('message') <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p> @enderror
             </div>
 

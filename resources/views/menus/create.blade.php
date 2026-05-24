@@ -15,13 +15,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="md:col-span-2">
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Judul Menu</label>
-                    <input type="text" name="title" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none" value="{{ old('title') }}" placeholder="Contoh: Beranda atau messages.home" required>
+                    <input type="text" name="title" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none" value="{{ old('title') }}" placeholder="Contoh: Beranda atau messages.home">
                     <p class="text-[10px] text-gray-400 mt-1 italic">Gunakan prefix 'messages.' untuk dukungan multi-bahasa (misal: messages.home).</p>
                 </div>
 
                 <div>
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Lokasi Menu</label>
-                    <select name="location" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none" required>
+                    <select name="location" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none">
                         <option value="admin">Dashboard Admin (Sidebar)</option>
                         <option value="frontend">Landing Page (Navbar Utama)</option>
                     </select>
@@ -49,7 +49,7 @@
 
                 <div>
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Urutan (Order)</label>
-                    <input type="number" name="order" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none" value="{{ old('order', 0) }}" required>
+                    <input type="number" name="order" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none" value="{{ old('order', 0) }}">
                 </div>
 
                 <div>

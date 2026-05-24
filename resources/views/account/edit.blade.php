@@ -27,7 +27,7 @@
                     </span>
                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}"
                            class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-600 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold @error('name') border-red-500 @enderror" 
-                           placeholder="Nama Anda" required>
+                           placeholder="Nama Anda">
                 </div>
                 @error('name')
                     <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p>
@@ -42,7 +42,7 @@
                     </span>
                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
                            class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-600 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold @error('email') border-red-500 @enderror" 
-                           placeholder="email@contoh.com" required>
+                           placeholder="email@contoh.com">
                 </div>
                 @error('email')
                     <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p>

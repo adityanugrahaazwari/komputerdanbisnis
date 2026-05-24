@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnnouncementRequest;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 
@@ -20,21 +21,17 @@ class AnnouncementController extends Controller
         return view('announcements.create');
     }
 
-    public function store(Request $request)
+    public function store(AnnouncementRequest $request)
     {
         $this->authorizePermission('announcements_create');
         
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'message' => 'required|string',
-            'type' => 'required|in:info,success,warning,danger',
-        ]);
+        $validated = $request->validated();
 
         Announcement::create([
             'user_id' => auth()->id(),
-            'title' => $request->title,
-            'message' => $request->message,
-            'type' => $request->type,
+            'title' => $validated['title'],
+            'message' => $validated['message'],
+            'type' => $validated['type'],
             'is_active' => true,
         ]);
 
@@ -53,12 +50,5 @@ class AnnouncementController extends Controller
         $this->authorizePermission('announcements_edit');
         $announcement->update(['is_active' => !$announcement->is_active]);
         return back()->with('success', 'Announcement status updated.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->hasPermission($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

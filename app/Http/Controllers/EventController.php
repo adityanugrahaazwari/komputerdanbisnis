@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Http\Requests\EventRequest;
+use App\Traits\UploadsFiles;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
-    use \App\Traits\LogsActivity;
+    use LogsActivity, UploadsFiles;
 
     public function index()
     {
@@ -24,29 +27,16 @@ class EventController extends Controller
         return view('events.create');
     }
 
-    public function store(Request $request)
+    public function store(EventRequest $request)
     {
         $this->authorizePermission('events_create');
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'type' => 'required|in:academic,webinar,competition,holiday,other',
-            'color' => 'required|string|max:20',
-            'location' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
-            'is_active' => 'boolean'
-        ]);
 
         $data = $request->except('image');
         $data['slug'] = Str::slug($request->title);
         $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('events', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'events');
         }
 
         $event = Event::create($data);
@@ -62,32 +52,16 @@ class EventController extends Controller
         return view('events.edit', compact('event'));
     }
 
-    public function update(Request $request, Event $event)
+    public function update(EventRequest $request, Event $event)
     {
         $this->authorizePermission('events_edit');
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'type' => 'required|in:academic,webinar,competition,holiday,other',
-            'color' => 'required|string|max:20',
-            'location' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
-            'is_active' => 'boolean'
-        ]);
 
         $data = $request->except('image');
         $data['slug'] = Str::slug($request->title);
         $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
-            if ($event->image) {
-                Storage::disk('public')->delete($event->image);
-            }
-            $file = $request->file('image');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['image'] = $file->storeAs('events', $filename, 'public');
+            $data['image'] = $this->uploadFile($request->file('image'), 'events', $event->image);
         }
 
         $event->update($data);
@@ -103,20 +77,11 @@ class EventController extends Controller
         
         $title = $event->title;
         
-        if ($event->image) {
-            Storage::disk('public')->delete($event->image);
-        }
+        $this->deleteFile($event->image);
         $event->delete();
         
         $this->logActivity('delete', null, 'Deleted event: ' . $title);
 
         return redirect()->route('events.index')->with('success', 'Event deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Lecturer;
 use App\Models\StudyProgram;
+use App\Http\Requests\LecturerRequest;
+use App\Traits\UploadsFiles;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class LecturerController extends Controller
 {
-    use \App\Traits\LogsActivity;
+    use LogsActivity, UploadsFiles;
 
     public function index()
     {
         $this->authorizePermission('lecturers_view');
-        $lecturers = Lecturer::with('studyProgram')->orderBy('order')->paginate(10);
+        $lecturers = Lecturer::with('studyProgram')->ordered()->paginate(10);
         return view('lecturers.index', compact('lecturers'));
     }
 
@@ -26,32 +29,16 @@ class LecturerController extends Controller
         return view('lecturers.create', compact('studyPrograms'));
     }
 
-    public function store(Request $request)
+    public function store(LecturerRequest $request)
     {
         $this->authorizePermission('lecturers_create');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'nip' => 'nullable|string|max:50',
-            'nidn' => 'nullable|string|max:50',
-            'position' => 'nullable|string|max:255',
-            'expertise' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'google_scholar_url' => 'nullable|url|max:255',
-            'sinta_url' => 'nullable|url|max:255',
-            'study_program_id' => 'nullable|exists:study_programs,id',
-            'photo' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
-            'order' => 'nullable|integer',
-            'is_active' => 'boolean'
-        ]);
 
         $data = $request->except('photo');
         $data['slug'] = Str::slug($request->name);
         $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['photo'] = $file->storeAs('lecturers', $filename, 'public');
+            $data['photo'] = $this->uploadFile($request->file('photo'), 'lecturers');
         }
 
         $lecturer = Lecturer::create($data);
@@ -68,35 +55,16 @@ class LecturerController extends Controller
         return view('lecturers.edit', compact('lecturer', 'studyPrograms'));
     }
 
-    public function update(Request $request, Lecturer $lecturer)
+    public function update(LecturerRequest $request, Lecturer $lecturer)
     {
         $this->authorizePermission('lecturers_edit');
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'nip' => 'nullable|string|max:50',
-            'nidn' => 'nullable|string|max:50',
-            'position' => 'nullable|string|max:255',
-            'expertise' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'google_scholar_url' => 'nullable|url|max:255',
-            'sinta_url' => 'nullable|url|max:255',
-            'study_program_id' => 'nullable|exists:study_programs,id',
-            'photo' => 'nullable|image|mimetypes:image/jpeg,image/png|max:2048',
-            'order' => 'nullable|integer',
-            'is_active' => 'boolean'
-        ]);
 
         $data = $request->except('photo');
         $data['slug'] = Str::slug($request->name);
         $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('photo')) {
-            if ($lecturer->photo) {
-                Storage::disk('public')->delete($lecturer->photo);
-            }
-            $file = $request->file('photo');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['photo'] = $file->storeAs('lecturers', $filename, 'public');
+            $data['photo'] = $this->uploadFile($request->file('photo'), 'lecturers', $lecturer->photo);
         }
 
         $lecturer->update($data);
@@ -112,20 +80,11 @@ class LecturerController extends Controller
         
         $name = $lecturer->name;
         
-        if ($lecturer->photo) {
-            Storage::disk('public')->delete($lecturer->photo);
-        }
+        $this->deleteFile($lecturer->photo);
         $lecturer->delete();
         
         $this->logActivity('delete', null, 'Deleted lecturer: ' . $name);
 
         return redirect()->route('lecturers.index')->with('success', 'Lecturer deleted successfully.');
-    }
-
-    protected function authorizePermission($permission)
-    {
-        if (!auth()->user()->can($permission)) {
-            abort(403, 'Unauthorized action.');
-        }
     }
 }

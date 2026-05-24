@@ -15,4 +15,14 @@ class Gallery extends Model
     {
         return $this->belongsTo(GalleryGroup::class, 'gallery_group_id');
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc');
+    }
 }

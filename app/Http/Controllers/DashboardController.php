@@ -50,7 +50,7 @@ class DashboardController extends Controller
         $recentComments = Comment::with('post')->latest()->take(5)->get();
         $recentContacts = Contact::latest()->take(5)->get();
         $recentLogs = ActivityLog::with('user')->latest()->take(10)->get();
-        $announcements = Announcement::where('is_active', true)->latest()->take(3)->get();
+        $announcements = Announcement::active()->latest()->take(3)->get();
         
         $role = auth()->user()->roles->first();
         $settings = $role ? $role->dashboardSetting : null;

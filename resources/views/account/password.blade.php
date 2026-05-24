@@ -27,7 +27,7 @@
                     </span>
                     <input type="password" name="current_password" id="current_password" 
                            class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold @error('current_password') border-red-500 @enderror" 
-                           placeholder="••••••••" required>
+                           placeholder="••••••••">
                 </div>
                 @error('current_password')
                     <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p>
@@ -42,7 +42,7 @@
                     </span>
                     <input type="password" name="password" id="password" 
                            class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold @error('password') border-red-500 @enderror" 
-                           placeholder="••••••••" required>
+                           placeholder="••••••••">
                 </div>
                 @error('password')
                     <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p>
@@ -57,7 +57,7 @@
                     </span>
                     <input type="password" name="password_confirmation" id="password_confirmation" 
                            class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold" 
-                           placeholder="••••••••" required>
+                           placeholder="••••••••">
                 </div>
             </div>
 
