@@ -12,6 +12,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LecturerController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ActivityLogController;
@@ -19,6 +21,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\PermissionGroupController;
 use App\Http\Controllers\OrganizationalStructureController;
 use App\Http\Controllers\SitemapController;
@@ -28,6 +31,7 @@ use App\Http\Controllers\DashboardSettingController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ManualBookController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['id', 'en'])) {
@@ -37,9 +41,12 @@ Route::get('/lang/{locale}', function ($locale) {
 })->name('lang.switch');
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::get('/profil', [LandingController::class, 'profile'])->name('landing.profile');
 Route::get('/program-studi', [LandingController::class, 'studyPrograms'])->name('landing.study_programs');
 Route::get('/layanan', [LandingController::class, 'services'])->name('landing.services');
+Route::get('/direktori-dosen', [LandingController::class, 'lecturers'])->name('landing.lecturers');
+Route::get('/kalender-kegiatan', [LandingController::class, 'calendar'])->name('landing.calendar');
 Route::get('/berita', [LandingController::class, 'allPosts'])->name('landing.news');
 Route::get('/berita/{slug}', [LandingController::class, 'showPost'])->name('landing.post');
 Route::get('/galeri', [LandingController::class, 'gallery'])->name('landing.gallery');
@@ -65,8 +72,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('gallery-groups', \App\Http\Controllers\GalleryGroupController::class)->names('gallery-groups');
     Route::resource('galleries', GalleryController::class);
+    Route::resource('lecturers', LecturerController::class);
+    Route::resource('events', EventController::class);
     Route::resource('documents', DocumentController::class);
     Route::resource('services', ServiceController::class);
+    Route::resource('testimonials', TestimonialController::class);
     
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
@@ -104,4 +114,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/account/profile', [AccountController::class, 'updateProfile'])->name('account.profile.update');
     Route::get('/account/password', [AccountController::class, 'password'])->name('account.password');
     Route::put('/account/password', [AccountController::class, 'updatePassword'])->name('account.password.update');
+
+    // Media Manager (UniSharp Filemanager)
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
 });

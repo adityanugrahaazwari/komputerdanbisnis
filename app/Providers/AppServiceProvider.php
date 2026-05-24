@@ -79,11 +79,14 @@ class AppServiceProvider extends ServiceProvider
                     'pending_comments' => \App\Models\Comment::where('status', 'pending')->count(),
                 ];
 
+                $visitorCount = \App\Models\Visitor::count();
+
                 $view->with([
                     'dynamicMenus' => $menus,
                     'frontendMenus' => $frontendMenus,
                     'notifications' => $notificationCounts,
-                    'siteSettings' => $siteSettings
+                    'siteSettings' => $siteSettings,
+                    'visitorCount' => $visitorCount
                 ]);
             } catch (\Exception $e) {
                 $view->with([

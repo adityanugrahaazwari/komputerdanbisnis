@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
             AccountMenuSeeder::class,
             AnnouncementRbacSeeder::class,
             DashboardSettingSeeder::class,
+            TestimonialRbacSeeder::class,
+            MediaManagerRbacSeeder::class,
         ]);
     }
 }

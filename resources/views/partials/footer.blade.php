@@ -52,8 +52,18 @@
                 </ul>
             </div>
         </div>
-        <div class="border-t border-white/5 mt-16 md:mt-20 pt-10 text-center text-[10px] md:text-sm font-bold tracking-widest uppercase">
-            {{ $siteSettings['footer'] }}
+        <div class="border-t border-white/5 mt-16 md:mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left text-[10px] md:text-sm font-bold tracking-widest uppercase">
+                {{ $siteSettings['footer'] }}
+            </div>
+            
+            <div class="flex items-center gap-4 bg-white/5 px-6 py-2 rounded-2xl border border-white/10">
+                <i class="fas fa-users text-red-600 text-xs"></i>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-white font-black text-sm">{{ number_format($visitorCount) }}</span>
+                    <span class="text-[8px] text-gray-500 font-bold uppercase tracking-widest">Unique Visitors</span>
+                </div>
+            </div>
         </div>
     </div>
 </footer>

@@ -39,6 +39,29 @@
         </div>
 
         <div class="flex items-center gap-2 md:gap-4">
+            <!-- Global Search -->
+            <div x-data="{ searchOpen: false }" class="relative">
+                <button @click="searchOpen = !searchOpen" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-600 transition">
+                    <i class="fas" :class="searchOpen ? 'fa-times' : 'fa-search'"></i>
+                </button>
+                <div x-show="searchOpen" 
+                     x-cloak 
+                     @click.outside="searchOpen = false"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                     x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                     class="absolute right-0 mt-4 w-[280px] md:w-[400px] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-slate-800 p-4 z-[60]">
+                    <form action="{{ route('search') }}" method="GET">
+                        <div class="relative">
+                            <input type="text" name="q" placeholder="Cari sesuatu..." autofocus class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-3 px-5 pr-12 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                            <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-red-700 text-white rounded-xl flex items-center justify-center hover:bg-red-800 transition">
+                                <i class="fas fa-search text-xs"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <!-- Dark Mode Toggle -->
             <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-600 transition">
                 <i class="fas" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
@@ -79,6 +102,16 @@
          x-transition:enter-end="opacity-100 translate-y-0"
          class="lg:hidden bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 absolute w-full shadow-xl max-h-[80vh] overflow-y-auto">
         <div class="flex flex-col p-6 space-y-1">
+            <!-- Mobile Search -->
+            <form action="{{ route('search') }}" method="GET" class="mb-6">
+                <div class="relative">
+                    <input type="text" name="q" placeholder="Cari sesuatu..." class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 pr-14 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-red-700 text-white rounded-xl flex items-center justify-center hover:bg-red-800 transition">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
             @foreach($frontendMenus as $menu)
                 @if($menu->children->count() > 0)
                     <div class="p-3 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mt-4 border-b border-gray-50 dark:border-slate-800 mb-2">

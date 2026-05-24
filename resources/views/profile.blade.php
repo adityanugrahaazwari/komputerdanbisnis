@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('messages.profile') }} - JKB POLITALA</title>
+    @include('partials.seo', [
+        'seoTitle' => __('messages.profile') . ' - JKB POLITALA',
+        'seoDescription' => 'Mengenal lebih dalam sejarah, visi, misi, dan struktur kepemimpinan Jurusan Komputer dan Bisnis.'
+    ])
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -34,6 +38,14 @@
     <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-red-900 text-white py-20 md:py-32 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
         <div class="container mx-auto px-4 text-center relative z-10">
+            <!-- Breadcrumbs -->
+            @include('partials.breadcrumbs', [
+                'items' => [
+                    ['label' => __('messages.profile'), 'url' => route('landing.profile')]
+                ],
+                'class' => 'text-white/70 justify-center',
+                'activeClass' => 'text-red-200'
+            ])
             <h1 class="text-4xl md:text-7xl font-black mb-6 tracking-tight uppercase">{{ __('messages.profile') }} <span class="text-red-600">Jurusan</span></h1>
             <p class="text-gray-400 max-w-2xl mx-auto italic text-lg md:text-xl leading-relaxed">Mengenal lebih dalam sejarah, visi, misi, dan struktur kepemimpinan Jurusan Komputer dan Bisnis.</p>
         </div>

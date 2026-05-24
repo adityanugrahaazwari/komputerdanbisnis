@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('messages.services') }} - JKB POLITALA</title>
+    @include('partials.seo', [
+        'seoTitle' => __('messages.services') . ' - JKB POLITALA',
+        'seoDescription' => 'Layanan digital terintegrasi untuk mendukung aktivitas civitas akademika Jurusan Komputer dan Bisnis.'
+    ])
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -31,8 +35,16 @@
     <!-- Header -->
 
     <!-- Header -->
-    <header class="bg-slate-900 text-white py-16 md:py-24 text-center">
+    <header class="bg-slate-900 text-white py-16 md:py-24 text-center relative">
         <div class="container mx-auto px-4">
+            <!-- Breadcrumbs -->
+            @include('partials.breadcrumbs', [
+                'items' => [
+                    ['label' => __('messages.services'), 'url' => route('landing.services')]
+                ],
+                'class' => 'text-white/70 justify-center',
+                'activeClass' => 'text-red-500'
+            ])
             <span class="text-red-600 font-black tracking-[0.2em] uppercase text-xs mb-4 block">Integrated Platforms</span>
             <h1 class="text-4xl md:text-6xl font-black mb-4 uppercase tracking-tight">{{ __('messages.services') }} <span class="text-red-600">Luar</span></h1>
             <p class="text-gray-400 max-w-2xl mx-auto italic">{{ __('messages.integrated_services_desc') }}</p>

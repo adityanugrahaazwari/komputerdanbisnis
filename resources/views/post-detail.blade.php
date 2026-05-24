@@ -6,12 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $post->title }} - JKB POLITALA</title>
-    @if($post->meta_description)
-        <meta name="description" content="{{ $post->meta_description }}">
-    @endif
-    @if($post->meta_keywords)
-        <meta name="keywords" content="{{ $post->meta_keywords }}">
-    @endif
+    @include('partials.seo', ['ogType' => 'article'])
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -48,13 +43,12 @@
     <!-- Post Content -->
     <main class="container mx-auto px-4 md:px-12 py-16">
         <!-- Breadcrumbs -->
-        <nav class="flex mb-8 text-xs font-bold uppercase tracking-widest text-gray-400">
-            <a href="{{ url('/') }}" class="hover:text-red-600 transition">Home</a>
-            <span class="mx-3">/</span>
-            <a href="{{ route('landing.news') }}" class="hover:text-red-600 transition">Berita</a>
-            <span class="mx-3">/</span>
-            <span class="text-gray-900 dark:text-white truncate max-w-xs">{{ $post->title }}</span>
-        </nav>
+        @include('partials.breadcrumbs', [
+            'items' => [
+                ['label' => __('messages.news'), 'url' => route('landing.news')],
+                ['label' => $post->title, 'url' => '#']
+            ]
+        ])
 
         <div class="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl dark:shadow-none overflow-hidden border-b-[12px] border-red-700 border border-gray-100 dark:border-slate-800">
             @if($post->image)
@@ -155,14 +149,33 @@
                     </div>
                 </div>
 
-                <div class="mt-20 pt-10
- border-t-2 border-gray-50 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="mt-20 pt-10 border-t-2 border-gray-50 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-8">
                     <div class="flex items-center space-x-6">
                         <span class="text-gray-900 dark:text-white font-black uppercase tracking-widest text-sm">{{ __('messages.share') }}:</span>
                         <div class="flex space-x-4">
-                            <a href="#" class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition"><i class="fab fa-facebook-f text-lg"></i></a>
-                            <a href="#" class="w-12 h-12 rounded-full bg-sky-400 text-white flex items-center justify-center hover:scale-110 transition"><i class="fab fa-twitter text-lg"></i></a>
-                            <a href="#" class="w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition"><i class="fab fa-whatsapp text-lg"></i></a>
+                            {{-- Share to Facebook --}}
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::fullUrl()) }}" 
+                               target="_blank" 
+                               class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition shadow-lg shadow-blue-200 dark:shadow-none"
+                               title="Bagikan ke Facebook">
+                                <i class="fab fa-facebook-f text-lg"></i>
+                            </a>
+
+                            {{-- Share to X (Twitter) --}}
+                            <a href="https://twitter.com/intent/tweet?text={{ urlencode($post->title) }}&url={{ urlencode(Request::fullUrl()) }}" 
+                               target="_blank" 
+                               class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:scale-110 transition shadow-lg shadow-gray-200 dark:shadow-none"
+                               title="Bagikan ke X">
+                                <i class="fab fa-x-twitter text-lg"></i>
+                            </a>
+
+                            {{-- Share to WhatsApp --}}
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode($post->title . ' - ' . Request::fullUrl()) }}" 
+                               target="_blank" 
+                               class="w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition shadow-lg shadow-green-200 dark:shadow-none"
+                               title="Bagikan ke WhatsApp">
+                                <i class="fab fa-whatsapp text-lg"></i>
+                            </a>
                         </div>
                     </div>
                     <a href="{{ route('landing.news') }}" class="text-red-700 dark:text-red-400 font-black hover:underline uppercase tracking-widest text-sm">

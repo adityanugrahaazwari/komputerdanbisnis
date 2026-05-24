@@ -8,6 +8,8 @@ use App\Models\Post;
 use App\Models\SocialMedia;
 use App\Models\OrganizationalStructure;
 use App\Models\Service;
+use App\Models\Testimonial;
+use App\Models\Visitor;
 use Illuminate\Http\Request;
 
 class LandingController extends Controller
@@ -39,7 +41,13 @@ class LandingController extends Controller
         // Fetch active social media
         $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
 
-        return view('welcome', compact('profiles', 'studyPrograms', 'structures', 'services', 'latestPosts', 'socialMedia'));
+        // Fetch active testimonials
+        $testimonials = Testimonial::where('is_active', true)->orderBy('order')->get();
+
+        // Fetch total unique visitor count
+        $visitorCount = Visitor::count();
+
+        return view('welcome', compact('profiles', 'studyPrograms', 'structures', 'services', 'latestPosts', 'socialMedia', 'testimonials', 'visitorCount'));
     }
 
     public function profile()
@@ -129,5 +137,38 @@ class LandingController extends Controller
         $documents = \App\Models\Document::where('is_active', true)->latest()->get()->groupBy('category');
         $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
         return view('downloads-index', compact('documents', 'socialMedia'));
+    }
+
+    public function lecturers(Request $request)
+    {
+        $query = \App\Models\Lecturer::where('is_active', true)->with('studyProgram')->orderBy('order');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('expertise', 'like', "%{$search}%")
+                  ->orWhere('position', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('prodi')) {
+            $query->whereHas('studyProgram', function($q) use ($request) {
+                $q->where('slug', $request->prodi);
+            });
+        }
+
+        $lecturers = $query->paginate(12)->withQueryString();
+        $studyPrograms = StudyProgram::all();
+        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+
+        return view('lecturer-index', compact('lecturers', 'studyPrograms', 'socialMedia'));
+    }
+
+    public function calendar()
+    {
+        $events = \App\Models\Event::where('is_active', true)->orderBy('start_date')->get();
+        $socialMedia = SocialMedia::where('is_active', true)->orderBy('order')->get();
+        return view('calendar-index', compact('events', 'socialMedia'));
     }
 }

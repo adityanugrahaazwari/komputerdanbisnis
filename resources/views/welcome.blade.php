@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $siteSettings['name'] }} - Politeknik Negeri Tanah Laut</title>
+    @include('partials.seo')
     @if(isset($siteSettings['favicon']) && $siteSettings['favicon'])
         <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $siteSettings['favicon']) }}">
     @endif
@@ -44,6 +45,13 @@
             background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);
         }
         [x-cloak] { display: none !important; }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -208,6 +216,124 @@
             </div>
         </div>
     </section>
+
+    <!-- Testimonials Section -->
+    @if($testimonials->count() > 0)
+    <section 
+        x-data="{
+            active: 0,
+            count: {{ $testimonials->count() }},
+            init() {
+                this.resetPosition();
+            },
+            resetPosition() {
+                let container = this.$refs.slider;
+                let firstItem = container.querySelector('[data-index=\'0\']');
+                if (firstItem) {
+                    let itemWidth = firstItem.offsetWidth + 32;
+                    container.scrollLeft = itemWidth * this.count;
+                }
+            },
+            handleScroll() {
+                let container = this.$refs.slider;
+                let firstItem = container.querySelector('[data-index=\'0\']');
+                if (!firstItem) return;
+                
+                let itemWidth = firstItem.offsetWidth + 32;
+                let totalWidth = itemWidth * this.count;
+                
+                if (container.scrollLeft < itemWidth / 2) {
+                    container.scrollTo({ left: container.scrollLeft + totalWidth, behavior: 'instant' });
+                } else if (container.scrollLeft > (totalWidth * 2) - (itemWidth / 2)) {
+                    container.scrollTo({ left: container.scrollLeft - totalWidth, behavior: 'instant' });
+                }
+                
+                this.active = Math.round((container.scrollLeft - totalWidth) / itemWidth) % this.count;
+                if (this.active < 0) this.active += this.count;
+            },
+            next() {
+                let container = this.$refs.slider;
+                let firstItem = container.querySelector('[data-index=\'0\']');
+                let itemWidth = firstItem.offsetWidth + 32;
+                container.scrollBy({ left: itemWidth, behavior: 'smooth' });
+            },
+            prev() {
+                let container = this.$refs.slider;
+                let firstItem = container.querySelector('[data-index=\'0\']');
+                let itemWidth = firstItem.offsetWidth + 32;
+                container.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+            }
+        }"
+        class="py-20 md:py-32 bg-white dark:bg-slate-900 transition-colors duration-300 overflow-hidden"
+    >
+        <div class="container mx-auto px-4 md:px-12">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 md:mb-24 gap-8">
+                <div class="text-center md:text-left">
+                    <span class="text-red-600 font-black tracking-[0.3em] uppercase text-xs mb-4 block">Testimonials</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight uppercase">Kata Mereka</h2>
+                    <p class="text-gray-500 dark:text-gray-400 max-w-2xl font-medium">Apa kata alumni dan mitra industri tentang Jurusan Komputer dan Bisnis Politala.</p>
+                </div>
+                <div class="flex gap-4 hidden md:flex">
+                    <button @click="prev()" class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-red-700 hover:text-white transition shadow-sm">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button @click="next()" class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-red-700 hover:text-white transition shadow-sm">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div 
+                x-ref="slider" 
+                @scroll.debounce.10ms="handleScroll()"
+                class="flex overflow-x-auto gap-8 pt-10 pb-12 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0"
+            >
+                @foreach($testimonials->concat($testimonials)->concat($testimonials) as $index => $testimonial)
+                <div data-index="{{ $index }}" class="flex-none w-[85%] md:w-[45%] lg:w-[30%] snap-center">
+                    <div class="bg-slate-50 dark:bg-slate-800 p-8 md:p-10 rounded-[3rem] relative border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all group h-full flex flex-col">
+                        <div class="absolute -top-6 left-10 w-12 h-12 bg-red-700 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg transform group-hover:rotate-12 transition">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        
+                        <div class="mb-8 mt-4 text-gray-600 dark:text-gray-300 italic leading-relaxed text-sm md:text-base flex-1">
+                            "{{ $testimonial->quote }}"
+                        </div>
+                        
+                        <div class="flex items-center gap-4 mt-auto">
+                            <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-white dark:border-slate-700 shadow-md flex-shrink-0">
+                                @if($testimonial->image)
+                                    <img src="{{ asset('storage/' . $testimonial->image) }}" alt="{{ $testimonial->name }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full bg-gray-200 dark:bg-slate-700 flex items-center justify-center text-gray-400">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="overflow-hidden">
+                                <h4 class="font-black text-gray-900 dark:text-white text-sm uppercase tracking-tight truncate">{{ $testimonial->name }}</h4>
+                                <p class="text-[10px] font-bold text-red-600 dark:text-red-400 uppercase tracking-widest truncate">{{ $testimonial->role }}</p>
+                                @if($testimonial->company)
+                                    <p class="text-[9px] text-gray-400 italic truncate">{{ $testimonial->company }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            
+            <!-- Mobile indicator -->
+            <div class="flex justify-center gap-2 mt-4 md:hidden">
+                @foreach($testimonials as $index => $testimonial)
+                    <div 
+                        class="w-2 h-2 rounded-full transition-all duration-300"
+                        :class="active === {{ $index }} ? 'bg-red-700 w-4' : 'bg-gray-300 dark:bg-slate-700'"
+                    ></div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
 
     <!-- Contact Form Section -->
     <section id="kontak" class="py-20 md:py-32 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">

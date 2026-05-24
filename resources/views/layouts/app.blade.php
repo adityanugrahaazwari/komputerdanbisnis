@@ -92,7 +92,7 @@
                                         @foreach($menu->children as $child)
                                             @if(!$child->permission_slug || auth()->user()->hasPermission($child->permission_slug))
                                                 <li>
-                                                    <a href="{{ url($child->url) }}" class="flex items-center text-gray-400 hover:text-white hover:bg-white/10 rounded-xl px-4 py-2.5 ml-2 transition-all duration-200 group {{ Request::is(trim($child->url, '/')) ? 'text-red-400 font-bold bg-white/5' : '' }}">
+                                                    <a href="{{ $child->url ? url($child->url) : '#' }}" class="flex items-center text-gray-400 hover:text-white hover:bg-white/10 rounded-xl px-4 py-2.5 ml-2 transition-all duration-200 group {{ $child->url && Request::is(trim($child->url, '/')) ? 'text-red-400 font-bold bg-white/5' : '' }}">
                                                         <i class="{{ $child->icon }} mr-3 w-4 text-center group-hover:text-red-500"></i> 
                                                         <span class="text-xs font-bold uppercase tracking-wider flex-1">
                                                             {{ Str::contains($child->title, 'messages.') ? __($child->title) : $child->title }}
@@ -202,5 +202,6 @@
         </div>
     </div>
 
+    @stack('scripts')
 </body>
 </html>

@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('messages.all_news') }} - JKB POLITALA</title>
+    @include('partials.seo', [
+        'seoTitle' => __('messages.all_news') . ' - JKB POLITALA',
+        'seoDescription' => 'Kumpulan berita dan informasi terbaru dari Jurusan Komputer dan Bisnis.'
+    ])
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -47,11 +51,13 @@
             <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase">{{ __('messages.all_news') }}</h1>
             
             <!-- Breadcrumbs -->
-            <nav class="flex justify-center mb-8 text-xs font-bold uppercase tracking-widest opacity-70">
-                <a href="{{ url('/') }}" class="hover:text-red-200 transition">{{ __('messages.home') }}</a>
-                <span class="mx-3">/</span>
-                <span class="text-red-200">{{ __('messages.news') }}</span>
-            </nav>
+            @include('partials.breadcrumbs', [
+                'items' => [
+                    ['label' => __('messages.news'), 'url' => route('landing.news')]
+                ],
+                'class' => 'text-white/70 justify-center',
+                'activeClass' => 'text-red-200'
+            ])
 
             <!-- Search & Filter Bar -->
             <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 shadow-2xl">

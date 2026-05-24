@@ -66,7 +66,19 @@
 
 <!-- Stats Grid -->
 @if(!$settings || $settings->show_stats)
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
+    <!-- Stat Card: Visitors -->
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-slate-800 group hover:shadow-xl transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center text-red-600">
+                <i class="fas fa-users text-xl"></i>
+            </div>
+            <span class="text-[10px] font-black text-red-500 bg-red-50 dark:bg-red-900/30 px-2 py-1 rounded-lg uppercase">{{ $stats['visitors_today'] }} Hari Ini</span>
+        </div>
+        <p class="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Pengunjung Unik</p>
+        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ $stats['visitors_total'] }}</h3>
+    </div>
+
     <!-- Stat Card: Berita -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-slate-800 group hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between mb-4">
@@ -120,6 +132,23 @@
     </div>
 </div>
 @endif
+
+<!-- Visitors Chart Section -->
+<div class="mb-10 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Statistik Pengunjung</h4>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Tren kunjungan dalam 30 hari terakhir</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-600"></span>
+            <span class="text-[10px] font-black text-gray-500 uppercase">Visits</span>
+        </div>
+    </div>
+    <div class="h-[300px] w-full">
+        <canvas id="visitorChart"></canvas>
+    </div>
+</div>
 
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
     <!-- Recent Content (Left/Center Column) -->
@@ -232,6 +261,16 @@
                 </div>
                 <div class="h-px bg-white/10 w-full"></div>
                 <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold">Dosen & Staf</span>
+                    <span class="text-2xl font-black">{{ $stats['lecturers'] }}</span>
+                </div>
+                <div class="h-px bg-white/10 w-full"></div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold">Kegiatan & Event</span>
+                    <span class="text-2xl font-black">{{ $stats['events'] }}</span>
+                </div>
+                <div class="h-px bg-white/10 w-full"></div>
+                <div class="flex items-center justify-between">
                     <span class="text-sm font-bold">File Dokumen</span>
                     <span class="text-2xl font-black">{{ $stats['documents'] }}</span>
                 </div>
@@ -298,3 +337,88 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('visitorChart').getContext('2d');
+    
+    // Gradient for the chart
+    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, 'rgba(220, 38, 38, 0.2)');
+    gradient.addColorStop(1, 'rgba(220, 38, 38, 0)');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($chartData['labels']) !!},
+            datasets: [{
+                label: 'Pengunjung',
+                data: {!! json_encode($chartData['data']) !!},
+                borderColor: '#dc2626',
+                backgroundColor: gradient,
+                borderWidth: 4,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#dc2626',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: '#111827',
+                    padding: 12,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    cornerRadius: 12,
+                    displayColors: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                        color: 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        stepSize: 1,
+                        font: {
+                            size: 11,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            size: 11,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+@endpush
