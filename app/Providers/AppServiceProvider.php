@@ -67,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
                     'hero_btn2_text' => SiteSetting::get('hero_btn2_text', 'Profil Jurusan'),
                     'hero_btn2_url' => SiteSetting::get('hero_btn2_url', '/profil'),
                     'footer' => SiteSetting::get('footer_text', '© ' . date('Y') . ' ' . config('app.name')),
+                    'primary_color' => SiteSetting::get('primary_color', '#ef4444'),
                 ];
 
                 $menus = Menu::where('location', 'admin')

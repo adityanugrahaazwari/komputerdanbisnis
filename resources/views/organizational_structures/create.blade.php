@@ -35,6 +35,7 @@
             <div>
                 <label class="block text-gray-700 dark:text-gray-300 text-xs font-black uppercase tracking-widest mb-3 ml-1">Foto</label>
                 <input type="file" name="image" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 outline-none transition-all dark:text-white font-medium text-sm">
+                <p class="text-[10px] text-gray-400 mt-2 italic ml-1">Rekomendasi ukuran: 3:4 (Contoh: 600x800px). Max: 2MB.</p>
             </div>
         </div>
 

@@ -62,13 +62,14 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wide">Gambar Poster (Opsional)</label>
+                <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wide">Ganti Poster (Opsional)</label>
                 @if($event->image)
                     <div class="mb-2">
-                        <img src="{{ asset('storage/' . $event->image) }}" class="w-32 h-20 object-cover rounded-xl border">
+                        <img src="{{ asset('storage/' . $event->image) }}" class="w-32 rounded-xl object-cover border">
                     </div>
                 @endif
                 <input type="file" name="image" class="w-full border-gray-200 rounded-2xl px-4 py-3 @error('image') border-red-500 @enderror">
+                <p class="text-[10px] text-gray-400 mt-1 italic">Rekomendasi ukuran: 16:9 (Contoh: 1200x675px). @if($event->image) Kosongkan jika tidak ingin mengubah. @endif</p>
                 @error('image') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 

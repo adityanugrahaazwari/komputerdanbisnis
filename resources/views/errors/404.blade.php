@@ -6,13 +6,33 @@
     <title>404 - Not Found</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: 'var(--primary-color)',
+                        red: {
+                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
+                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="bg-slate-50 font-sans flex items-center justify-center min-h-screen">
     <div class="text-center p-8">
-        <h1 class="text-9xl font-black text-red-700 mb-4">404</h1>
+        <h1 class="text-9xl font-black text-primary mb-4">404</h1>
         <p class="text-2xl font-bold text-gray-800 mb-8 uppercase tracking-widest">Halaman Tidak Ditemukan</p>
         <p class="text-gray-500 mb-12">Maaf, halaman yang Anda cari tidak ada atau telah dipindahkan.</p>
-        <a href="{{ url('/') }}" class="bg-slate-900 text-white px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest hover:bg-red-700 transition shadow-xl">
+        <a href="{{ url('/') }}" class="bg-slate-900 text-white px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest hover:bg-primary transition shadow-xl">
             Kembali ke Beranda
         </a>
     </div>

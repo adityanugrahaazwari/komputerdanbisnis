@@ -44,10 +44,13 @@ class LandingController extends Controller
         // Fetch active testimonials
         $testimonials = Testimonial::active()->ordered()->get();
 
+        // Fetch some lecturers for landing page
+        $lecturers = \App\Models\Lecturer::active()->with('studyProgram')->ordered()->take(8)->get();
+
         // Fetch total unique visitor count
         $visitorCount = Visitor::count();
 
-        return view('welcome', compact('profiles', 'studyPrograms', 'structures', 'services', 'latestPosts', 'socialMedia', 'testimonials', 'visitorCount'));
+        return view('welcome', compact('profiles', 'studyPrograms', 'structures', 'services', 'latestPosts', 'socialMedia', 'testimonials', 'visitorCount', 'lecturers'));
     }
 
     public function profile()

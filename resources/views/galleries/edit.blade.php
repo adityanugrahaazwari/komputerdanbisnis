@@ -50,6 +50,7 @@
                     <div class="flex items-center gap-6 p-4 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
                         <img src="{{ asset('storage/' . $gallery->image) }}" class="w-24 h-24 object-cover rounded-xl shadow-sm">
                         <input type="file" name="image" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:uppercase file:bg-red-50 file:text-red-700 hover:file:bg-red-100 transition">
+                        <p class="text-[10px] text-gray-400 mt-2 italic font-bold">Rekomendasi ukuran: 1:1 (Square, e.g. 1000x1000px). Kosongkan jika tidak ingin mengubah.</p>
                     </div>
                     @error('image') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror
                 </div>

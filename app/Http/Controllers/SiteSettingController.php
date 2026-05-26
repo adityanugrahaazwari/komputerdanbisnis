@@ -34,6 +34,7 @@ class SiteSettingController extends Controller
             'hero_btn2_text' => SiteSetting::get('hero_btn2_text', 'Profil Jurusan'),
             'hero_btn2_url' => SiteSetting::get('hero_btn2_url', '/profil'),
             'footer_text' => SiteSetting::get('footer_text', '© ' . date('Y') . ' ' . config('app.name')),
+            'primary_color' => SiteSetting::get('primary_color', '#ef4444'),
         ];
 
         return view('site_settings.index', compact('settings'));
@@ -47,7 +48,7 @@ class SiteSettingController extends Controller
             'site_name', 'site_description', 'site_address', 'site_phone', 'site_email', 
             'contact_title', 'contact_description', 
             'hero_badge', 'hero_title', 'hero_subtitle', 'hero_btn1_text', 'hero_btn1_url', 'hero_btn2_text', 'hero_btn2_url',
-            'footer_text'
+            'footer_text', 'primary_color'
         ];
         foreach ($fields as $field) {
             if ($request->has($field)) {

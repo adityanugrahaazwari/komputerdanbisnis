@@ -8,15 +8,22 @@
     <title>{{ __('messages.downloads') }} - JKB POLITALA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
+                        primary: 'var(--primary-color)',
                         red: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171', 500: '#ef4444', 600: '#dc2626', 700: '#b91c1c', 800: '#991b1b', 900: '#7f1d1d',
+                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
+                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
                         }
                     }
                 }
@@ -32,7 +39,7 @@
     <!-- Header -->
 
     <!-- Header -->
-    <header class="bg-gradient-to-r from-red-900 to-red-600 text-white py-16 md:py-24 relative overflow-hidden">
+    <header class="bg-gradient-to-r from-primary to-primary/80 text-white py-12 md:py-20 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
         <div class="container mx-auto px-4 md:px-12 text-center relative z-10">
             <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase">Pusat <span class="text-red-200">{{ __('messages.downloads') }}</span></h1>
@@ -86,7 +93,7 @@
                                 <div class="text-[10px] font-black uppercase tracking-widest text-gray-400">
                                     {{ strtoupper($ext) }} &bull; {{ $doc->created_at->format('d M Y') }}
                                 </div>
-                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="bg-red-700 text-white w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-red-800 transition shadow-lg shadow-red-200 dark:shadow-none">
+                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="bg-red-700 text-white w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-red-800 transition shadow-lg shadow-primary/20 dark:shadow-none">
                                     <i class="fas fa-download"></i>
                                 </a>
                             </div>

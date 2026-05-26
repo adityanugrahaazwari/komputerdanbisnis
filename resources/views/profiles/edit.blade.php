@@ -29,7 +29,7 @@
                 </div>
             @endif
             <input type="file" name="image" class="w-full border rounded px-3 py-2 @error('image') border-red-500 @enderror">
-            <p class="text-xs text-gray-500 mt-1">Upload gambar baru untuk mengganti yang lama. Khusus untuk Struktur Organisasi, disarankan upload gambar diagram.</p>
+            <p class="text-[10px] text-gray-400 mt-1 italic">Rekomendasi ukuran: 16:9 (Contoh: 1200x675px). Khusus untuk Struktur Organisasi, disarankan upload gambar diagram. Kosongkan jika tidak ingin mengubah.</p>
             @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 

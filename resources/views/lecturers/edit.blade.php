@@ -68,7 +68,7 @@
                     </div>
                 @endif
                 <input type="file" name="photo" class="w-full border-gray-200 rounded-2xl px-4 py-3 @error('photo') border-red-500 @enderror">
-                <p class="text-[10px] text-gray-400 mt-1 italic">Kosongkan jika tidak ingin mengubah foto.</p>
+                <p class="text-[10px] text-gray-400 mt-1 italic">Rekomendasi ukuran: 3:4 (Contoh: 600x800px). Kosongkan jika tidak ingin mengubah foto.</p>
                 @error('photo') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 

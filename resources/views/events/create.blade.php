@@ -63,6 +63,7 @@
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wide">Gambar Poster (Opsional)</label>
                 <input type="file" name="image" class="w-full border-gray-200 rounded-2xl px-4 py-3 @error('image') border-red-500 @enderror">
+                <p class="text-[10px] text-gray-400 mt-1 italic">Rekomendasi ukuran: 16:9 (Contoh: 1200x675px). Max: 2MB.</p>
                 @error('image') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 

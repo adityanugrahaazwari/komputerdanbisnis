@@ -27,6 +27,7 @@
                 <div>
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2">Pilih File</label>
                     <input type="file" name="file" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:uppercase file:bg-red-50 file:text-red-700 hover:file:bg-red-100 transition">
+                    <p class="text-[10px] text-gray-400 mt-2 italic font-bold">Format: PDF, DOCX, XLSX, JPG, PNG. Max: 10MB.</p>
                     <p class="text-[10px] text-gray-400 mt-2 italic">* PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, ZIP (Max 10MB)</p>
                     @error('file') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror
                 </div>

@@ -9,24 +9,22 @@
     @include('partials.seo', ['ogType' => 'article'])
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
+                        primary: 'var(--primary-color)',
                         red: {
-                            50: '#fef2f2',
-                            100: '#fee2e2',
-                            200: '#fecaca',
-                            300: '#fca5a5',
-                            400: '#f87171',
-                            500: '#ef4444',
-                            600: '#dc2626',
-                            700: '#b91c1c',
-                            800: '#991b1b',
-                            900: '#7f1d1d',
+                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
+                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
                         }
                     }
                 }
@@ -50,17 +48,17 @@
             ]
         ])
 
-        <div class="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl dark:shadow-none overflow-hidden border-b-[12px] border-red-700 border border-gray-100 dark:border-slate-800">
+        <div class="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl dark:shadow-none overflow-hidden border-b-[12px] border-primary border border-gray-100 dark:border-slate-800">
             @if($post->image)
-                <div class="relative h-[400px] md:h-[600px]">
+                <div class="relative h-[300px] md:h-[450px]">
                     <img src="{{ asset('storage/' . $post->image) }}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                     <div class="absolute bottom-10 left-10 right-10 text-white">
                         <div class="flex items-center text-sm font-bold uppercase tracking-widest mb-4">
                             @if($post->category)
-                                <span class="bg-red-600 px-3 py-1 rounded-md mr-4 italic shadow-lg">{{ $post->category->name }}</span>
+                                <span class="bg-primary px-3 py-1 rounded-md mr-4 italic shadow-lg">{{ $post->category->name }}</span>
                             @else
-                                <span class="bg-red-600 px-3 py-1 rounded-md mr-4 italic">News & Update</span>
+                                <span class="bg-primary px-3 py-1 rounded-md mr-4 italic">News & Update</span>
                             @endif
                             <span>{{ $post->created_at->format('d M Y') }}</span>
                         </div>
@@ -68,7 +66,7 @@
                     </div>
                 </div>
             @else
-                <div class="p-10 md:p-20 bg-gradient-to-br from-red-900 to-red-600 text-white">
+                <div class="p-8 md:p-16 bg-gradient-to-br from-primary to-primary/80 text-white">
                     <div class="flex items-center text-sm font-bold uppercase tracking-widest mb-6">
                          @if($post->category)
                             <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-md mr-4 italic border border-white/30">{{ $post->category->name }}</span>
@@ -81,9 +79,9 @@
                 </div>
             @endif
             
-            <div class="p-10 md:p-20">
+            <div class="p-8 md:p-16">
                 <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-10 pb-6 border-b border-gray-100 dark:border-slate-800">
-                    <span class="mr-8 flex items-center"><i class="fas fa-user-circle mr-3 text-red-600 dark:text-red-500 text-xl"></i> {{ __('messages.written_by') }}: <strong class="ml-2 text-gray-900 dark:text-white font-black uppercase">{{ $post->user->name }}</strong></span>
+                    <span class="mr-8 flex items-center"><i class="fas fa-user-circle mr-3 text-primary text-xl"></i> {{ __('messages.written_by') }}: <strong class="ml-2 text-gray-900 dark:text-white font-black uppercase">{{ $post->user->name }}</strong></span>
                 </div>
                 
                 <div class="prose prose-xl max-w-none text-gray-700 dark:text-gray-300 leading-relaxed space-y-6">
@@ -110,7 +108,7 @@
                                         <h4 class="font-black text-gray-900 dark:text-white uppercase text-sm tracking-widest">{{ $comment->user_name }}</h4>
                                         <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ $comment->created_at->diffForHumans() }}</span>
                                     </div>
-                                    <div class="text-red-600/20 dark:text-red-500/10">
+                                    <div class="text-primary/20">
                                         <i class="fas fa-quote-right text-4xl"></i>
                                     </div>
                                 </div>
@@ -131,18 +129,18 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Nama Lengkap</label>
-                                    <input type="text" name="user_name" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm">
+                                    <input type="text" name="user_name" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition text-sm">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Email (Tidak akan dipublikasikan)</label>
-                                    <input type="email" name="user_email" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm">
+                                    <input type="email" name="user_email" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition text-sm">
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Komentar Anda</label>
-                                <textarea name="comment" rows="5" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm"></textarea>
+                                <textarea name="comment" rows="5" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition text-sm"></textarea>
                             </div>
-                            <button type="submit" class="bg-red-700 text-white px-10 py-4 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-red-800 transition shadow-lg shadow-red-200 dark:shadow-none">
+                            <button type="submit" class="bg-primary text-white px-10 py-4 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-primary/90 transition shadow-lg shadow-primary/20 dark:shadow-none">
                                 Kirim Komentar
                             </button>
                         </form>
@@ -176,9 +174,16 @@
                                title="Bagikan ke WhatsApp">
                                 <i class="fab fa-whatsapp text-lg"></i>
                             </a>
+
+                            {{-- Share to Instagram (Copy Link) --}}
+                            <button onclick="copyLinkToInstagram()" 
+                               class="w-12 h-12 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 text-white flex items-center justify-center hover:scale-110 transition shadow-lg shadow-pink-200 dark:shadow-none"
+                               title="Salin Link untuk Instagram">
+                                <i class="fab fa-instagram text-lg"></i>
+                            </button>
                         </div>
                     </div>
-                    <a href="{{ route('landing.news') }}" class="text-red-700 dark:text-red-400 font-black hover:underline uppercase tracking-widest text-sm">
+                    <a href="{{ route('landing.news') }}" class="text-primary font-black hover:underline uppercase tracking-widest text-sm">
                         <i class="fas fa-th-large mr-2"></i> {{ __('messages.all_news') }}
                     </a>
                 </div>
@@ -187,6 +192,77 @@
     </main>
 
 @include('partials.footer')
+
+<script>
+    function copyLinkToInstagram() {
+        const url = window.location.href;
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            // Modern Clipboard API
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Link berita berhasil disalin!');
+            }).catch(err => {
+                console.error('Gagal menyalin link: ', err);
+                fallbackCopyTextToClipboard(url);
+            });
+        } else {
+            // Legacy Fallback
+            fallbackCopyTextToClipboard(url);
+        }
+    }
+
+    function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // Ensure textarea is not visible but part of DOM
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        
+        textArea.focus();
+        textArea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showToast('Link berita berhasil disalin!');
+            } else {
+                alert('Gagal menyalin link. Silakan salin manual dari address bar.');
+            }
+        } catch (err) {
+            console.error('Fallback: Gagal menyalin', err);
+        }
+
+        document.body.removeChild(textArea);
+    }
+
+    function showToast(message) {
+        // Remove existing toast if any
+        const existingToast = document.getElementById('custom-toast');
+        if (existingToast) existingToast.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'custom-toast';
+        toast.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-4 rounded-2xl shadow-2xl z-[100] font-black text-xs uppercase tracking-[0.2em] flex items-center gap-3 transform transition-all duration-500 opacity-0 translate-y-10';
+        toast.innerHTML = `<i class="fas fa-check-circle text-green-500"></i> ${message}`;
+        document.body.appendChild(toast);
+        
+        // Trigger animation
+        setTimeout(() => {
+            toast.classList.remove('opacity-0', 'translate-y-10');
+        }, 10);
+        
+        // Remove after 3s
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-10');
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        }, 3000);
+    }
+</script>
 
 </body>
 </html>

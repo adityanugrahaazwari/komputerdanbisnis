@@ -34,10 +34,11 @@
                 <label class="block text-gray-700 font-bold mb-2">Gambar / Logo</label>
                 @if($studyProgram->image)
                     <div class="mb-2">
-                        <img src="{{ asset('storage/' . $studyProgram->image) }}" class="h-20 object-contain rounded">
+                        <img src="{{ asset('storage/' . $studyProgram->image) }}" class="h-20 rounded shadow">
                     </div>
                 @endif
                 <input type="file" name="image" class="w-full border rounded px-3 py-2">
+                <p class="text-[10px] text-gray-400 mt-1 italic">Rekomendasi ukuran: 16:9 (Contoh: 800x450px). Kosongkan jika tidak ingin mengubah foto.</p>
             </div>
 
             <div class="mb-4">

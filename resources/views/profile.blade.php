@@ -12,15 +12,22 @@
     ])
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
+                        primary: 'var(--primary-color)',
                         red: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171', 500: '#ef4444', 600: '#dc2626', 700: '#b91c1c', 800: '#991b1b', 900: '#7f1d1d',
+                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
+                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
                         }
                     }
                 }
@@ -35,7 +42,7 @@
     <!-- Page Header -->
 
     <!-- Page Header -->
-    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-red-900 text-white py-20 md:py-32 relative overflow-hidden">
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-primary text-white py-12 md:py-24 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
         <div class="container mx-auto px-4 text-center relative z-10">
             <!-- Breadcrumbs -->
@@ -67,11 +74,11 @@
                 <div class="flex flex-col lg:flex-row items-center gap-12 md:gap-20">
                     <div class="lg:w-1/2">
                         <div class="relative">
-                            <div class="absolute -top-6 -left-6 w-24 h-24 bg-red-600/20 rounded-full blur-2xl animate-pulse"></div>
+                            <div class="absolute -top-6 -left-6 w-24 h-24 bg-primary/20 rounded-full blur-2xl animate-pulse"></div>
                             @if(isset($profiles['history']->image))
                                 <img src="{{ asset('storage/' . $profiles['history']->image) }}" class="rounded-[3rem] shadow-2xl relative z-10 border-8 border-slate-50 dark:border-slate-800 w-full object-cover aspect-[4/3]">
                             @else
-                                <div class="bg-red-700 aspect-[4/3] rounded-[3rem] flex items-center justify-center text-white shadow-2xl relative z-10 border-8 border-slate-50 dark:border-slate-800 overflow-hidden">
+                                <div class="bg-primary aspect-[4/3] rounded-[3rem] flex items-center justify-center text-white shadow-2xl relative z-10 border-8 border-slate-50 dark:border-slate-800 overflow-hidden">
                                      <i class="fas fa-university text-[10rem] opacity-10 absolute"></i>
                                      <span class="text-3xl font-black tracking-widest italic opacity-50">JKB HISTORY</span>
                                 </div>
@@ -104,7 +111,7 @@
 
         <!-- Vision & Mission -->
         <section id="visi-misi" class="py-20 md:py-32 bg-slate-900 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-red-700/20 rounded-full blur-[120px]"></div>
+            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px]"></div>
             <div class="container mx-auto px-4 md:px-12 relative z-10">
                 <div class="text-center mb-16 md:mb-24">
                     <span class="text-red-500 font-black tracking-[0.3em] uppercase text-xs mb-4 block">Our Goals</span>
@@ -115,7 +122,7 @@
                 <div class="grid lg:grid-cols-2 gap-10 md:gap-16">
                     {{-- Vision Card --}}
                     <div class="bg-white/5 backdrop-blur-xl p-10 md:p-16 rounded-[4rem] border border-white/10 hover:bg-white/10 transition group">
-                        <div class="w-20 h-20 bg-red-600 rounded-3xl flex items-center justify-center mb-10 shadow-xl shadow-red-600/30 group-hover:scale-110 transition duration-500">
+                        <div class="w-20 h-20 bg-primary rounded-3xl flex items-center justify-center mb-10 shadow-xl shadow-primary/30 group-hover:scale-110 transition duration-500">
                             <i class="fas fa-eye text-3xl text-white"></i>
                         </div>
                         <h3 class="text-2xl md:text-3xl font-black text-white mb-8 uppercase tracking-tight">{{ $profiles['vision']->title ?? __('messages.vision') }}</h3>
@@ -126,7 +133,7 @@
 
                     {{-- Mission Card --}}
                     <div class="bg-white/5 backdrop-blur-xl p-10 md:p-16 rounded-[4rem] border border-white/10 hover:bg-white/10 transition group">
-                        <div class="w-20 h-20 bg-red-600 rounded-3xl flex items-center justify-center mb-10 shadow-xl shadow-red-600/30 group-hover:scale-110 transition duration-500">
+                        <div class="w-20 h-20 bg-primary rounded-3xl flex items-center justify-center mb-10 shadow-xl shadow-primary/30 group-hover:scale-110 transition duration-500">
                             <i class="fas fa-bullseye text-3xl text-white"></i>
                         </div>
                         <h3 class="text-2xl md:text-3xl font-black text-white mb-8 uppercase tracking-tight">{{ $profiles['mission']->title ?? __('messages.mission') }}</h3>

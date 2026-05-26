@@ -28,6 +28,19 @@
                     </div>
 
                     <div class="space-y-2">
+                        <label for="primary_color" class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-4">Warna Tema Utama</label>
+                        <div class="flex items-center gap-4 bg-gray-50 dark:bg-slate-800 rounded-2xl px-6 py-3">
+                            <input type="color" name="primary_color" id="primary_color" value="{{ $settings['primary_color'] ?? '#ef4444' }}" class="w-12 h-12 rounded-lg border-none cursor-pointer bg-transparent">
+                            <input type="text" value="{{ $settings['primary_color'] ?? '#ef4444' }}" class="bg-transparent border-none font-mono font-bold text-gray-900 dark:text-white focus:ring-0" readonly>
+                            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tight">Klik ikon warna untuk mengubah</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <!-- Spacer for grid alignment if needed -->
+                    </div>
+
+                    <div class="space-y-2">
                         <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-4">Logo Situs</label>
                         <div class="bg-gray-50 dark:bg-slate-800 rounded-3xl p-6 border-2 border-dashed border-gray-200 dark:border-slate-700">
                             <div class="flex flex-col items-center gap-4">
@@ -39,7 +52,7 @@
                                     </div>
                                 @endif
                                 <input type="file" name="site_logo" class="text-[10px] text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-red-50 file:text-red-700 hover:file:bg-red-100">
-                                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tight text-center">PNG transparan, maks 2MB</p>
+                                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tight text-center">PNG transparan, landscape (400x100px), maks 2MB</p>
                             </div>
                         </div>
                     </div>
@@ -56,7 +69,7 @@
                                     </div>
                                 @endif
                                 <input type="file" name="site_favicon" class="text-[10px] text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-red-50 file:text-red-700 hover:file:bg-red-100">
-                                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tight text-center">ICO/PNG 32x32, maks 1MB</p>
+                                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tight text-center">ICO/PNG square (32x32px), maks 1MB</p>
                             </div>
                         </div>
                     </div>

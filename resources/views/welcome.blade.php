@@ -12,24 +12,22 @@
     @endif
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
+                        primary: 'var(--primary-color)',
                         red: {
-                            50: '#fef2f2',
-                            100: '#fee2e2',
-                            200: '#fecaca',
-                            300: '#fca5a5',
-                            400: '#f87171',
-                            500: '#ef4444',
-                            600: '#dc2626',
-                            700: '#b91c1c',
-                            800: '#991b1b',
-                            900: '#7f1d1d',
+                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
+                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
                         }
                     }
                 }
@@ -38,10 +36,11 @@
     </script>
     <style>
         .hero-gradient {
-            background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color) 100%);
+            filter: saturate(1.1);
         }
         .dark .hero-gradient {
-            background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);
+            background: linear-gradient(135deg, #450a0a 0%, var(--primary-color) 100%);
         }
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar {
@@ -58,7 +57,7 @@
 @include('partials.navbar')
 
     <!-- Hero Section -->
-    <header id="beranda" class="hero-gradient text-white py-20 md:py-40 relative overflow-hidden">
+    <header id="beranda" class="hero-gradient text-white py-12 md:py-24 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
             <svg class="h-full w-full" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="url(#grid)"></path>
@@ -212,6 +211,62 @@
                 @empty
                     <p class="text-center text-gray-400 col-span-full py-10">{{ __('messages.no_data') }}</p>
                 @endforelse
+            </div>
+        </div>
+    </section>
+
+    <!-- Lecturers Section -->
+    <section id="dosen" class="py-20 md:py-32 bg-white dark:bg-slate-900 transition-colors duration-300">
+        <div class="container mx-auto px-4 md:px-12">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-16 md:mb-24 gap-8">
+                <div class="text-center md:text-left">
+                    <span class="text-red-600 font-black tracking-[0.3em] uppercase text-xs mb-4 block">Meet Our Experts</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight uppercase">Dosen & Staf</h2>
+                    <p class="text-gray-500 dark:text-gray-400 max-w-2xl font-medium">Pengajar profesional dan staf ahli yang siap membimbing mahasiswa mencapai masa depan cemerlang.</p>
+                </div>
+                <a href="{{ route('landing.lecturers') }}" class="w-full md:w-auto text-center bg-gray-900 dark:bg-red-700 text-white px-8 md:px-10 py-3 md:py-4 rounded-2xl font-black hover:bg-red-700 transition shadow-xl uppercase tracking-widest text-sm">
+                    Lihat Semua Direktori
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach($lecturers as $lecturer)
+                    <div class="group bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] p-6 border border-gray-100 dark:border-slate-700 hover:shadow-2xl hover:border-red-500 transition-all duration-500 text-center flex flex-col items-center">
+                        <div class="w-32 h-32 rounded-[2rem] overflow-hidden mb-6 border-4 border-white dark:border-slate-700 shadow-lg transform group-hover:rotate-6 transition-transform">
+                            @if($lecturer->image)
+                                <img src="{{ asset('storage/' . $lecturer->image) }}" alt="{{ $lecturer->name }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center text-red-600">
+                                    <i class="fas fa-user text-5xl"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <h4 class="font-black text-gray-900 dark:text-white uppercase tracking-tight text-sm mb-2 leading-tight h-10 flex items-center justify-center">{{ $lecturer->name }}</h4>
+                        <p class="text-[10px] font-bold text-red-600 dark:text-red-400 uppercase tracking-widest mb-3">{{ $lecturer->position }}</p>
+                        
+                        <div class="flex gap-3 mb-4">
+                            @if($lecturer->google_scholar_url)
+                                <a href="{{ $lecturer->google_scholar_url }}" target="_blank" class="text-gray-400 hover:text-red-600 transition-colors" title="Google Scholar">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </a>
+                            @endif
+                            @if($lecturer->sinta_url)
+                                <a href="{{ $lecturer->sinta_url }}" target="_blank" class="text-gray-400 hover:text-red-600 transition-colors" title="SINTA">
+                                    <i class="fas fa-microscope"></i>
+                                </a>
+                            @endif
+                            @if($lecturer->email)
+                                <a href="mailto:{{ $lecturer->email }}" class="text-gray-400 hover:text-red-600 transition-colors" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            @endif
+                        </div>
+
+                        <div class="mt-auto pt-4 border-t border-gray-100 dark:border-slate-700 w-full">
+                            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.1em] line-clamp-1 italic">"{{ $lecturer->expertise }}"</p>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -411,7 +466,7 @@
                                 <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.message') }}</label>
                                 <textarea name="message" rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white"></textarea>
                             </div>
-                            <button type="submit" class="w-full bg-red-700 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] hover:bg-red-800 transition shadow-xl shadow-red-200 dark:shadow-none">
+                            <button type="submit" class="w-full bg-red-700 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] hover:bg-red-800 transition shadow-xl shadow-primary/20 dark:shadow-none">
                                 {{ __('messages.send_message') }}
                             </button>
                         </form>

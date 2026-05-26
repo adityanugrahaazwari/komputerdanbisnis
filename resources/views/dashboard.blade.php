@@ -135,17 +135,28 @@
 
 <!-- Visitors Chart Section -->
 <div class="mb-10 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
             <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Statistik Pengunjung</h4>
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Tren kunjungan dalam 30 hari terakhir</p>
+            <p id="chartDescription" class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Tren kunjungan harian (30 hari terakhir)</p>
         </div>
-        <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-red-600"></span>
-            <span class="text-[10px] font-black text-gray-500 uppercase">Visits</span>
+        <div class="flex items-center gap-3">
+            <select id="chartRange" class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-red-600 transition-all outline-none">
+                <option value="daily" selected>Harian</option>
+                <option value="weekly">Mingguan</option>
+                <option value="monthly">Bulanan</option>
+                <option value="yearly">Tahunan</option>
+            </select>
+            <div class="flex items-center gap-2 ml-4">
+                <span class="w-3 h-3 rounded-full bg-red-600"></span>
+                <span class="text-[10px] font-black text-gray-500 uppercase">Visits</span>
+            </div>
         </div>
     </div>
-    <div class="h-[300px] w-full">
+    <div class="h-[300px] w-full relative">
+        <div id="chartLoading" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center hidden">
+            <i class="fas fa-circle-notch fa-spin text-red-600 text-2xl"></i>
+        </div>
         <canvas id="visitorChart"></canvas>
     </div>
 </div>
@@ -343,13 +354,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('visitorChart').getContext('2d');
+    const chartRange = document.getElementById('chartRange');
+    const chartLoading = document.getElementById('chartLoading');
+    const chartDescription = document.getElementById('chartDescription');
     
     // Gradient for the chart
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
     gradient.addColorStop(0, 'rgba(220, 38, 38, 0.2)');
     gradient.addColorStop(1, 'rgba(220, 38, 38, 0)');
 
-    new Chart(ctx, {
+    let visitorChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: {!! json_encode($chartData['labels']) !!},
@@ -418,6 +432,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
+    });
+
+    const updateChart = async (range) => {
+        chartLoading.classList.remove('hidden');
+        
+        const descMap = {
+            'daily': 'Tren kunjungan harian (30 hari terakhir)',
+            'weekly': 'Tren kunjungan mingguan (12 minggu terakhir)',
+            'monthly': 'Tren kunjungan bulanan (12 bulan terakhir)',
+            'yearly': 'Tren kunjungan tahunan'
+        };
+        
+        chartDescription.innerText = descMap[range];
+
+        try {
+            const response = await fetch(`{{ route('dashboard.chart-data') }}?range=${range}`);
+            const data = await response.json();
+            
+            visitorChart.data.labels = data.labels;
+            visitorChart.data.datasets[0].data = data.data;
+            visitorChart.update();
+        } catch (error) {
+            console.error('Error fetching chart data:', error);
+        } finally {
+            chartLoading.classList.add('hidden');
+        }
+    };
+
+    chartRange.addEventListener('change', (e) => {
+        updateChart(e.target.value);
     });
 });
 </script>

@@ -8,6 +8,7 @@ return [
     'gallery' => 'Galeri',
     'downloads' => 'Unduhan',
     'services' => 'Layanan',
+    'lecturers' => 'Dosen & Staf',
     'contact' => 'Kontak',
     'login_staff' => 'Login Staff',
     'dashboard' => 'Dashboard',

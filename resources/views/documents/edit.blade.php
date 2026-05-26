@@ -42,6 +42,7 @@
                         <div class="flex-1">
                             <p class="text-xs font-bold text-gray-900 truncate max-w-xs">{{ basename($document->file_path) }}</p>
                             <input type="file" name="file" class="mt-2 text-sm text-gray-500 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-red-50 file:text-red-700 hover:file:bg-red-100 transition">
+                            <p class="text-[10px] text-gray-400 mt-2 italic font-bold">Format: PDF, DOCX, XLSX, JPG, PNG. Max: 10MB. Kosongkan jika tidak diganti.</p>
                         </div>
                     </div>
                     @error('file') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror

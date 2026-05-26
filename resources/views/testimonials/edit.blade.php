@@ -44,7 +44,7 @@
                         </div>
                     @endif
                     <input type="file" name="image" class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 transition outline-none @error('image') border-red-500 @enderror">
-                    <p class="text-[10px] text-gray-400 mt-1 italic">Format: JPG, PNG, GIF (Maks. 2MB). Biarkan kosong jika tidak ingin mengubah.</p>
+                    <p class="text-[10px] text-gray-400 mt-1 italic font-bold">Rekomendasi ukuran: 1:1 (Square, e.g. 400x400px). Kosongkan jika tidak ingin mengubah.</p>
                     @error('image') <span class="text-red-500 text-xs font-bold mt-1">{{ $message }}</span> @enderror
                 </div>
 

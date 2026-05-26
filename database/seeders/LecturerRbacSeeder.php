@@ -64,8 +64,7 @@ class LecturerRbacSeeder extends Seeder
         $academicMenu = Menu::where('title', 'Akademik')->where('location', 'frontend')->first();
         if ($academicMenu) {
             Menu::updateOrCreate(
-                ['url' => '/direktori-dosen'],
-                [
+                ['url' => '/dosen'],                [
                     'title' => 'Dosen & Staf',
                     'location' => 'frontend',
                     'parent_id' => $academicMenu->id,

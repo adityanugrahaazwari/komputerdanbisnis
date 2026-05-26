@@ -32,11 +32,11 @@ class SecurityHeaders
         // Content-Security-Policy (CSP)
         // Note: This is a base policy. Adjusted to allow common CDNs used in this project.
         $csp = "default-src 'self'; ";
-        $csp .= "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com; ";
-        $csp .= "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; ";
+        $csp .= "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; ";
+        $csp .= "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://cdn.jsdelivr.net; ";
         $csp .= "img-src 'self' data: https:; ";
         $csp .= "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; ";
-        $csp .= "connect-src 'self'; ";
+        $csp .= "connect-src 'self' https://cdn.jsdelivr.net; ";
         $csp .= "frame-src 'self'; ";
         $csp .= "object-src 'none';";
 

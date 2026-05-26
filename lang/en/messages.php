@@ -8,6 +8,7 @@ return [
     'gallery' => 'Gallery',
     'downloads' => 'Downloads',
     'services' => 'Services',
+    'lecturers' => 'Lecturers & Staff',
     'contact' => 'Contact',
     'login_staff' => 'Staff Login',
     'dashboard' => 'Dashboard',

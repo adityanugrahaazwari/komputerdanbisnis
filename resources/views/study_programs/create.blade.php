@@ -32,6 +32,7 @@
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Gambar / Logo</label>
                 <input type="file" name="image" class="w-full border rounded px-3 py-2">
+                <p class="text-[10px] text-gray-400 mt-1 italic">Rekomendasi ukuran: 16:9 (Contoh: 800x450px). Max: 2MB.</p>
             </div>
 
             <div class="mb-4">

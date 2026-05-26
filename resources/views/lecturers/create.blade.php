@@ -62,7 +62,7 @@
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wide">Foto</label>
                 <input type="file" name="photo" class="w-full border-gray-200 rounded-2xl px-4 py-3 @error('photo') border-red-500 @enderror">
-                <p class="text-[10px] text-gray-400 mt-1 italic">Format: JPG, PNG, JPEG. Max: 2MB.</p>
+                <p class="text-[10px] text-gray-400 mt-1 italic">Rekomendasi ukuran: 3:4 (Contoh: 600x800px). Format: JPG, PNG, JPEG. Max: 2MB.</p>
                 @error('photo') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 

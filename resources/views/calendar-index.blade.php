@@ -8,25 +8,31 @@
     <title>Kalender Kegiatan - JKB POLITALA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <style>
+        :root {
+            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
+                        primary: 'var(--primary-color)',
                         red: {
                             50: '#fef2f2',
                             100: '#fee2e2',
                             200: '#fecaca',
                             300: '#fca5a5',
                             400: '#f87171',
-                            500: '#ef4444',
-                            600: '#dc2626',
-                            700: '#b91c1c',
-                            800: '#991b1b',
-                            900: '#7f1d1d',
+                            500: 'var(--primary-color)',
+                            600: 'var(--primary-color)',
+                            700: 'var(--primary-color)',
+                            800: 'var(--primary-color)',
+                            900: 'var(--primary-color)',
                         }
                     }
                 }
@@ -37,9 +43,9 @@
         [x-cloak] { display: none !important; }
         .fc { font-family: inherit; }
         .fc .fc-toolbar-title { font-weight: 900; text-transform: uppercase; font-size: 1.25rem; letter-spacing: -0.025em; }
-        .fc .fc-button-primary { background-color: #dc2626; border-color: #dc2626; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; padding: 0.75rem 1.25rem; border-radius: 1rem; }
-        .fc .fc-button-primary:hover { background-color: #991b1b; border-color: #991b1b; }
-        .fc .fc-button-primary:disabled { background-color: #fca5a5; border-color: #fca5a5; }
+        .fc .fc-button-primary { background-color: var(--primary-color); border-color: var(--primary-color); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; padding: 0.75rem 1.25rem; border-radius: 1rem; }
+        .fc .fc-button-primary:hover { background-color: var(--primary-color); border-color: var(--primary-color); filter: brightness(0.9); }
+        .fc .fc-button-primary:disabled { background-color: #fca5a5; border-color: #fca5a5; opacity: 0.5; }
         .fc-theme-standard td, .fc-theme-standard th { border-color: #f1f5f9; }
         .dark .fc-theme-standard td, .dark .fc-theme-standard th { border-color: #1e293b; }
         .dark .fc .fc-list-day-cushion { background-color: #1e293b; }
@@ -50,7 +56,7 @@
 @include('partials.navbar')
 
     <!-- Header -->
-    <header class="bg-gradient-to-r from-red-900 to-red-600 text-white py-16 md:py-24 relative overflow-hidden">
+    <header class="bg-gradient-to-r from-primary to-primary/80 text-white py-12 md:py-20 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
         <div class="container mx-auto px-4 md:px-12 text-center relative z-10">
             <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase">Kalender Kegiatan</h1>

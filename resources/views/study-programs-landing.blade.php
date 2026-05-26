@@ -12,15 +12,22 @@
     ])
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
+                        primary: 'var(--primary-color)',
                         red: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171', 500: '#ef4444', 600: '#dc2626', 700: '#b91c1c', 800: '#991b1b', 900: '#7f1d1d',
+                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
+                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
                         }
                     }
                 }
@@ -35,7 +42,7 @@
     <!-- Header -->
 
     <!-- Header -->
-    <header class="bg-slate-900 text-white py-16 md:py-24 text-center relative">
+    <header class="bg-slate-900 text-white py-12 md:py-20 text-center relative">
         <div class="container mx-auto px-4">
             <!-- Breadcrumbs -->
             @include('partials.breadcrumbs', [
@@ -55,7 +62,7 @@
     <main class="container mx-auto px-4 md:px-12 py-16 md:py-24">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             @forelse($studyPrograms as $prodi)
-                <div class="group bg-white dark:bg-slate-800 rounded-[3rem] overflow-hidden shadow-2xl hover:shadow-red-200 dark:hover:shadow-none transition-all duration-500 border border-gray-100 dark:border-slate-700 flex flex-col transform hover:-translate-y-2">
+                <div class="group bg-white dark:bg-slate-800 rounded-[3rem] overflow-hidden shadow-2xl hover:shadow-primary/20 dark:hover:shadow-none transition-all duration-500 border border-gray-100 dark:border-slate-700 flex flex-col transform hover:-translate-y-2">
                     <div class="h-64 bg-gray-200 dark:bg-slate-700 relative overflow-hidden">
                         @if($prodi->image)
                             <img src="{{ asset('storage/' . $prodi->image) }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
@@ -76,7 +83,7 @@
                         <div class="flex items-center justify-between pt-8 border-t border-gray-100 dark:border-slate-700">
                             <span class="text-red-700 dark:text-red-400 font-black text-sm uppercase tracking-widest">KODE: {{ $prodi->code }}</span>
                             @if($prodi->website_url)
-                                <a href="{{ $prodi->website_url }}" target="_blank" class="flex items-center gap-3 bg-red-700 text-white px-6 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-800 transition shadow-lg shadow-red-200 dark:shadow-none">
+                                <a href="{{ $prodi->website_url }}" target="_blank" class="flex items-center gap-3 bg-red-700 text-white px-6 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-800 transition shadow-lg shadow-primary/20 dark:shadow-none">
                                     Website <i class="fas fa-external-link-alt text-[8px]"></i>
                                 </a>
                             @else

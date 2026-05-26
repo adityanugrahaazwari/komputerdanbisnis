@@ -10,62 +10,45 @@ class FrontendMenusSeeder extends Seeder
     public function run()
     {
         // Home
-        Menu::create([
-            'title' => 'messages.home',
-            'url' => '/',
-            'location' => 'frontend',
-            'order' => 1,
-            'is_active' => true
-        ]);
+        Menu::updateOrCreate(
+            ['url' => '/', 'location' => 'frontend'],
+            ['title' => 'messages.home', 'order' => 1, 'is_active' => true]
+        );
 
         // Profile Dropdown
-        $profile = Menu::create([
-            'title' => 'messages.profile',
-            'url' => '#',
-            'location' => 'frontend',
-            'order' => 2,
-            'is_active' => true,
-            'icon' => 'fas fa-chevron-down'
-        ]);
+        $profile = Menu::updateOrCreate(
+            ['url' => '#', 'location' => 'frontend', 'order' => 2],
+            ['title' => 'messages.profile', 'is_active' => true, 'icon' => 'fas fa-chevron-down']
+        );
 
-        Menu::create(['title' => 'messages.history', 'url' => '/profil#sejarah', 'location' => 'frontend', 'parent_id' => $profile->id, 'order' => 1, 'is_active' => true]);
-        Menu::create(['title' => 'messages.vision & messages.mission', 'url' => '/profil#visi-misi', 'location' => 'frontend', 'parent_id' => $profile->id, 'order' => 2, 'is_active' => true]);
-        Menu::create(['title' => 'messages.structure', 'url' => '/profil#struktur', 'location' => 'frontend', 'parent_id' => $profile->id, 'order' => 3, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/profil#sejarah', 'location' => 'frontend'], ['title' => 'messages.history', 'parent_id' => $profile->id, 'order' => 1, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/profil#visi-misi', 'location' => 'frontend'], ['title' => 'messages.vision_mission', 'parent_id' => $profile->id, 'order' => 2, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/profil#struktur', 'location' => 'frontend'], ['title' => 'messages.structure', 'parent_id' => $profile->id, 'order' => 3, 'is_active' => true]);
 
         // Academic Dropdown
-        $academic = Menu::create([
-            'title' => 'Akademik',
-            'url' => '#',
-            'location' => 'frontend',
-            'order' => 3,
-            'is_active' => true,
-            'icon' => 'fas fa-chevron-down'
-        ]);
+        $academic = Menu::updateOrCreate(
+            ['url' => '#', 'location' => 'frontend', 'order' => 3],
+            ['title' => 'messages.academic', 'is_active' => true, 'icon' => 'fas fa-chevron-down']
+        );
 
-        Menu::create(['title' => 'messages.study_programs', 'url' => '/program-studi', 'location' => 'frontend', 'parent_id' => $academic->id, 'order' => 1, 'is_active' => true]);
-        Menu::create(['title' => 'messages.services', 'url' => '/layanan', 'location' => 'frontend', 'parent_id' => $academic->id, 'order' => 2, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/program-studi', 'location' => 'frontend'], ['title' => 'messages.study_programs', 'parent_id' => $academic->id, 'order' => 1, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/dosen', 'location' => 'frontend'], ['title' => 'messages.lecturers', 'parent_id' => $academic->id, 'order' => 2, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/layanan', 'location' => 'frontend'], ['title' => 'messages.services', 'parent_id' => $academic->id, 'order' => 3, 'is_active' => true]);
 
         // Information Dropdown
-        $info = Menu::create([
-            'title' => 'Informasi',
-            'url' => '#',
-            'location' => 'frontend',
-            'order' => 4,
-            'is_active' => true,
-            'icon' => 'fas fa-chevron-down'
-        ]);
+        $info = Menu::updateOrCreate(
+            ['url' => '#', 'location' => 'frontend', 'order' => 4],
+            ['title' => 'messages.information', 'is_active' => true, 'icon' => 'fas fa-chevron-down']
+        );
 
-        Menu::create(['title' => 'messages.news', 'url' => '/berita', 'location' => 'frontend', 'parent_id' => $info->id, 'order' => 1, 'is_active' => true]);
-        Menu::create(['title' => 'messages.gallery', 'url' => '/galeri', 'location' => 'frontend', 'parent_id' => $info->id, 'order' => 2, 'is_active' => true]);
-        Menu::create(['title' => 'messages.downloads', 'url' => '/downloads', 'location' => 'frontend', 'parent_id' => $info->id, 'order' => 3, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/berita', 'location' => 'frontend'], ['title' => 'messages.news', 'parent_id' => $info->id, 'order' => 1, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/galeri', 'location' => 'frontend'], ['title' => 'messages.gallery', 'parent_id' => $info->id, 'order' => 2, 'is_active' => true]);
+        Menu::updateOrCreate(['url' => '/downloads', 'location' => 'frontend'], ['title' => 'messages.downloads', 'parent_id' => $info->id, 'order' => 3, 'is_active' => true]);
 
         // Contact
-        Menu::create([
-            'title' => 'messages.contact',
-            'url' => '#kontak',
-            'location' => 'frontend',
-            'order' => 5,
-            'is_active' => true
-        ]);
+        Menu::updateOrCreate(
+            ['url' => '#kontak', 'location' => 'frontend'],
+            ['title' => 'messages.contact', 'order' => 5, 'is_active' => true]
+        );
     }
 }

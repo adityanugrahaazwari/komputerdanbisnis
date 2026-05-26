@@ -17,36 +17,48 @@ class StudyProgramSeeder extends Seeder
         // 1. Create Sample Study Programs
         $prodis = [
             [
-                'name' => 'Manajemen Informatika',
-                'code' => 'MI',
-                'level' => 'D3',
-                'description' => 'Program studi yang fokus pada pengembangan perangkat lunak dan manajemen basis data untuk kebutuhan bisnis.'
+                'name' => 'Akuntansi Perpajakan',
+                'code' => 'AP',
+                'level' => 'D-IV',
+                'description' => 'Program studi yang fokus pada keahlian di bidang akuntansi dengan spesialisasi perpajakan untuk memenuhi kebutuhan industri dan pemerintah.',
+                'website_url' => 'https://ap.politala.ac.id'
             ],
             [
-                'name' => 'Teknologi Rekayasa Perangkat Lunak',
-                'code' => 'TRPL',
-                'level' => 'D4',
-                'description' => 'Program studi yang menekankan pada rekayasa perangkat lunak skala besar dan kualitas perangkat lunak.'
+                'name' => 'Teknik Rekayasa Komputer dan Jaringan',
+                'code' => 'TRKJ',
+                'level' => 'D-IV',
+                'description' => 'Program studi yang membekali mahasiswa dengan kemampuan merancang, mengimplementasikan, dan mengelola infrastruktur jaringan komputer serta sistem komputer.',
+                'website_url' => 'https://trkj.politala.ac.id'
             ],
             [
-                'name' => 'Akuntansi Komputer',
+                'name' => 'Akuntansi',
                 'code' => 'AK',
-                'level' => 'D3',
-                'description' => 'Integrasi antara ilmu akuntansi dan teknologi informasi untuk menghasilkan laporan keuangan yang akurat dan cepat.'
+                'level' => 'D-III',
+                'description' => 'Menghasilkan tenaga ahli madya akuntansi yang kompeten dalam menyusun laporan keuangan, perpajakan, dan pengauditan.',
+                'website_url' => 'https://ak.politala.ac.id'
+            ],
+            [
+                'name' => 'Teknologi Informasi',
+                'code' => 'TI',
+                'level' => 'D-III',
+                'description' => 'Fokus pada pengembangan keterampilan praktis dalam pemrograman, basis data, dan pengembangan aplikasi web serta mobile.',
+                'website_url' => 'https://ti.politala.ac.id'
             ],
         ];
 
+        // Clear existing data to replace with the new ones
+        StudyProgram::truncate();
+
         foreach ($prodis as $prodi) {
-            StudyProgram::updateOrCreate(
-                ['code' => $prodi['code']],
-                [
-                    'name' => $prodi['name'],
-                    'slug' => Str::slug($prodi['name']),
-                    'level' => $prodi['level'],
-                    'description' => $prodi['description'],
-                    'is_active' => true
-                ]
-            );
+            StudyProgram::create([
+                'name' => $prodi['name'],
+                'slug' => Str::slug($prodi['level'] . '-' . $prodi['name']),
+                'code' => $prodi['code'],
+                'level' => $prodi['level'],
+                'description' => $prodi['description'],
+                'website_url' => $prodi['website_url'],
+                'is_active' => true
+            ]);
         }
 
         // 2. Create Permissions

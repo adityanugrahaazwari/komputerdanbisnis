@@ -30,7 +30,7 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::get('/profil', [LandingController::class, 'profile'])->name('landing.profile');
 Route::get('/program-studi', [LandingController::class, 'studyPrograms'])->name('landing.study_programs');
 Route::get('/layanan', [LandingController::class, 'services'])->name('landing.services');
-Route::get('/direktori-dosen', [LandingController::class, 'lecturers'])->name('landing.lecturers');
+Route::get('/dosen', [LandingController::class, 'lecturers'])->name('landing.lecturers');
 Route::get('/kalender-kegiatan', [LandingController::class, 'calendar'])->name('landing.calendar');
 Route::get('/berita', [LandingController::class, 'allPosts'])->name('landing.news');
 Route::get('/berita/{slug}', [LandingController::class, 'showPost'])->name('landing.post');

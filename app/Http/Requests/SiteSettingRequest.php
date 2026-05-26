@@ -39,6 +39,7 @@ class SiteSettingRequest extends FormRequest
             'hero_btn2_text' => 'nullable|string|max:255',
             'hero_btn2_url' => 'nullable|string|max:255',
             'footer_text' => 'nullable|string|max:255',
+            'primary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
         ];
     }
 }

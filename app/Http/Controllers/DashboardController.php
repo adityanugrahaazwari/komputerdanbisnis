@@ -34,17 +34,7 @@ class DashboardController extends Controller
             'visitors_today' => Visitor::where('visit_date', now()->toDateString())->count(),
         ];
 
-        // Chart Data: Visitors last 30 days
-        $visitorStats = Visitor::select('visit_date', DB::raw('count(*) as total'))
-            ->where('visit_date', '>=', now()->subDays(30)->toDateString())
-            ->groupBy('visit_date')
-            ->orderBy('visit_date')
-            ->get();
-
-        $chartData = [
-            'labels' => $visitorStats->pluck('visit_date')->map(fn($date) => date('d M', strtotime($date))),
-            'data' => $visitorStats->pluck('total'),
-        ];
+        $chartData = $this->getVisitorChartData('daily');
 
         $recentPosts = Post::with('user')->latest()->take(5)->get();
         $recentComments = Comment::with('post')->latest()->take(5)->get();
@@ -56,5 +46,77 @@ class DashboardController extends Controller
         $settings = $role ? $role->dashboardSetting : null;
 
         return view('dashboard', compact('stats', 'recentPosts', 'recentComments', 'recentContacts', 'recentLogs', 'announcements', 'settings', 'chartData'));
+    }
+
+    public function chartData(Request $request)
+    {
+        $range = $request->get('range', 'daily');
+        return response()->json($this->getVisitorChartData($range));
+    }
+
+    private function getVisitorChartData($range)
+    {
+        $query = Visitor::query();
+
+        switch ($range) {
+            case 'weekly':
+                // Group by week (last 12 weeks)
+                $stats = $query->select(
+                        DB::raw("DATE_FORMAT(visit_date, '%x-%v') as label_key"),
+                        DB::raw("MIN(visit_date) as min_date"),
+                        DB::raw('count(*) as total')
+                    )
+                    ->where('visit_date', '>=', now()->subWeeks(12)->toDateString())
+                    ->groupBy('label_key')
+                    ->orderBy('label_key')
+                    ->get();
+                
+                $labels = $stats->map(fn($item) => 'Minggu ' . date('W', strtotime($item->min_date)));
+                break;
+
+            case 'monthly':
+                // Group by month (last 12 months)
+                $stats = $query->select(
+                        DB::raw("DATE_FORMAT(visit_date, '%Y-%m') as label_key"),
+                        DB::raw('count(*) as total')
+                    )
+                    ->where('visit_date', '>=', now()->subMonths(12)->startOfMonth()->toDateString())
+                    ->groupBy('label_key')
+                    ->orderBy('label_key')
+                    ->get();
+                
+                $labels = $stats->map(fn($item) => date('M Y', strtotime($item->label_key . '-01')));
+                break;
+
+            case 'yearly':
+                // Group by year
+                $stats = $query->select(
+                        DB::raw("DATE_FORMAT(visit_date, '%Y') as label_key"),
+                        DB::raw('count(*) as total')
+                    )
+                    ->groupBy('label_key')
+                    ->orderBy('label_key')
+                    ->get();
+                
+                $labels = $stats->pluck('label_key');
+                break;
+
+            case 'daily':
+            default:
+                // Group by date (last 30 days)
+                $stats = $query->select('visit_date as label_key', DB::raw('count(*) as total'))
+                    ->where('visit_date', '>=', now()->subDays(30)->toDateString())
+                    ->groupBy('visit_date')
+                    ->orderBy('visit_date')
+                    ->get();
+                
+                $labels = $stats->map(fn($item) => date('d M', strtotime($item->label_key)));
+                break;
+        }
+
+        return [
+            'labels' => $labels,
+            'data' => $stats->pluck('total'),
+        ];
     }
 }

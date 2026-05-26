@@ -30,6 +30,7 @@ use App\Http\Controllers\ManualBookController;
 use App\Http\Controllers\AccountController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData'])->name('dashboard.chart-data');
 
 // Granular permissions are handled inside controllers for cleaner routes
 Route::resource('users', UserController::class);

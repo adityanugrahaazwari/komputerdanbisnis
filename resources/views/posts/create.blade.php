@@ -44,9 +44,10 @@
         </div>
 
         <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Image</label>
+            <label class="block text-gray-700">Foto Sampul</label>
             <input type="file" name="image" class="w-full border rounded px-3 py-2 @error('image') border-red-500 @enderror">
-            @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            <p class="text-[10px] text-gray-400 mt-1 italic">Rekomendasi ukuran: 16:9 (Contoh: 1280x720px). Max: 2MB.</p>
+            @error('image') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
         </div>
 
         <div class="mb-4">
