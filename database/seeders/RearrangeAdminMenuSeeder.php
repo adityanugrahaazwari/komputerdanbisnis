@@ -58,53 +58,58 @@ class RearrangeAdminMenuSeeder extends Seeder
         // 2. Susun Sub-Menu
 
         // --- Profil Lembaga ---
-        $this->moveMenu('/profiles', 'Informasi Umum', 'fas fa-info-circle', $profilLembaga->id, 1);
-        $this->moveMenu('/organizational-structures', 'Struktur Organisasi', 'fas fa-sitemap', $profilLembaga->id, 2);
-        $this->moveMenu('/study-programs', 'Program Studi', 'fas fa-graduation-cap', $profilLembaga->id, 3);
-        $this->moveMenu('/lecturers', 'Dosen & Staf', 'fas fa-users', $profilLembaga->id, 4);
-        $this->moveMenu('/services', 'Layanan', 'fas fa-concierge-bell', $profilLembaga->id, 5);
-        $this->moveMenu('/social-media', 'Media Sosial', 'fas fa-share-alt', $profilLembaga->id, 6);
-        $this->moveMenu('/testimonials', 'Testimoni', 'fas fa-quote-left', $profilLembaga->id, 7);
+        $this->moveMenu('/profiles', 'Informasi Umum', 'fas fa-info-circle', $profilLembaga->id, 1, 'profiles_view');
+        $this->moveMenu('/organizational-structures', 'Struktur Organisasi', 'fas fa-sitemap', $profilLembaga->id, 2, 'organizational_structures_view');
+        $this->moveMenu('/study-programs', 'Program Studi', 'fas fa-graduation-cap', $profilLembaga->id, 3, 'study_programs_view');
+        $this->moveMenu('/lecturers', 'Dosen & Staf', 'fas fa-users', $profilLembaga->id, 4, 'lecturers_view');
+        $this->moveMenu('/services', 'Layanan', 'fas fa-concierge-bell', $profilLembaga->id, 5, 'services_view');
+        $this->moveMenu('/social-media', 'Media Sosial', 'fas fa-share-alt', $profilLembaga->id, 6, 'social_media_view');
+        $this->moveMenu('/testimonials', 'Testimoni', 'fas fa-quote-left', $profilLembaga->id, 7, 'testimonials_view');
 
         // --- Manajemen Konten ---
-        $this->moveMenu('/posts', 'Berita & Artikel', 'fas fa-newspaper', $manajemenKonten->id, 1);
-        $this->moveMenu('/categories', 'Kategori Berita', 'fas fa-tags', $manajemenKonten->id, 2);
-        $this->moveMenu('/galleries', 'Galeri Foto', 'fas fa-images', $manajemenKonten->id, 3);
-        $this->moveMenu('/gallery-groups', 'Grup Galeri', 'fas fa-folder', $manajemenKonten->id, 4);
-        $this->moveMenu('/documents', 'Pusat Unduhan', 'fas fa-file-download', $manajemenKonten->id, 5);
-        $this->moveMenu('/events', 'Agenda & Event', 'fas fa-calendar-alt', $manajemenKonten->id, 6);
+        $this->moveMenu('/posts', 'Berita & Artikel', 'fas fa-newspaper', $manajemenKonten->id, 1, 'posts_view');
+        $this->moveMenu('/categories', 'Kategori Berita', 'fas fa-tags', $manajemenKonten->id, 2, 'categories_view');
+        $this->moveMenu('/galleries', 'Galeri Foto', 'fas fa-images', $manajemenKonten->id, 3, 'galleries_view');
+        $this->moveMenu('/gallery-groups', 'Grup Galeri', 'fas fa-folder', $manajemenKonten->id, 4, 'gallery_groups_view');
+        $this->moveMenu('/documents', 'Pusat Unduhan', 'fas fa-file-download', $manajemenKonten->id, 5, 'documents_view');
+        $this->moveMenu('/events', 'Agenda & Event', 'fas fa-calendar-alt', $manajemenKonten->id, 6, 'events_view');
 
         // --- Komunikasi ---
-        $this->moveMenu('/contacts', 'Inbox Pesan', 'fas fa-envelope', $komunikasi->id, 1);
-        $this->moveMenu('/comments', 'Moderasi Komentar', 'fas fa-comment-dots', $komunikasi->id, 2);
-        $this->moveMenu('/announcements', 'Pengumuman', 'fas fa-bullhorn', $komunikasi->id, 3);
+        $this->moveMenu('/contacts', 'Inbox Pesan', 'fas fa-envelope', $komunikasi->id, 1, 'contacts_view');
+        $this->moveMenu('/comments', 'Moderasi Komentar', 'fas fa-comment-dots', $komunikasi->id, 2, 'comments_view');
+        $this->moveMenu('/announcements', 'Pengumuman', 'fas fa-bullhorn', $komunikasi->id, 3, 'announcements_view');
 
         // --- User & Hak Akses ---
-        $this->moveMenu('/users', 'Manajemen User', 'fas fa-user-friends', $userAkses->id, 1);
-        $this->moveMenu('/roles', 'Role & Hak Akses', 'fas fa-user-shield', $userAkses->id, 2);
-        $this->moveMenu('/permissions', 'Daftar Izin', 'fas fa-key', $userAkses->id, 3);
-        $this->moveMenu('/permission-groups', 'Grup Izin', 'fas fa-layer-group', $userAkses->id, 4);
+        $this->moveMenu('/users', 'Manajemen User', 'fas fa-user-friends', $userAkses->id, 1, 'users_view');
+        $this->moveMenu('/roles', 'Role & Hak Akses', 'fas fa-user-shield', $userAkses->id, 2, 'roles_view');
+        $this->moveMenu('/permissions', 'Daftar Izin', 'fas fa-key', $userAkses->id, 3, 'permissions_view');
+        $this->moveMenu('/permission-groups', 'Grup Izin', 'fas fa-layer-group', $userAkses->id, 4, 'permission_groups_view');
 
         // --- Pengaturan Sistem ---
-        $this->moveMenu('/site-settings', 'Identitas Situs', 'fas fa-id-card', $pengaturanSistem->id, 1);
-        $this->moveMenu('/dashboard-settings', 'Konfigurasi Dashboard', 'fas fa-tachometer-alt', $pengaturanSistem->id, 2);
-        $this->moveMenu('/menus', 'Manajemen Menu', 'fas fa-list', $pengaturanSistem->id, 3);
-        $this->moveMenu('/backups', 'Backup Database', 'fas fa-database', $pengaturanSistem->id, 4);
-        $this->moveMenu('/logs', 'Audit Logs', 'fas fa-history', $pengaturanSistem->id, 5);
+        $this->moveMenu('/site-settings', 'Identitas Situs', 'fas fa-id-card', $pengaturanSistem->id, 1, 'site_settings_view');
+        $this->moveMenu('/dashboard-settings', 'Konfigurasi Dashboard', 'fas fa-tachometer-alt', $pengaturanSistem->id, 2, 'dashboard_settings_view');
+        $this->moveMenu('/menus', 'Manajemen Menu', 'fas fa-list', $pengaturanSistem->id, 3, 'menus_view');
+        $this->moveMenu('/backups', 'Backup Database', 'fas fa-database', $pengaturanSistem->id, 4, 'backups_view');
+        $this->moveMenu('/logs', 'Audit Logs', 'fas fa-history', $pengaturanSistem->id, 5, 'logs_view');
 
         // Cleanup: Hapus menu lama yang mungkin duplikat atau tidak diperlukan
         Menu::where('title', 'User & Hak Akses')->where('url', '#')->delete();
         Menu::where('title', 'Komunikasi')->where('url', '#')->delete();
     }
 
-    private function moveMenu($url, $title, $icon, $parentId, $order)
+    private function moveMenu($url, $title, $icon, $parentId, $order, $permission = null)
     {
-        Menu::where('url', $url)->update([
-            'title' => $title,
-            'icon' => $icon,
-            'parent_id' => $parentId,
-            'order' => $order,
-            'location' => 'admin'
-        ]);
+        Menu::updateOrCreate(
+            ['url' => $url],
+            [
+                'title' => $title,
+                'icon' => $icon,
+                'parent_id' => $parentId,
+                'order' => $order,
+                'location' => 'admin',
+                'permission_slug' => $permission,
+                'is_active' => 1
+            ]
+        );
     }
 }
