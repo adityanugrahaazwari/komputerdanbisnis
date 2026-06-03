@@ -11,11 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->foreignId('category_id')->nullable()->after('user_id')->constrained()->nullOnDelete();
-            $table->string('meta_description', 160)->nullable()->after('status');
-            $table->string('meta_keywords')->nullable()->after('meta_description');
-        });
+        // Handled in create_posts_table
     }
 
     /**
@@ -23,9 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['category_id']);
-            $table->dropColumn(['category_id', 'meta_description', 'meta_keywords']);
-        });
+        // Handled in create_posts_table
     }
 };

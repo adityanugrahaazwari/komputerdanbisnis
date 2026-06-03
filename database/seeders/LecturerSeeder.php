@@ -10,6 +10,7 @@ use App\Models\PermissionGroup;
 use App\Models\Menu;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 
 class LecturerSeeder extends Seeder
 {
@@ -173,11 +174,14 @@ class LecturerSeeder extends Seeder
         ];
 
         // Clear existing lecturers to replace with new data
+        Schema::disableForeignKeyConstraints();
         Lecturer::truncate();
+        Schema::enableForeignKeyConstraints();
 
         foreach ($lecturers as $lecturer) {
             Lecturer::create([
                 'name' => $lecturer['name'],
+                'slug' => Str::slug($lecturer['name']),
                 'nidn' => $lecturer['nidn'],
                 'position' => $lecturer['position'],
                 'expertise' => $lecturer['expertise'],

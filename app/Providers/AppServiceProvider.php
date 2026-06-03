@@ -54,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
                     'name' => SiteSetting::get('site_name', config('app.name')),
                     'favicon' => SiteSetting::get('site_favicon'),
                     'description' => SiteSetting::get('site_description'),
+                    'keywords' => SiteSetting::get('site_keywords'),
                     'address' => SiteSetting::get('site_address'),
                     'phone' => SiteSetting::get('site_phone'),
                     'email' => SiteSetting::get('site_email'),

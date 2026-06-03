@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('level')->nullable(); // e.g., D3, D4, S1
             $table->text('description')->nullable();
             $table->string('image')->nullable(); // Logo or building image
-            $table->boolean('is_active')->default(true);
+            $table->string('website_url')->nullable();
+            $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
         });
     }

@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('testimonials', function (Blueprint $table) {
-            $table->integer('order')->default(0)->after('is_active');
-        });
+        // Handled in create_testimonials_table
     }
 
     /**
@@ -21,8 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('testimonials', function (Blueprint $table) {
-            $table->dropColumn('order');
-        });
+        // Handled in create_testimonials_table
     }
 };

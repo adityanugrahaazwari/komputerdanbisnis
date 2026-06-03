@@ -41,8 +41,6 @@ class EventController extends Controller
 
         $event = Event::create($data);
         
-        $this->logActivity('create', $event, 'Created event: ' . $event->title);
-
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
     }
 
@@ -66,8 +64,6 @@ class EventController extends Controller
 
         $event->update($data);
 
-        $this->logActivity('update', $event, 'Updated event: ' . $event->title);
-
         return redirect()->route('events.index')->with('success', 'Event updated successfully.');
     }
 
@@ -75,13 +71,9 @@ class EventController extends Controller
     {
         $this->authorizePermission('events_delete');
         
-        $title = $event->title;
-        
         $this->deleteFile($event->image);
         $event->delete();
         
-        $this->logActivity('delete', null, 'Deleted event: ' . $title);
-
         return redirect()->route('events.index')->with('success', 'Event deleted successfully.');
     }
 }

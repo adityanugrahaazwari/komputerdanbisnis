@@ -6,18 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::table('galleries', function (Blueprint $table) {
-            $table->foreignId('gallery_group_id')->nullable()->constrained()->nullOnDelete()->after('id');
-        });
+        // Handled in create_galleries_table
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('galleries', function (Blueprint $table) {
-            $table->dropForeign(['gallery_group_id']);
-            $table->dropColumn('gallery_group_id');
-        });
+        // Handled in create_galleries_table
     }
 };

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('company')->nullable();
             $table->text('quote');
             $table->string('image')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->integer('order')->default(0)->index();
+            $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
         });
     }

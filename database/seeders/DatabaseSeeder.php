@@ -27,8 +27,10 @@ class DatabaseSeeder extends Seeder
             SocialMediaSeeder::class,
             AccountMenuSeeder::class,
             AnnouncementRbacSeeder::class,
+            AnnouncementSeeder::class,
             DashboardSettingSeeder::class,
             TestimonialRbacSeeder::class,
+            TestimonialSeeder::class,
             MediaManagerRbacSeeder::class,
             EventRbacSeeder::class,
             EventSeeder::class,
@@ -38,6 +40,7 @@ class DatabaseSeeder extends Seeder
             SiteSettingSeeder::class,
             FrontendMenusSeeder::class,
             DemoDataSeeder::class,
+            RearrangeAdminMenuSeeder::class,
         ]);
     }
 }

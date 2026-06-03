@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('gallery_group_id')->nullable()->constrained()->nullOnDelete();
             $table->string('title');
             $table->string('image');
             $table->text('description')->nullable();
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->integer('order')->default(0)->index();
+            $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
         });
     }

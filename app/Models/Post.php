@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Traits\LogsActivity;
 
 #[Fillable(['title', 'slug', 'content', 'image', 'user_id', 'status', 'category_id', 'meta_description', 'meta_keywords'])]
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     public function user()
     {

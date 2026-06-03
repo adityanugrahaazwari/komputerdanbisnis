@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Testimonial;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class TestimonialSeeder extends Seeder
 {
@@ -37,7 +38,27 @@ class TestimonialSeeder extends Seeder
                 'order' => 3,
                 'is_active' => true,
             ],
+            [
+                'name' => 'Rina Wijaya, S.E.',
+                'role' => 'Alumni 2020 / Accountant',
+                'company' => 'Bank Mandiri',
+                'quote' => 'Fasilitas laboratorium di JKB sangat lengkap dan modern. Hal ini sangat mendukung proses belajar mengajar kami menjadi lebih efektif.',
+                'order' => 4,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Hendra Kusuma, S.T.',
+                'role' => 'Project Manager',
+                'company' => 'PT Cloud Indonesia',
+                'quote' => 'Kerjasama antara JKB dengan industri sangat erat. Banyak lulusannya yang langsung terserap kerja bahkan sebelum wisuda.',
+                'order' => 5,
+                'is_active' => true,
+            ],
         ];
+
+        Schema::disableForeignKeyConstraints();
+        Testimonial::truncate();
+        Schema::enableForeignKeyConstraints();
 
         foreach ($testimonials as $testimonial) {
             Testimonial::create($testimonial);

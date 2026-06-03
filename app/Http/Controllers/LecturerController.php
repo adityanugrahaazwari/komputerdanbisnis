@@ -43,8 +43,6 @@ class LecturerController extends Controller
 
         $lecturer = Lecturer::create($data);
         
-        $this->logActivity('create', $lecturer, 'Added lecturer: ' . $lecturer->name);
-
         return redirect()->route('lecturers.index')->with('success', 'Lecturer added successfully.');
     }
 
@@ -69,8 +67,6 @@ class LecturerController extends Controller
 
         $lecturer->update($data);
 
-        $this->logActivity('update', $lecturer, 'Updated lecturer: ' . $lecturer->name);
-
         return redirect()->route('lecturers.index')->with('success', 'Lecturer updated successfully.');
     }
 
@@ -78,13 +74,9 @@ class LecturerController extends Controller
     {
         $this->authorizePermission('lecturers_delete');
         
-        $name = $lecturer->name;
-        
         $this->deleteFile($lecturer->photo);
         $lecturer->delete();
         
-        $this->logActivity('delete', null, 'Deleted lecturer: ' . $name);
-
         return redirect()->route('lecturers.index')->with('success', 'Lecturer deleted successfully.');
     }
 }

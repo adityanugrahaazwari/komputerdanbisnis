@@ -48,6 +48,7 @@ class SiteSettingSeeder extends Seeder
         // 4. Default Settings
         SiteSetting::updateOrCreate(['key' => 'site_name'], ['value' => 'JKB POLITALA']);
         SiteSetting::updateOrCreate(['key' => 'site_description'], ['value' => 'Jurusan Komputer dan Bisnis - Politeknik Negeri Tanah Laut. Menghasilkan lulusan yang unggul, profesional, dan berjiwa wirausaha.']);
+        SiteSetting::updateOrCreate(['key' => 'site_keywords'], ['value' => 'Politala, JKB, Komputer dan Bisnis, Politeknik Negeri Tanah Laut, Teknik Informatika, Akuntansi, Pelaihari']);
         SiteSetting::updateOrCreate(['key' => 'site_address'], ['value' => 'Jl. Ahmad Yani KM.06, Desa Panggung, Pelaihari, Tanah Laut, Kalimantan Selatan.']);
         SiteSetting::updateOrCreate(['key' => 'site_phone'], ['value' => '(0512) 2021065']);
         SiteSetting::updateOrCreate(['key' => 'site_email'], ['value' => 'jkb@politala.ac.id']);

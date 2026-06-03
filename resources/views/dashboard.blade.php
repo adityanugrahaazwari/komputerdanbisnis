@@ -70,22 +70,25 @@
     <!-- Stat Card: Visitors -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-slate-800 group hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center text-red-600">
+            <div class="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center text-red-600 group-hover:scale-110 transition-transform">
                 <i class="fas fa-users text-xl"></i>
             </div>
-            <span class="text-[10px] font-black text-red-500 bg-red-50 dark:bg-red-900/30 px-2 py-1 rounded-lg uppercase">{{ $stats['visitors_today'] }} Hari Ini</span>
+            <span class="text-[10px] font-black text-red-500 bg-red-50 dark:bg-red-900/30 px-2 py-1 rounded-lg uppercase">+{{ $stats['visitors_today'] }} Hari Ini</span>
         </div>
         <p class="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Pengunjung Unik</p>
-        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ $stats['visitors_total'] }}</h3>
+        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ number_format($stats['visitors_total']) }}</h3>
     </div>
 
     <!-- Stat Card: Berita -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-slate-800 group hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-orange-50 dark:bg-orange-900/20 rounded-xl flex items-center justify-center text-orange-600">
+            <div class="w-12 h-12 bg-orange-50 dark:bg-orange-900/20 rounded-xl flex items-center justify-center text-orange-600 group-hover:scale-110 transition-transform">
                 <i class="fas fa-newspaper text-xl"></i>
             </div>
-            <span class="text-[10px] font-black text-orange-500 bg-orange-50 dark:bg-orange-900/30 px-2 py-1 rounded-lg uppercase">{{ $stats['posts_pending'] }} Pending</span>
+            <div class="flex flex-col items-end">
+                <span class="text-[10px] font-black text-orange-500 bg-orange-50 dark:bg-orange-900/30 px-2 py-1 rounded-lg uppercase">{{ $stats['posts_pending'] }} Pending</span>
+                <span class="text-[8px] font-bold text-gray-400 mt-1 uppercase">{{ $stats['posts_this_month'] }} Bulan Ini</span>
+            </div>
         </div>
         <p class="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Berita Terbit</p>
         <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ $stats['posts_published'] }}</h3>
@@ -94,41 +97,43 @@
     <!-- Stat Card: Komentar -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-slate-800 group hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center text-blue-600">
+            <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
                 <i class="fas fa-comments text-xl"></i>
             </div>
             @if($stats['comments_pending'] > 0)
                 <span class="text-[10px] font-black text-red-500 bg-red-50 dark:bg-red-900/30 px-2 py-1 rounded-lg uppercase animate-pulse">{{ $stats['comments_pending'] }} Moderasi</span>
+            @else
+                <span class="text-[10px] font-black text-green-500 bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-lg uppercase">Clean</span>
             @endif
         </div>
         <p class="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Total Komentar</p>
-        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ \App\Models\Comment::count() }}</h3>
+        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ $stats['comments_total'] }}</h3>
     </div>
 
     <!-- Stat Card: Pesan -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-slate-800 group hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center text-green-600">
+            <div class="w-12 h-12 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform">
                 <i class="fas fa-envelope text-xl"></i>
             </div>
             @if($stats['contacts_unread'] > 0)
                 <span class="text-[10px] font-black text-green-500 bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-lg uppercase">{{ $stats['contacts_unread'] }} Baru</span>
             @endif
         </div>
-        <p class="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Pesan Masuk</p>
-        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ \App\Models\Contact::count() }}</h3>
+        <p class="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Pesan Inbox</p>
+        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ $stats['contacts_total'] }}</h3>
     </div>
 
     <!-- Stat Card: Media -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-slate-800 group hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/20 rounded-xl flex items-center justify-center text-purple-600">
+            <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/20 rounded-xl flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
                 <i class="fas fa-photo-video text-xl"></i>
             </div>
-            <span class="text-[10px] font-black text-purple-500 bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded-lg uppercase">{{ $stats['documents'] }} Dokumen</span>
+            <span class="text-[10px] font-black text-purple-500 bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded-lg uppercase">{{ $stats['galleries'] }} Item</span>
         </div>
-        <p class="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Galeri Foto</p>
-        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ $stats['galleries'] }}</h3>
+        <p class="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Galeri & Dokumen</p>
+        <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ $stats['galleries'] + $stats['documents'] }}</h3>
     </div>
 </div>
 @endif

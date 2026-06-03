@@ -52,7 +52,88 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300" x-data="{ 
+    annModalOpen: false, 
+    annActive: null 
+}">
+
+    <!-- Announcement Bar -->
+    @if($announcements->count() > 0)
+    <div 
+        x-data="{ 
+            active: 0, 
+            count: {{ $announcements->count() }},
+            init() {
+                setInterval(() => {
+                    this.active = (this.active + 1) % this.count;
+                }, 5000);
+            }
+        }" 
+        class="bg-gray-900 text-white py-2 relative overflow-hidden z-[60]"
+    >
+        <div class="container mx-auto px-4 md:px-12 relative">
+            @foreach($announcements as $index => $ann)
+                <div 
+                    x-show="active === {{ $index }}" 
+                    x-transition:enter="transition ease-out duration-500"
+                    x-transition:enter-start="opacity-0 translate-y-4"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-500"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 -translate-y-4"
+                    class="flex items-center justify-center gap-3 text-[10px] md:text-xs font-bold uppercase tracking-widest"
+                >
+                    <span class="px-2 py-0.5 rounded bg-{{ $ann->type == 'danger' ? 'red' : ($ann->type == 'warning' ? 'amber' : 'blue') }}-600 text-[8px]">
+                        {{ $ann->type == 'danger' ? 'PENTING' : ($ann->type == 'warning' ? 'PERHATIAN' : 'INFO') }}
+                    </span>
+                    <span class="truncate">{{ $ann->title }}</span>
+                    <button @click="annActive = {{ json_encode($ann) }}; annModalOpen = true" class="underline hover:text-red-400 ml-2 shrink-0">Detail</button>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    <!-- Announcement Modal -->
+    <div x-show="annModalOpen" 
+         x-cloak 
+         class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        
+        <div @click.away="annModalOpen = false" 
+             class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95 translate-y-8"
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+            
+            <!-- Close Button -->
+            <button @click="annModalOpen = false" class="absolute top-6 right-6 w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center text-gray-500 hover:bg-red-700 hover:text-white transition">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="mb-8">
+                <template x-if="annActive">
+                    <span :class="{
+                        'bg-red-100 text-red-700': annActive.type === 'danger',
+                        'bg-amber-100 text-amber-700': annActive.type === 'warning',
+                        'bg-blue-100 text-blue-700': annActive.type === 'info'
+                    }" class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 inline-block" x-text="annActive.type === 'danger' ? 'Penting' : (annActive.type === 'warning' ? 'Perhatian' : 'Informasi')"></span>
+                </template>
+                <h3 class="text-2xl md:text-3xl font-black text-gray-900 dark:text-white leading-tight uppercase tracking-tight" x-text="annActive ? annActive.title : ''"></h3>
+            </div>
+
+            <div class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed italic mb-10" x-text="annActive ? annActive.message : ''"></div>
+
+            <button @click="annModalOpen = false" class="w-full bg-gray-900 dark:bg-red-700 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] hover:bg-red-700 transition">
+                Tutup Pengumuman
+            </button>
+        </div>
+    </div>
 
 @include('partials.navbar')
 

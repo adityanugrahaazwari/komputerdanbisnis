@@ -10,6 +10,7 @@ use App\Models\OrganizationalStructure;
 use App\Models\Service;
 use App\Models\Testimonial;
 use App\Models\Visitor;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 
 class LandingController extends Controller
@@ -44,13 +45,16 @@ class LandingController extends Controller
         // Fetch active testimonials
         $testimonials = Testimonial::active()->ordered()->get();
 
+        // Fetch active announcements
+        $announcements = Announcement::active()->latest()->get();
+
         // Fetch some lecturers for landing page
         $lecturers = \App\Models\Lecturer::active()->with('studyProgram')->ordered()->take(8)->get();
 
         // Fetch total unique visitor count
         $visitorCount = Visitor::count();
 
-        return view('welcome', compact('profiles', 'studyPrograms', 'structures', 'services', 'latestPosts', 'socialMedia', 'testimonials', 'visitorCount', 'lecturers'));
+        return view('welcome', compact('profiles', 'studyPrograms', 'structures', 'services', 'latestPosts', 'socialMedia', 'testimonials', 'visitorCount', 'lecturers', 'announcements'));
     }
 
     public function profile()
@@ -62,21 +66,32 @@ class LandingController extends Controller
             ->get();
         $socialMedia = SocialMedia::active()->ordered()->get();
 
-        return view('profile', compact('profiles', 'structures', 'socialMedia'));
+        $seoTitle = 'Profil Jurusan - JKB POLITALA';
+        $seoDescription = 'Mengenal lebih dalam sejarah, visi, misi, dan struktur kepemimpinan Jurusan Komputer dan Bisnis Politala.';
+
+        return view('profile', compact('profiles', 'structures', 'socialMedia', 'seoTitle', 'seoDescription'));
     }
 
     public function studyPrograms()
     {
         $studyPrograms = StudyProgram::active()->get();
         $socialMedia = SocialMedia::active()->ordered()->get();
-        return view('study-programs-landing', compact('studyPrograms', 'socialMedia'));
+        
+        $seoTitle = 'Program Studi - JKB POLITALA';
+        $seoDescription = 'Daftar program studi unggulan di Jurusan Komputer dan Bisnis Politeknik Negeri Tanah Laut.';
+        
+        return view('study-programs-landing', compact('studyPrograms', 'socialMedia', 'seoTitle', 'seoDescription'));
     }
 
     public function services()
     {
         $services = Service::active()->ordered()->get();
         $socialMedia = SocialMedia::active()->ordered()->get();
-        return view('services-landing', compact('services', 'socialMedia'));
+        
+        $seoTitle = 'Layanan Eksternal - JKB POLITALA';
+        $seoDescription = 'Berbagai layanan eksternal dan aplikasi pendukung yang disediakan oleh Jurusan Komputer dan Bisnis.';
+
+        return view('services-landing', compact('services', 'socialMedia', 'seoTitle', 'seoDescription'));
     }
 
     public function showPost($slug)
@@ -115,7 +130,10 @@ class LandingController extends Controller
         $categories = \App\Models\Category::all();
         $socialMedia = SocialMedia::active()->ordered()->get();
         
-        return view('news-index', compact('posts', 'socialMedia', 'categories'));
+        $seoTitle = 'Berita & Artikel - JKB POLITALA';
+        $seoDescription = 'Dapatkan informasi terbaru mengenai kegiatan, prestasi, dan pengumuman di Jurusan Komputer dan Bisnis.';
+
+        return view('news-index', compact('posts', 'socialMedia', 'categories', 'seoTitle', 'seoDescription'));
     }
 
     public function gallery()
@@ -132,14 +150,22 @@ class LandingController extends Controller
             ->paginate(12);
 
         $socialMedia = SocialMedia::active()->ordered()->get();
-        return view('gallery-index', compact('galleryGroups', 'ungroupedGalleries', 'socialMedia'));
+        
+        $seoTitle = 'Galeri Foto - JKB POLITALA';
+        $seoDescription = 'Koleksi dokumentasi kegiatan, fasilitas, dan momen berharga di Jurusan Komputer dan Bisnis.';
+
+        return view('gallery-index', compact('galleryGroups', 'ungroupedGalleries', 'socialMedia', 'seoTitle', 'seoDescription'));
     }
 
     public function downloads()
     {
         $documents = \App\Models\Document::active()->latest()->get()->groupBy('category');
         $socialMedia = SocialMedia::active()->ordered()->get();
-        return view('downloads-index', compact('documents', 'socialMedia'));
+        
+        $seoTitle = 'Pusat Unduhan - JKB POLITALA';
+        $seoDescription = 'Unduh berbagai dokumen penting, formulir, kurikulum, dan materi pembelajaran di sini.';
+
+        return view('downloads-index', compact('documents', 'socialMedia', 'seoTitle', 'seoDescription'));
     }
 
     public function lecturers(Request $request)
@@ -165,13 +191,20 @@ class LandingController extends Controller
         $studyPrograms = StudyProgram::all();
         $socialMedia = SocialMedia::active()->ordered()->get();
 
-        return view('lecturer-index', compact('lecturers', 'studyPrograms', 'socialMedia'));
+        $seoTitle = 'Direktori Dosen & Staf - JKB POLITALA';
+        $seoDescription = 'Daftar pengajar dan staf profesional di lingkungan Jurusan Komputer dan Bisnis Politala.';
+
+        return view('lecturer-index', compact('lecturers', 'studyPrograms', 'socialMedia', 'seoTitle', 'seoDescription'));
     }
 
     public function calendar()
     {
         $events = \App\Models\Event::active()->orderBy('start_date')->get();
         $socialMedia = SocialMedia::active()->ordered()->get();
-        return view('calendar-index', compact('events', 'socialMedia'));
+        
+        $seoTitle = 'Kalender Akademik & Agenda - JKB POLITALA';
+        $seoDescription = 'Pantau jadwal kegiatan akademik, seminar, webinar, dan event penting lainnya di JKB Politala.';
+
+        return view('calendar-index', compact('events', 'socialMedia', 'seoTitle', 'seoDescription'));
     }
 }

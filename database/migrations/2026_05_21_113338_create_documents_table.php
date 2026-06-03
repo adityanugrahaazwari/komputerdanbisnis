@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('file_path');
-            $table->string('category')->nullable(); // e.g., 'kurikulum', 'formulir'
+            $table->string('category')->nullable()->index(); // e.g., 'kurikulum', 'formulir'
             $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
         });
     }

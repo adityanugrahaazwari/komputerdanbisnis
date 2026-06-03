@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('url');
-            $table->string('icon')->nullable();
             $table->text('description')->nullable();
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('icon')->nullable();
+            $table->string('url')->nullable();
+            $table->integer('order')->default(0)->index();
+            $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
         });
     }

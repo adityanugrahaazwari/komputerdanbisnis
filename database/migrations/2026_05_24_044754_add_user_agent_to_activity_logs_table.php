@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('activity_logs', function (Blueprint $table) {
-            $table->string('user_agent')->nullable()->after('ip_address');
-        });
+        // Handled in create_activity_logs_table
     }
 
     /**
@@ -21,8 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('activity_logs', function (Blueprint $table) {
-            $table->dropColumn('user_agent');
-        });
+        // Handled in create_activity_logs_table
     }
 };

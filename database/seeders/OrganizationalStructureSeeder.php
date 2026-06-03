@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\OrganizationalStructure;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class OrganizationalStructureSeeder extends Seeder
 {
@@ -13,7 +14,9 @@ class OrganizationalStructureSeeder extends Seeder
     public function run(): void
     {
         // Clear existing data to avoid duplicates
+        Schema::disableForeignKeyConstraints();
         OrganizationalStructure::truncate();
+        Schema::enableForeignKeyConstraints();
 
         // 1. Level 1: 1 Ketua Jurusan
         $kajur = OrganizationalStructure::create([

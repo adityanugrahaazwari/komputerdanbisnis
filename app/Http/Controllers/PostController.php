@@ -52,8 +52,6 @@ class PostController extends Controller
 
         $post = Post::create($data);
 
-        $this->logActivity('create', $post, 'Created post: ' . $post->title);
-
         // Record submission log
         PostSubmission::create([
             'post_id' => $post->id,
@@ -102,8 +100,6 @@ class PostController extends Controller
         }
 
         $post->update($data);
-
-        $this->logActivity('update', $post, 'Updated post: ' . $post->title);
 
         // Record log if status changed or notes provided
         if ($oldStatus !== $post->status || $request->filled('notes')) {

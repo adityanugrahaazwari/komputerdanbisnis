@@ -6,17 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            $table->string('group')->nullable()->after('name');
-        });
+        // Handled in create_rbac_tables
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            $table->dropColumn('group');
-        });
+        // Handled in create_rbac_tables
     }
 };

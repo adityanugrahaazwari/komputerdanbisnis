@@ -13,13 +13,13 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->dateTime('start_date');
+            $table->dateTime('start_date')->index();
             $table->dateTime('end_date')->nullable();
             $table->string('location')->nullable();
-            $table->string('type')->default('academic'); // academic, webinar, competition, holiday
+            $table->string('type')->default('academic')->index(); // academic, webinar, competition, holiday
             $table->string('color')->default('#dc2626'); // default red-600
             $table->string('image')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
         });
     }

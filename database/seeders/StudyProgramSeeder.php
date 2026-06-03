@@ -9,6 +9,7 @@ use App\Models\PermissionGroup;
 use App\Models\Menu;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 
 class StudyProgramSeeder extends Seeder
 {
@@ -47,7 +48,9 @@ class StudyProgramSeeder extends Seeder
         ];
 
         // Clear existing data to replace with the new ones
+        Schema::disableForeignKeyConstraints();
         StudyProgram::truncate();
+        Schema::enableForeignKeyConstraints();
 
         foreach ($prodis as $prodi) {
             StudyProgram::create([

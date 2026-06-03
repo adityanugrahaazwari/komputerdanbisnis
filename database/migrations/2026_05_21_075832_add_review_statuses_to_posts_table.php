@@ -6,17 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->enum('status', ['draft', 'pending', 'published', 'rejected'])->default('draft')->change();
-        });
+        // Handled in create_posts_table
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->enum('status', ['draft', 'published'])->default('draft')->change();
-        });
+        // Handled in create_posts_table
     }
 };

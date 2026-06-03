@@ -6,17 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::table('study_programs', function (Blueprint $table) {
-            $table->string('website_url')->nullable()->after('is_active');
-        });
+        // Handled in create_study_programs_table
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('study_programs', function (Blueprint $table) {
-            $table->dropColumn('website_url');
-        });
+        // Handled in create_study_programs_table
     }
 };

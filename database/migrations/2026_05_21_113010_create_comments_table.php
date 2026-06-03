@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('user_name');
             $table->string('user_email');
             $table->text('comment');
-            $table->enum('status', ['pending', 'approved', 'spam'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'spam'])->default('pending')->index();
             $table->timestamps();
         });
     }

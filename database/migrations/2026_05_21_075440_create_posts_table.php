@@ -18,7 +18,10 @@ return new class extends Migration
             $table->text('content');
             $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->enum('status', ['draft', 'pending', 'published', 'rejected'])->default('draft')->index();
+            $table->string('meta_description', 160)->nullable();
+            $table->string('meta_keywords')->nullable();
             $table->timestamps();
         });
     }

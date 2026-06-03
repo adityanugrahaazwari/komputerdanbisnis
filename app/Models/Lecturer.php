@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Traits\LogsActivity;
 
 #[Fillable(['name', 'slug', 'nip', 'nidn', 'position', 'expertise', 'photo', 'email', 'google_scholar_url', 'sinta_url', 'study_program_id', 'order', 'is_active'])]
 class Lecturer extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     public function studyProgram()
     {

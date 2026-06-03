@@ -16,10 +16,19 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('permission_groups', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->timestamps();
+        });
+
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('group')->nullable();
+            $table->foreignId('permission_group_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
 
@@ -40,10 +49,11 @@ return new class extends Migration
             $table->string('title');
             $table->string('url')->nullable();
             $table->string('icon')->nullable();
+            $table->string('location')->default('admin')->index();
             $table->foreignId('parent_id')->nullable()->constrained('menus')->cascadeOnDelete();
             $table->string('permission_slug')->nullable();
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->integer('order')->default(0)->index();
+            $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
         });
     }
@@ -54,6 +64,7 @@ return new class extends Migration
         Schema::dropIfExists('permission_role');
         Schema::dropIfExists('role_user');
         Schema::dropIfExists('permissions');
+        Schema::dropIfExists('permission_groups');
         Schema::dropIfExists('roles');
     }
 };
