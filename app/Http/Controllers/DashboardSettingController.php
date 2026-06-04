@@ -41,6 +41,11 @@ class DashboardSettingController extends Controller
                     'show_system_logs' => isset($values['show_system_logs']),
                     'show_academic_info' => isset($values['show_academic_info']),
                     'show_my_activity' => isset($values['show_my_activity']),
+                    'show_quick_actions' => isset($values['show_quick_actions']),
+                    'show_server_status' => isset($values['show_server_status']),
+                    'show_upcoming_events' => isset($values['show_upcoming_events']),
+                    'show_popular_posts' => isset($values['show_popular_posts']),
+                    'show_todo_list' => isset($values['show_todo_list']),
                 ]
             );
         }

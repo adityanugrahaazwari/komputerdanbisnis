@@ -18,13 +18,14 @@
                 <thead>
                     <tr class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
                         <th class="px-6 py-3">Peran (Role)</th>
+                        <th class="px-4 py-3 text-center">Quick Actions</th>
                         <th class="px-4 py-3 text-center">Statistik</th>
-                        <th class="px-4 py-3 text-center">Pengumuman</th>
-                        <th class="px-4 py-3 text-center">Berita Terbaru</th>
-                        <th class="px-4 py-3 text-center">Interaksi</th>
-                        <th class="px-4 py-3 text-center">Log Sistem</th>
-                        <th class="px-4 py-3 text-center">Info Akademik</th>
-                        <th class="px-4 py-3 text-center">Aktivitas Saya</th>
+                        <th class="px-4 py-3 text-center">Chart</th>
+                        <th class="px-4 py-3 text-center">Agenda</th>
+                        <th class="px-4 py-3 text-center">Berita Populer</th>
+                        <th class="px-4 py-3 text-center">To-Do List</th>
+                        <th class="px-4 py-3 text-center">Server Info</th>
+                        <th class="px-4 py-3 text-center">Log</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,19 +39,20 @@
                         @php
                             $s = $role->dashboardSetting;
                             $fields = [
+                                'show_quick_actions' => 'Aksi Cepat',
                                 'show_stats' => 'Statistik',
                                 'show_announcements' => 'Pengumuman',
-                                'show_recent_posts' => 'Berita',
-                                'show_recent_interactions' => 'Interaksi',
+                                'show_upcoming_events' => 'Agenda',
+                                'show_popular_posts' => 'Populer',
+                                'show_todo_list' => 'To-Do',
+                                'show_server_status' => 'Server',
                                 'show_system_logs' => 'Log',
-                                'show_academic_info' => 'Akademik',
-                                'show_my_activity' => 'Aktivitas'
                             ];
                         @endphp
 
                         @foreach($fields as $field => $label)
                         <td class="px-4 py-4 text-center">
-                            <label class="inline-flex items-center cursor-pointer">
+                            <label class="inline-flex items-center cursor-pointer" title="{{ $label }}">
                                 <input type="checkbox" name="settings[{{ $role->id }}][{{ $field }}]" value="1" {{ $s && $s->$field ? 'checked' : '' }} class="sr-only peer">
                                 <div class="w-9 h-5 bg-gray-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-red-600 relative"></div>
                             </label>

@@ -95,6 +95,8 @@ class LandingController extends Controller
             ->with(['user', 'category', 'approvedComments'])
             ->firstOrFail();
             
+        $post->increment('views');
+            
         return view('post-detail', compact('post'));
     }
 

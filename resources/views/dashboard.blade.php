@@ -15,14 +15,59 @@
         </div>
     </div>
     <div class="flex gap-3">
-        <a href="{{ route('posts.create') }}" class="bg-gray-900 dark:bg-red-700 text-white px-6 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform flex items-center shadow-lg">
-            <i class="fas fa-plus mr-2 text-red-500 dark:text-white"></i> Buat Berita
+        <a href="{{ route('dashboard-settings.index') }}" class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-6 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center shadow-sm">
+            <i class="fas fa-cog mr-2"></i> Atur Dashboard
         </a>
         <a href="{{ url('/') }}" target="_blank" class="bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-slate-700 px-6 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-slate-700 transition flex items-center shadow-sm">
             <i class="fas fa-external-link-alt mr-2 text-red-600"></i> Kunjungi Web
         </a>
     </div>
 </div>
+
+<!-- Quick Actions -->
+@if(!$settings || $settings->show_quick_actions)
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
+    <a href="{{ route('posts.create') }}" class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-gray-100 dark:border-slate-800 flex flex-col items-center justify-center text-center hover:border-red-500 transition group">
+        <div class="w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center text-red-600 mb-3 group-hover:scale-110 transition">
+            <i class="fas fa-plus"></i>
+        </div>
+        <span class="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400">Buat Berita</span>
+    </a>
+    <a href="{{ route('documents.index') }}" class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-gray-100 dark:border-slate-800 flex flex-col items-center justify-center text-center hover:border-blue-500 transition group">
+        <div class="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center text-blue-600 mb-3 group-hover:scale-110 transition">
+            <i class="fas fa-file-upload"></i>
+        </div>
+        <span class="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400">Upload File</span>
+    </a>
+    <a href="{{ route('lecturers.create') }}" class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-gray-100 dark:border-slate-800 flex flex-col items-center justify-center text-center hover:border-green-500 transition group">
+        <div class="w-10 h-10 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center text-green-600 mb-3 group-hover:scale-110 transition">
+            <i class="fas fa-user-plus"></i>
+        </div>
+        <span class="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400">Tambah Dosen</span>
+    </a>
+    <a href="{{ route('comments.index') }}" class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-gray-100 dark:border-slate-800 flex flex-col items-center justify-center text-center hover:border-amber-500 transition group relative">
+        <div class="w-10 h-10 bg-amber-50 dark:bg-amber-900/20 rounded-xl flex items-center justify-center text-amber-600 mb-3 group-hover:scale-110 transition">
+            <i class="fas fa-comments"></i>
+        </div>
+        @if($stats['comments_pending'] > 0)
+            <span class="absolute top-3 right-8 w-2 h-2 bg-red-600 rounded-full animate-ping"></span>
+        @endif
+        <span class="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400">Moderasi</span>
+    </a>
+    <a href="{{ route('site-settings.index') }}" class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-gray-100 dark:border-slate-800 flex flex-col items-center justify-center text-center hover:border-purple-500 transition group">
+        <div class="w-10 h-10 bg-purple-50 dark:bg-purple-900/20 rounded-xl flex items-center justify-center text-purple-600 mb-3 group-hover:scale-110 transition">
+            <i class="fas fa-id-card"></i>
+        </div>
+        <span class="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400">Info Situs</span>
+    </a>
+    <a href="{{ route('backups.index') }}" class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-gray-100 dark:border-slate-800 flex flex-col items-center justify-center text-center hover:border-gray-500 transition group">
+        <div class="w-10 h-10 bg-gray-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-gray-600 mb-3 group-hover:scale-110 transition">
+            <i class="fas fa-database"></i>
+        </div>
+        <span class="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400">Backup</span>
+    </a>
+</div>
+@endif
 
 <!-- Announcements Section -->
 @if($announcements->count() > 0 && (!$settings || $settings->show_announcements))
@@ -51,10 +96,7 @@
                 </div>
                 <p class="text-sm leading-relaxed font-medium opacity-80">{{ $announcement->message }}</p>
                 <div class="mt-2 flex items-center gap-2">
-                    <div class="w-4 h-4 rounded-full bg-black/10 flex items-center justify-center">
-                        <i class="fas fa-user text-[8px]"></i>
-                    </div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest opacity-60">Admin: {{ $announcement->user->name }}</span>
+                    <span class="px-2 py-0.5 rounded bg-black/10 text-[8px] font-bold uppercase tracking-widest">{{ $announcement->target_role == 'all' ? 'Publik' : 'Internal: ' . $announcement->target_role }}</span>
                 </div>
             </div>
 
@@ -138,48 +180,98 @@
 </div>
 @endif
 
-<!-- Visitors Chart Section -->
-<div class="mb-10 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
-    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-        <div>
-            <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Statistik Pengunjung</h4>
-            <p id="chartDescription" class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Tren kunjungan harian (30 hari terakhir)</p>
-        </div>
-        <div class="flex items-center gap-3">
-            <select id="chartRange" class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-red-600 transition-all outline-none">
-                <option value="daily" selected>Harian</option>
-                <option value="weekly">Mingguan</option>
-                <option value="monthly">Bulanan</option>
-                <option value="yearly">Tahunan</option>
-            </select>
-            <div class="flex items-center gap-2 ml-4">
-                <span class="w-3 h-3 rounded-full bg-red-600"></span>
-                <span class="text-[10px] font-black text-gray-500 uppercase">Visits</span>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+    <!-- Main Column (Left/Center) -->
+    <div class="xl:col-span-2 space-y-8">
+        
+        <!-- Visitors Chart Section -->
+        <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                <div>
+                    <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Statistik Pengunjung</h4>
+                    <p id="chartDescription" class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Tren kunjungan harian (30 hari terakhir)</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <select id="chartRange" class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-red-600 transition-all outline-none">
+                        <option value="daily" selected>Harian</option>
+                        <option value="weekly">Mingguan</option>
+                        <option value="monthly">Bulanan</option>
+                        <option value="yearly">Tahunan</option>
+                    </select>
+                </div>
+            </div>
+            <div class="h-[300px] w-full relative">
+                <div id="chartLoading" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center hidden">
+                    <i class="fas fa-circle-notch fa-spin text-red-600 text-2xl"></i>
+                </div>
+                <canvas id="visitorChart"></canvas>
             </div>
         </div>
-    </div>
-    <div class="h-[300px] w-full relative">
-        <div id="chartLoading" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center hidden">
-            <i class="fas fa-circle-notch fa-spin text-red-600 text-2xl"></i>
-        </div>
-        <canvas id="visitorChart"></canvas>
-    </div>
-</div>
 
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-    <!-- Recent Content (Left/Center Column) -->
-    <div class="xl:col-span-2 space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Popular Content -->
+            @if(!$settings || $settings->show_popular_posts)
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Berita Populer</h4>
+                    <i class="fas fa-fire text-orange-500"></i>
+                </div>
+                <div class="space-y-4">
+                    @foreach($popularPosts as $post)
+                        <div class="flex items-center gap-3 group">
+                            <div class="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 text-[10px] font-black shrink-0">
+                                {{ $loop->iteration }}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <a href="{{ route('landing.post', $post->slug) }}" target="_blank" class="text-xs font-bold text-gray-900 dark:text-white truncate block hover:text-red-700 transition">{{ $post->title }}</a>
+                                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">{{ number_format($post->views) }} Kali Dilihat</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            <!-- Upcoming Events -->
+            @if(!$settings || $settings->show_upcoming_events)
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Agenda Terdekat</h4>
+                    <a href="{{ route('events.index') }}" class="text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline">Kalender</a>
+                </div>
+                <div class="space-y-4">
+                    @forelse($upcomingEvents as $event)
+                        <div class="flex gap-3">
+                            <div class="shrink-0 w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-xl flex flex-col items-center justify-center border border-red-100 dark:border-red-800">
+                                <span class="text-[8px] font-black text-red-600 dark:text-red-400 uppercase">{{ $event->start_date->format('M') }}</span>
+                                <span class="text-sm font-black text-gray-900 dark:text-white leading-none">{{ $event->start_date->format('d') }}</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-bold text-gray-900 dark:text-white truncate">{{ $event->title }}</p>
+                                <p class="text-[9px] text-gray-400 truncate uppercase font-bold tracking-widest mt-0.5">
+                                    <i class="fas fa-clock mr-1"></i> {{ $event->start_date->format('H:i') }}
+                                </p>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-[11px] text-gray-400 italic text-center py-4">Belum ada agenda.</p>
+                    @endforelse
+                </div>
+            </div>
+            @endif
+        </div>
+
         <!-- Recent Posts -->
         @if(!$settings || $settings->show_recent_posts)
         <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
             <div class="flex items-center justify-between mb-6">
-                <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Berita Terbaru</h4>
+                <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Update Berita</h4>
                 <a href="{{ route('posts.index') }}" class="text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline">Lihat Semua</a>
             </div>
             <div class="space-y-4">
                 @foreach($recentPosts as $post)
                     <div class="flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded-2xl transition group">
-                        <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-gray-100 dark:border-slate-700">
+                        <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-gray-100 dark:border-slate-700">
                             @if($post->image)
                                 <img src="{{ asset('storage/' . $post->image) }}" class="w-full h-full object-cover">
                             @else
@@ -208,87 +300,103 @@
             </div>
         </div>
         @endif
+    </div>
 
-        <!-- Recent Interactions (Comments & Contacts) -->
-        @if(!$settings || $settings->show_recent_interactions)
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Recent Comments -->
-            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
-                <div class="flex items-center justify-between mb-6">
-                    <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Komentar</h4>
-                    <a href="{{ route('comments.index') }}" class="text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline">Moderasi</a>
-                </div>
-                <div class="space-y-4">
-                    @foreach($recentComments as $comment)
-                        <div class="p-4 bg-slate-50 dark:bg-slate-800/30 rounded-2xl border border-gray-50 dark:border-slate-800">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs font-bold text-gray-900 dark:text-white">{{ $comment->user_name }}</span>
-                                <span class="text-[8px] text-gray-400 italic">{{ $comment->created_at->diffForHumans() }}</span>
-                            </div>
-                            <p class="text-[11px] text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">"{{ $comment->comment }}"</p>
-                        </div>
-                    @endforeach
-                </div>
+    <!-- Sidebar (Right Column) -->
+    <div class="space-y-8">
+        
+        <!-- Personal To-Do List -->
+        @if(!$settings || $settings->show_todo_list)
+        <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800" x-data="{ adding: false }">
+            <div class="flex items-center justify-between mb-6">
+                <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Catatan Tugas</h4>
+                <button @click="adding = !adding" class="text-red-600 hover:text-red-700 transition">
+                    <i class="fas" :class="adding ? 'fa-times' : 'fa-plus-circle'"></i>
+                </button>
+            </div>
+            
+            <div x-show="adding" class="mb-6 animate-fade-in">
+                <form action="{{ route('todos.store') }}" method="POST">
+                    @csrf
+                    <input type="text" name="task" placeholder="Tulis tugas baru..." required 
+                           class="w-full px-4 py-2 text-xs bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-red-600 outline-none transition">
+                </form>
             </div>
 
-            <!-- Recent Inbox -->
-            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
-                <div class="flex items-center justify-between mb-6">
-                    <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Pesan Masuk</h4>
-                    <a href="{{ route('contacts.index') }}" class="text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline">Semua</a>
+            <div class="space-y-3 max-h-[300px] overflow-y-auto no-scrollbar">
+                @forelse($myTodos as $todo)
+                    <div class="flex items-center gap-3 group">
+                        <form action="{{ route('todos.toggle', $todo) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-colors
+                                {{ $todo->is_completed ? 'bg-green-500 border-green-500 text-white' : 'border-gray-200 dark:border-slate-700 text-transparent hover:border-red-500' }}">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </button>
+                        </form>
+                        <span class="text-xs font-medium flex-1 truncate {{ $todo->is_completed ? 'text-gray-400 line-through' : 'text-gray-700 dark:text-gray-300' }}">
+                            {{ $todo->task }}
+                        </span>
+                        <form action="{{ route('todos.destroy', $todo) }}" method="POST" class="opacity-0 group-hover:opacity-100 transition-opacity">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-gray-400 hover:text-red-600 transition text-[10px]">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                @empty
+                    <p class="text-[10px] text-gray-400 italic text-center py-4">Belum ada tugas.</p>
+                @endforelse
+            </div>
+        </div>
+        @endif
+
+        <!-- Server Status Info -->
+        @if(!$settings || $settings->show_server_status)
+        <div class="bg-gray-900 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden">
+            <i class="fas fa-server absolute -bottom-10 -right-10 text-9xl text-white/5"></i>
+            <h4 class="text-xs font-black uppercase tracking-[0.2em] mb-6 opacity-60">Status Server</h4>
+            <div class="space-y-6 relative z-10">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold uppercase opacity-60">PHP Version</span>
+                    <span class="text-xs font-black">{{ $serverInfo['php_version'] }}</span>
                 </div>
-                <div class="space-y-4">
-                    @foreach($recentContacts as $contact)
-                        <div class="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded-xl transition">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 shrink-0">
-                                <i class="fas fa-envelope text-xs"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs font-bold text-gray-900 dark:text-white truncate">{{ $contact->subject }}</p>
-                                <p class="text-[10px] text-gray-400 truncate">{{ $contact->name }}</p>
-                            </div>
-                            @if(!$contact->is_read)
-                                <div class="w-2 h-2 rounded-full bg-blue-600"></div>
-                            @endif
-                        </div>
-                    @endforeach
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold uppercase opacity-60">Laravel</span>
+                    <span class="text-xs font-black">v{{ $serverInfo['laravel_version'] }}</span>
+                </div>
+                <div class="h-px bg-white/10 w-full"></div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-bold uppercase opacity-60">Disk Usage</span>
+                        <span class="text-[10px] font-black">{{ $serverInfo['disk_usage_percent'] }}%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                        <div class="h-full bg-red-500" style="width: {{ $serverInfo['disk_usage_percent'] }}%"></div>
+                    </div>
+                    <p class="text-[8px] text-right mt-1 opacity-40 uppercase font-black">{{ $serverInfo['disk_free'] }} Free of {{ $serverInfo['disk_total'] }}</p>
                 </div>
             </div>
         </div>
         @endif
-    </div>
 
-    <!-- Sidebar Info (Right Column) -->
-    <div class="space-y-8">
-        <!-- Quick Stats -->
+        <!-- Info Akademik -->
         @if(!$settings || $settings->show_academic_info)
-        <div class="bg-red-700 rounded-[2.5rem] p-8 text-white shadow-xl shadow-red-100 dark:shadow-none relative overflow-hidden">
+        <div class="bg-red-700 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden">
             <i class="fas fa-university absolute -bottom-10 -right-10 text-9xl text-white/10"></i>
             <h4 class="text-xs font-black uppercase tracking-[0.2em] mb-6 opacity-60">Info Akademik</h4>
-            <div class="space-y-6 relative z-10">
+            <div class="space-y-4 relative z-10">
                 <div class="flex items-center justify-between">
-                    <span class="text-sm font-bold">Program Studi</span>
-                    <span class="text-2xl font-black">{{ $stats['study_programs'] }}</span>
+                    <span class="text-[10px] font-bold uppercase opacity-80">Prodi</span>
+                    <span class="text-lg font-black">{{ $stats['study_programs'] }}</span>
                 </div>
-                <div class="h-px bg-white/10 w-full"></div>
                 <div class="flex items-center justify-between">
-                    <span class="text-sm font-bold">Total Pengguna</span>
-                    <span class="text-2xl font-black">{{ $stats['users'] }}</span>
+                    <span class="text-[10px] font-bold uppercase opacity-80">Dosen</span>
+                    <span class="text-lg font-black">{{ $stats['lecturers'] }}</span>
                 </div>
-                <div class="h-px bg-white/10 w-full"></div>
                 <div class="flex items-center justify-between">
-                    <span class="text-sm font-bold">Dosen & Staf</span>
-                    <span class="text-2xl font-black">{{ $stats['lecturers'] }}</span>
-                </div>
-                <div class="h-px bg-white/10 w-full"></div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-bold">Kegiatan & Event</span>
-                    <span class="text-2xl font-black">{{ $stats['events'] }}</span>
-                </div>
-                <div class="h-px bg-white/10 w-full"></div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-bold">File Dokumen</span>
-                    <span class="text-2xl font-black">{{ $stats['documents'] }}</span>
+                    <span class="text-[10px] font-bold uppercase opacity-80">Kegiatan</span>
+                    <span class="text-lg font-black">{{ $stats['events'] }}</span>
                 </div>
             </div>
         </div>
@@ -305,49 +413,19 @@
                 @foreach($recentLogs as $log)
                     <div class="flex gap-3">
                         <div class="shrink-0 mt-1">
-                            <div class="w-2 h-2 rounded-full bg-red-600"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-red-600"></div>
                         </div>
-                        <div>
-                            <p class="text-[11px] text-gray-700 dark:text-gray-300">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-[10px] text-gray-700 dark:text-gray-300 leading-tight">
                                 <strong class="text-gray-900 dark:text-white">{{ $log->user->name ?? 'System' }}</strong> 
                                 {{ $log->description }}
                             </p>
-                            <p class="text-[9px] text-gray-400 italic mt-0.5">{{ $log->created_at->diffForHumans() }}</p>
+                            <p class="text-[8px] text-gray-400 italic mt-0.5">{{ $log->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
                 @endforeach
             </div>
-            <a href="{{ route('logs.index') }}" class="block text-center mt-6 py-3 bg-gray-50 dark:bg-slate-800 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-red-700 transition">Lihat Semua Log</a>
-        </div>
-        @endif
-
-        @if(!$settings || $settings->show_my_activity)
-        <!-- My Recent Activity -->
-        <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-slate-800">
-            <div class="flex items-center justify-between mb-6">
-                <h4 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Aktivitas Saya</h4>
-                <i class="fas fa-user-edit text-gray-300"></i>
-            </div>
-            <div class="space-y-4">
-                @php
-                    $myLogs = \App\Models\ActivityLog::where('user_id', auth()->id())->latest()->take(5)->get();
-                @endphp
-                @forelse($myLogs as $log)
-                    <div class="flex gap-3">
-                        <div class="shrink-0 mt-1">
-                            <div class="w-2 h-2 rounded-full bg-blue-600"></div>
-                        </div>
-                        <div>
-                            <p class="text-[11px] text-gray-700 dark:text-gray-300">
-                                {{ $log->description }}
-                            </p>
-                            <p class="text-[9px] text-gray-400 italic mt-0.5">{{ $log->created_at->diffForHumans() }}</p>
-                        </div>
-                    </div>
-                @empty
-                    <p class="text-xs text-gray-400 italic text-center py-4">Belum ada aktivitas.</p>
-                @endforelse
-            </div>
+            <a href="{{ route('logs.index') }}" class="block text-center mt-6 py-3 bg-gray-50 dark:bg-slate-800 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-red-700 transition">Lihat Semua</a>
         </div>
         @endif
     </div>

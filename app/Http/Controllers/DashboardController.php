@@ -46,10 +46,33 @@ class DashboardController extends Controller
         $recentLogs = ActivityLog::with('user')->latest()->take(10)->get();
         $announcements = Announcement::active()->forUser(auth()->user())->latest()->take(5)->get();
         
+        $popularPosts = Post::orderBy('views', 'desc')->take(5)->get();
+        $upcomingEvents = \App\Models\Event::where('start_date', '>=', now())->orderBy('start_date', 'asc')->take(5)->get();
+        $myTodos = \App\Models\Todo::where('user_id', auth()->id())->orderBy('is_completed')->orderBy('order')->latest()->get();
+
+        $serverInfo = [
+            'php_version' => PHP_VERSION,
+            'laravel_version' => app()->version(),
+            'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
+            'disk_free' => $this->formatBytes(disk_free_space(base_path())),
+            'disk_total' => $this->formatBytes(disk_total_space(base_path())),
+            'disk_usage_percent' => round((1 - (disk_free_space(base_path()) / disk_total_space(base_path()))) * 100),
+        ];
+
         $role = auth()->user()->roles->first();
         $settings = $role ? $role->dashboardSetting : null;
 
-        return view('dashboard', compact('stats', 'recentPosts', 'recentComments', 'recentContacts', 'recentLogs', 'announcements', 'settings', 'chartData'));
+        return view('dashboard', compact('stats', 'recentPosts', 'recentComments', 'recentContacts', 'recentLogs', 'announcements', 'settings', 'chartData', 'popularPosts', 'upcomingEvents', 'myTodos', 'serverInfo'));
+    }
+
+    private function formatBytes($bytes, $precision = 2)
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 
     public function chartData(Request $request)

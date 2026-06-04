@@ -32,6 +32,11 @@ use App\Http\Controllers\AccountController;
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData'])->name('dashboard.chart-data');
 
+// Todo routes
+Route::post('/todos', [\App\Http\Controllers\TodoController::class, 'store'])->name('todos.store');
+Route::post('/todos/{todo}/toggle', [\App\Http\Controllers\TodoController::class, 'toggle'])->name('todos.toggle');
+Route::delete('/todos/{todo}', [\App\Http\Controllers\TodoController::class, 'destroy'])->name('todos.destroy');
+
 // Granular permissions are handled inside controllers for cleaner routes
 Route::resource('users', UserController::class);
 Route::resource('roles', RoleController::class);
