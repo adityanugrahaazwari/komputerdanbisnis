@@ -18,7 +18,8 @@ class AnnouncementController extends Controller
     public function create()
     {
         $this->authorizePermission('announcements_create');
-        return view('announcements.create');
+        $roles = \App\Models\Role::all();
+        return view('announcements.create', compact('roles'));
     }
 
     public function store(AnnouncementRequest $request)
@@ -32,6 +33,7 @@ class AnnouncementController extends Controller
             'title' => $validated['title'],
             'message' => $validated['message'],
             'type' => $validated['type'],
+            'target_role' => $validated['target_role'],
             'is_active' => true,
         ]);
 

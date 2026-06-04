@@ -16,15 +16,29 @@
                 @error('title') <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p> @enderror
             </div>
 
-            <div>
-                <label for="type" class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Tipe Pesan</label>
-                <select name="type" id="type" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold">
-                    <option value="info">Informasi (Biru)</option>
-                    <option value="success">Sukses (Hijau)</option>
-                    <option value="warning">Peringatan (Kuning)</option>
-                    <option value="danger">Penting/Bahaya (Merah)</option>
-                </select>
-                @error('type') <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p> @enderror
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="type" class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Tipe Pesan</label>
+                    <select name="type" id="type" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold appearance-none">
+                        <option value="info">Informasi (Biru)</option>
+                        <option value="success">Sukses (Hijau)</option>
+                        <option value="warning">Peringatan (Kuning)</option>
+                        <option value="danger">Penting/Bahaya (Merah)</option>
+                    </select>
+                    @error('type') <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label for="target_role" class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Target Audiens</label>
+                    <select name="target_role" id="target_role" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-600 transition-all outline-none text-gray-700 dark:text-gray-200 font-bold appearance-none">
+                        <option value="all">Semua Orang (Termasuk Pengunjung)</option>
+                        <hr>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->slug }}">Hanya {{ $role->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('target_role') <p class="mt-1 text-xs text-red-500 font-bold ml-1">{{ $message }}</p> @enderror
+                </div>
             </div>
 
             <div>

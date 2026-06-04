@@ -20,6 +20,7 @@
                 <tr class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
                     <th class="px-6 py-3">Status</th>
                     <th class="px-6 py-3">Judul & Pesan</th>
+                    <th class="px-6 py-3">Target</th>
                     <th class="px-6 py-3">Pembuat</th>
                     <th class="px-6 py-3 text-right">Aksi</th>
                 </tr>
@@ -50,6 +51,13 @@
                             </span>
                             <span class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1 mt-1">{{ $item->message }}</span>
                         </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        @if($item->target_role == 'all')
+                            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 rounded-full text-[10px] font-black uppercase tracking-widest">Public</span>
+                        @else
+                            <span class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-[10px] font-black uppercase tracking-widest">{{ $item->target_role }}</span>
+                        @endif
                     </td>
                     <td class="px-6 py-4 text-xs font-medium text-gray-600 dark:text-gray-400">
                         {{ $item->user->name }}<br>

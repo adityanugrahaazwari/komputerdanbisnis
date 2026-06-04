@@ -25,6 +25,7 @@ class AnnouncementRequest extends FormRequest
             'title' => 'required|string|max:255',
             'message' => 'required|string',
             'type' => 'required|in:info,success,warning,danger',
+            'target_role' => 'required|string',
         ];
     }
 }

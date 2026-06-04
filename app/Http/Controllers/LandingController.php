@@ -42,8 +42,8 @@ class LandingController extends Controller
         // Fetch active testimonials
         $testimonials = Testimonial::active()->ordered()->get();
 
-        // Fetch active announcements
-        $announcements = Announcement::active()->latest()->get();
+        // Fetch active announcements (public only)
+        $announcements = Announcement::active()->where('target_role', 'all')->latest()->get();
 
         // Fetch some lecturers for landing page
         $lecturers = \App\Models\Lecturer::active()->with('studyProgram')->ordered()->take(8)->get();
