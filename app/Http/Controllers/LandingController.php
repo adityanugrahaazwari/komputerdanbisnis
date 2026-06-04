@@ -39,9 +39,6 @@ class LandingController extends Controller
             ->take(3)
             ->get();
 
-        // Fetch active social media
-        $socialMedia = SocialMedia::active()->ordered()->get();
-
         // Fetch active testimonials
         $testimonials = Testimonial::active()->ordered()->get();
 
@@ -54,7 +51,7 @@ class LandingController extends Controller
         // Fetch total unique visitor count
         $visitorCount = Visitor::count();
 
-        return view('welcome', compact('profiles', 'studyPrograms', 'structures', 'services', 'latestPosts', 'socialMedia', 'testimonials', 'visitorCount', 'lecturers', 'announcements'));
+        return view('welcome', compact('profiles', 'studyPrograms', 'structures', 'services', 'latestPosts', 'testimonials', 'visitorCount', 'lecturers', 'announcements'));
     }
 
     public function profile()
@@ -64,34 +61,31 @@ class LandingController extends Controller
             ->with('children')
             ->ordered()
             ->get();
-        $socialMedia = SocialMedia::active()->ordered()->get();
 
         $seoTitle = 'Profil Jurusan - JKB POLITALA';
         $seoDescription = 'Mengenal lebih dalam sejarah, visi, misi, dan struktur kepemimpinan Jurusan Komputer dan Bisnis Politala.';
 
-        return view('profile', compact('profiles', 'structures', 'socialMedia', 'seoTitle', 'seoDescription'));
+        return view('profile', compact('profiles', 'structures', 'seoTitle', 'seoDescription'));
     }
 
     public function studyPrograms()
     {
         $studyPrograms = StudyProgram::active()->get();
-        $socialMedia = SocialMedia::active()->ordered()->get();
         
         $seoTitle = 'Program Studi - JKB POLITALA';
         $seoDescription = 'Daftar program studi unggulan di Jurusan Komputer dan Bisnis Politeknik Negeri Tanah Laut.';
         
-        return view('study-programs-landing', compact('studyPrograms', 'socialMedia', 'seoTitle', 'seoDescription'));
+        return view('study-programs-landing', compact('studyPrograms', 'seoTitle', 'seoDescription'));
     }
 
     public function services()
     {
         $services = Service::active()->ordered()->get();
-        $socialMedia = SocialMedia::active()->ordered()->get();
         
         $seoTitle = 'Layanan Eksternal - JKB POLITALA';
         $seoDescription = 'Berbagai layanan eksternal dan aplikasi pendukung yang disediakan oleh Jurusan Komputer dan Bisnis.';
 
-        return view('services-landing', compact('services', 'socialMedia', 'seoTitle', 'seoDescription'));
+        return view('services-landing', compact('services', 'seoTitle', 'seoDescription'));
     }
 
     public function showPost($slug)
@@ -101,8 +95,7 @@ class LandingController extends Controller
             ->with(['user', 'category', 'approvedComments'])
             ->firstOrFail();
             
-        $socialMedia = SocialMedia::active()->ordered()->get();
-        return view('post-detail', compact('post', 'socialMedia'));
+        return view('post-detail', compact('post'));
     }
 
     public function allPosts(Request $request)
@@ -128,12 +121,11 @@ class LandingController extends Controller
         $posts = $query->paginate(9)->withQueryString();
         
         $categories = \App\Models\Category::all();
-        $socialMedia = SocialMedia::active()->ordered()->get();
         
         $seoTitle = 'Berita & Artikel - JKB POLITALA';
         $seoDescription = 'Dapatkan informasi terbaru mengenai kegiatan, prestasi, dan pengumuman di Jurusan Komputer dan Bisnis.';
 
-        return view('news-index', compact('posts', 'socialMedia', 'categories', 'seoTitle', 'seoDescription'));
+        return view('news-index', compact('posts', 'categories', 'seoTitle', 'seoDescription'));
     }
 
     public function gallery()
@@ -149,23 +141,20 @@ class LandingController extends Controller
             ->ordered()
             ->paginate(12);
 
-        $socialMedia = SocialMedia::active()->ordered()->get();
-        
         $seoTitle = 'Galeri Foto - JKB POLITALA';
         $seoDescription = 'Koleksi dokumentasi kegiatan, fasilitas, dan momen berharga di Jurusan Komputer dan Bisnis.';
 
-        return view('gallery-index', compact('galleryGroups', 'ungroupedGalleries', 'socialMedia', 'seoTitle', 'seoDescription'));
+        return view('gallery-index', compact('galleryGroups', 'ungroupedGalleries', 'seoTitle', 'seoDescription'));
     }
 
     public function downloads()
     {
         $documents = \App\Models\Document::active()->latest()->get()->groupBy('category');
-        $socialMedia = SocialMedia::active()->ordered()->get();
         
         $seoTitle = 'Pusat Unduhan - JKB POLITALA';
         $seoDescription = 'Unduh berbagai dokumen penting, formulir, kurikulum, dan materi pembelajaran di sini.';
 
-        return view('downloads-index', compact('documents', 'socialMedia', 'seoTitle', 'seoDescription'));
+        return view('downloads-index', compact('documents', 'seoTitle', 'seoDescription'));
     }
 
     public function lecturers(Request $request)
@@ -189,22 +178,20 @@ class LandingController extends Controller
 
         $lecturers = $query->paginate(12)->withQueryString();
         $studyPrograms = StudyProgram::all();
-        $socialMedia = SocialMedia::active()->ordered()->get();
 
         $seoTitle = 'Direktori Dosen & Staf - JKB POLITALA';
         $seoDescription = 'Daftar pengajar dan staf profesional di lingkungan Jurusan Komputer dan Bisnis Politala.';
 
-        return view('lecturer-index', compact('lecturers', 'studyPrograms', 'socialMedia', 'seoTitle', 'seoDescription'));
+        return view('lecturer-index', compact('lecturers', 'studyPrograms', 'seoTitle', 'seoDescription'));
     }
 
     public function calendar()
     {
         $events = \App\Models\Event::active()->orderBy('start_date')->get();
-        $socialMedia = SocialMedia::active()->ordered()->get();
         
         $seoTitle = 'Kalender Akademik & Agenda - JKB POLITALA';
         $seoDescription = 'Pantau jadwal kegiatan akademik, seminar, webinar, dan event penting lainnya di JKB Politala.';
 
-        return view('calendar-index', compact('events', 'socialMedia', 'seoTitle', 'seoDescription'));
+        return view('calendar-index', compact('events', 'seoTitle', 'seoDescription'));
     }
 }

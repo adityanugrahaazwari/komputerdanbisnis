@@ -16,6 +16,27 @@
         @endcan
     </div>
 
+    <!-- Filter Section -->
+    <div class="mb-8 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-gray-100 dark:border-slate-800">
+        <form action="{{ route('users.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+            <div class="relative flex-1">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau email..." class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary outline-none transition-all">
+                <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+            </div>
+            
+            <div class="flex gap-2">
+                <button type="submit" class="px-8 bg-gray-900 dark:bg-primary text-white font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest hover:opacity-90 transition shadow-lg shadow-gray-200 dark:shadow-none">
+                    Cari
+                </button>
+                @if(request('search'))
+                    <a href="{{ route('users.index') }}" class="px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-500 hover:text-red-600 transition flex items-center justify-center">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                @endif
+            </div>
+        </form>
+    </div>
+
     <div class="overflow-x-auto">
         <table class="w-full text-left">
             <thead>

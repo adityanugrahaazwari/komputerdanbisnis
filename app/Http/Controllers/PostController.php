@@ -16,7 +16,7 @@ class PostController extends Controller
 {
     use LogsActivity, UploadsFiles;
 
-    public function index()
+    public function index(Request $request)
     {
         $this->authorizePermission('posts_view');
         
@@ -26,8 +26,27 @@ class PostController extends Controller
             $query->where('user_id', auth()->id());
         }
 
-        $posts = $query->paginate(10);
-        return view('posts.index', compact('posts'));
+        // Apply filters
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $posts = $query->paginate(10)->withQueryString();
+        $categories = \App\Models\Category::all();
+
+        return view('posts.index', compact('posts', 'categories'));
     }
 
     public function create()

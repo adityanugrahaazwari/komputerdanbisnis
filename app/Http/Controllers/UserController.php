@@ -10,10 +10,22 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->authorizePermission('users_view');
-        $users = User::with('roles')->paginate(10);
+        
+        $query = User::with('roles')->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->paginate(10)->withQueryString();
+        
         return view('users.index', compact('users'));
     }
 

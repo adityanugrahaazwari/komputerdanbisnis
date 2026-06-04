@@ -46,3 +46,9 @@ Route::post('/kontak', [ContactController::class, 'store'])->name('contacts.stor
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Password Reset Routes
+Route::get('/forgot-password', [\App\Http\Controllers\PasswordResetController::class, 'create'])->name('password.request');
+Route::post('/forgot-password', [\App\Http\Controllers\PasswordResetController::class, 'store'])->name('password.email');
+Route::get('/reset-password/{token}', [\App\Http\Controllers\PasswordResetController::class, 'reset'])->name('password.reset');
+Route::post('/reset-password', [\App\Http\Controllers\PasswordResetController::class, 'update'])->name('password.update');

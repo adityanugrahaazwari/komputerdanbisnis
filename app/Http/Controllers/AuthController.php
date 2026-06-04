@@ -18,7 +18,7 @@ class AuthController extends Controller
 
     public function login(AuthRequest $request)
     {
-        $credentials = $request->validated();
+        $credentials = $request->only('email', 'password');
 
         $this->ensureIsNotRateLimited($request);
 

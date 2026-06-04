@@ -1,46 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ 
-    darkMode: localStorage.getItem('darkMode') === 'true'
-}" :class="{ 'dark': darkMode }">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('messages.services') }} - JKB POLITALA</title>
-    @include('partials.seo', [
-        'seoTitle' => __('messages.services') . ' - JKB POLITALA',
-        'seoDescription' => 'Layanan digital terintegrasi untuk mendukung aktivitas civitas akademika Jurusan Komputer dan Bisnis.'
-    ])
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <style>
-        :root {
-            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: 'var(--primary-color)',
-                        red: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
-                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
+@extends('layouts.frontend')
 
-@include('partials.navbar')
+@section('title', __('messages.services') . ' - ' . $siteSettings['name'])
 
-    <!-- Header -->
-
+@section('content')
     <!-- Header -->
     <header class="bg-slate-900 text-white py-12 md:py-20 text-center relative">
         <div class="container mx-auto px-4">
@@ -81,20 +43,4 @@
             @endforelse
         </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-gray-400 py-16 border-t-8 border-red-700 dark:border-red-900 text-center">
-        <div class="container mx-auto px-4 md:px-12">
-            <div class="flex justify-center space-x-6 text-2xl mb-8">
-                @foreach($socialMedia as $social)
-                    <a href="{{ $social->url }}" target="_blank" class="text-gray-600 hover:text-red-500 transition-colors" title="{{ $social->platform }}">
-                        <i class="{{ $social->icon }}"></i>
-                    </a>
-                @endforeach
-            </div>
-            <p class="text-sm font-bold tracking-widest uppercase">&copy; {{ date('Y') }} {{ __('messages.copyright') }}</p>
-        </div>
-    </footer>
-
-</body>
-</html>
+@endsection

@@ -1,44 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ 
-    darkMode: localStorage.getItem('darkMode') === 'true'
-}" :class="{ 'dark': darkMode }">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $post->title }} - JKB POLITALA</title>
-    @include('partials.seo', ['ogType' => 'article'])
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <style>
-        :root {
-            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: 'var(--primary-color)',
-                        red: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
-                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
+@extends('layouts.frontend')
 
-@include('partials.navbar')
+@section('title', $post->title . ' - ' . $siteSettings['name'])
 
-    <!-- Post Content -->
-
-    <!-- Post Content -->
+@section('content')
     <main class="container mx-auto px-4 md:px-12 py-16">
         <!-- Breadcrumbs -->
         @include('partials.breadcrumbs', [
@@ -62,7 +26,7 @@
                             @endif
                             <span>{{ $post->created_at->format('d M Y') }}</span>
                         </div>
-                        <h1 class="text-3xl md:text-5xl font-black leading-tight">{{ $post->title }}</h1>
+                        <h1 class="text-3xl md:text-5xl font-black leading-tight uppercase tracking-tight">{{ $post->title }}</h1>
                     </div>
                 </div>
             @else
@@ -75,7 +39,7 @@
                          @endif
                          <span>{{ $post->created_at->format('d M Y') }}</span>
                     </div>
-                    <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight">{{ $post->title }}</h1>
+                    <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight uppercase">{{ $post->title }}</h1>
                 </div>
             @endif
             
@@ -136,6 +100,10 @@
                                     <input type="email" name="user_email" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition text-sm">
                                 </div>
                             </div>
+                            <div class="hidden">
+                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Honey</label>
+                                <input type="text" name="honeypot" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition text-sm">
+                            </div>
                             <div>
                                 <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Komentar Anda</label>
                                 <textarea name="comment" rows="5" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition text-sm"></textarea>
@@ -190,9 +158,9 @@
             </div>
         </div>
     </main>
+@endsection
 
-@include('partials.footer')
-
+@section('scripts')
 <script>
     function copyLinkToInstagram() {
         const url = window.location.href;
@@ -263,6 +231,4 @@
         }, 3000);
     }
 </script>
-
-</body>
-</html>
+@endsection

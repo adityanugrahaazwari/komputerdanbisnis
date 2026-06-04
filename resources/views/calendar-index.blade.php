@@ -1,60 +1,19 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ 
-    darkMode: localStorage.getItem('darkMode') === 'true'
-}" :class="{ 'dark': darkMode }">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalender Kegiatan - JKB POLITALA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-    <style>
-        :root {
-            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: 'var(--primary-color)',
-                        red: {
-                            50: '#fef2f2',
-                            100: '#fee2e2',
-                            200: '#fecaca',
-                            300: '#fca5a5',
-                            400: '#f87171',
-                            500: 'var(--primary-color)',
-                            600: 'var(--primary-color)',
-                            700: 'var(--primary-color)',
-                            800: 'var(--primary-color)',
-                            900: 'var(--primary-color)',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        [x-cloak] { display: none !important; }
-        .fc { font-family: inherit; }
-        .fc .fc-toolbar-title { font-weight: 900; text-transform: uppercase; font-size: 1.25rem; letter-spacing: -0.025em; }
-        .fc .fc-button-primary { background-color: var(--primary-color); border-color: var(--primary-color); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; padding: 0.75rem 1.25rem; border-radius: 1rem; }
-        .fc .fc-button-primary:hover { background-color: var(--primary-color); border-color: var(--primary-color); filter: brightness(0.9); }
-        .fc .fc-button-primary:disabled { background-color: #fca5a5; border-color: #fca5a5; opacity: 0.5; }
-        .fc-theme-standard td, .fc-theme-standard th { border-color: #f1f5f9; }
-        .dark .fc-theme-standard td, .dark .fc-theme-standard th { border-color: #1e293b; }
-        .dark .fc .fc-list-day-cushion { background-color: #1e293b; }
-    </style>
-</head>
-<body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
+@extends('layouts.frontend')
 
-@include('partials.navbar')
+@section('title', 'Kalender Kegiatan - ' . $siteSettings['name'])
 
+@section('styles')
+    .fc { font-family: inherit; }
+    .fc .fc-toolbar-title { font-weight: 900; text-transform: uppercase; font-size: 1.25rem; letter-spacing: -0.025em; }
+    .fc .fc-button-primary { background-color: var(--primary-color); border-color: var(--primary-color); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; padding: 0.75rem 1.25rem; border-radius: 1rem; }
+    .fc .fc-button-primary:hover { background-color: var(--primary-color); border-color: var(--primary-color); filter: brightness(0.9); }
+    .fc .fc-button-primary:disabled { background-color: #fca5a5; border-color: #fca5a5; opacity: 0.5; }
+    .fc-theme-standard td, .fc-theme-standard th { border-color: #f1f5f9; }
+    .dark .fc-theme-standard td, .dark .fc-theme-standard th { border-color: #1e293b; }
+    .dark .fc .fc-list-day-cushion { background-color: #1e293b; }
+@endsection
+
+@section('content')
     <!-- Header -->
     <header class="bg-gradient-to-r from-primary to-primary/80 text-white py-12 md:py-20 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
@@ -62,11 +21,13 @@
             <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase">Kalender Kegiatan</h1>
             
             <!-- Breadcrumbs -->
-            <nav class="flex justify-center mb-8 text-xs font-bold uppercase tracking-widest opacity-70">
-                <a href="{{ url('/') }}" class="hover:text-red-200 transition">{{ __('messages.home') }}</a>
-                <span class="mx-3">/</span>
-                <span class="text-red-200">Kalender</span>
-            </nav>
+            @include('partials.breadcrumbs', [
+                'items' => [
+                    ['label' => 'Kalender', 'url' => '#']
+                ],
+                'class' => 'text-white/70 justify-center',
+                'activeClass' => 'text-red-200'
+            ])
         </div>
     </header>
 
@@ -139,9 +100,10 @@
             </div>
         </div>
     </main>
+@endsection
 
-@include('partials.footer')
-
+@section('scripts')
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -176,6 +138,4 @@
         calendar.render();
     });
 </script>
-
-</body>
-</html>
+@endsection

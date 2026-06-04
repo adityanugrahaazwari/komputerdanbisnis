@@ -25,6 +25,7 @@ class CommentRequest extends FormRequest
             'user_name' => 'required|string|max:255',
             'user_email' => 'required|email|max:255',
             'comment' => 'required|string',
+            'honeypot' => 'nullable|prohibited',
         ];
     }
 }

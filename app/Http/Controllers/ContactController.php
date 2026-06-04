@@ -11,7 +11,7 @@ class ContactController extends Controller
     // Public: Store contact message
     public function store(ContactRequest $request)
     {
-        $validated = $request->validated();
+        $validated = $request->safe()->except(['honeypot']);
 
         Contact::create($validated);
 

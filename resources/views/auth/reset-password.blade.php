@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Staff - JKB POLITALA</title>
+    <title>Reset Password - JKB POLITALA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
@@ -44,11 +44,12 @@
         <div class="bg-white/95 backdrop-blur-md p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
             
-            <h2 class="text-2xl font-black text-gray-900 mb-8">Login Staff</h2>
+            <h2 class="text-2xl font-black text-gray-900 mb-4">Reset Password</h2>
+            <p class="text-gray-500 text-sm mb-8">Silakan masukkan kata sandi baru Anda.</p>
 
             @if($errors->any())
                 <div class="bg-red-50 border-l-4 border-red-600 text-red-700 p-4 mb-8 rounded-r-lg" role="alert">
-                    <p class="font-bold text-sm uppercase mb-1">Gagal Login</p>
+                    <p class="font-bold text-sm uppercase mb-1">Terjadi Kesalahan</p>
                     <ul class="text-sm opacity-90">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -57,67 +58,44 @@
                 </div>
             @endif
 
-            <form action="{{ route('login') }}" method="POST" class="space-y-6">
+            <form action="{{ route('password.update') }}" method="POST" class="space-y-6">
                 @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
+                
                 <div>
                     <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2 ml-1">Alamat Email</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
                             <i class="fas fa-envelope"></i>
                         </span>
-                        <input type="email" name="email" value="admin@example.com" class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="nama@email.com">
+                        <input type="email" name="email" value="{{ $email ?? old('email') }}" required class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="nama@email.com">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2 ml-1">Kata Sandi</label>
+                    <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2 ml-1">Kata Sandi Baru</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
                             <i class="fas fa-lock"></i>
                         </span>
-                        <input type="password" name="password" value="password" class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="••••••••">
+                        <input type="password" name="password" required autofocus class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="••••••••">
                     </div>
                 </div>
 
-                <div class="hidden">
-                    <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2 ml-1">Honey</label>
-                    <input type="text" name="honeypot" class="w-full px-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none">
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <label class="flex items-center">
-                        <input type="checkbox" name="remember" class="rounded border-gray-300 text-primary shadow-sm focus:ring-primary">
-                        <span class="ml-2 text-xs font-bold text-gray-500 uppercase tracking-widest">Ingat Saya</span>
-                    </label>
-                    <a href="{{ route('password.request') }}" class="text-xs font-black text-primary uppercase tracking-widest hover:underline">Lupa Password?</a>
+                <div>
+                    <label class="block text-gray-700 text-xs font-black uppercase tracking-widest mb-2 ml-1">Konfirmasi Kata Sandi</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                            <i class="fas fa-check-double"></i>
+                        </span>
+                        <input type="password" name="password_confirmation" required class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none text-gray-700 font-medium" placeholder="••••••••">
+                    </div>
                 </div>
 
                 <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-2xl transition transform active:scale-[0.98] shadow-xl shadow-primary/20 uppercase tracking-widest">
-                    Masuk ke Sistem
+                    Simpan Kata Sandi
                 </button>
             </form>
-
-            <div class="mt-10 pt-8 border-t border-gray-100">
-                <div class="bg-primary/5 p-4 rounded-2xl border border-primary/10">
-                    <p class="text-[10px] font-black text-primary uppercase tracking-tighter mb-2">Akun Demo:</p>
-                    <div class="grid grid-cols-2 gap-4 text-[10px] text-primary/80 font-bold uppercase tracking-tight">
-                        <div>
-                            <p class="opacity-60 mb-0.5">ADMIN:</p>
-                            <p>admin@example.com</p>
-                        </div>
-                        <div>
-                            <p class="opacity-60 mb-0.5">OPERATOR:</p>
-                            <p>operator@example.com</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="text-center mt-8">
-            <a href="{{ url('/') }}" class="text-white/60 hover:text-white transition text-sm font-bold uppercase tracking-widest">
-                <i class="fas fa-arrow-left mr-2"></i> Kembali ke Beranda
-            </a>
         </div>
     </div>
 

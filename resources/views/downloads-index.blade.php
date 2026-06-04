@@ -1,43 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ 
-    darkMode: localStorage.getItem('darkMode') === 'true'
-}" :class="{ 'dark': darkMode }">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('messages.downloads') }} - JKB POLITALA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <style>
-        :root {
-            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: 'var(--primary-color)',
-                        red: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
-                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>[x-cloak] { display: none !important; }</style>
-</head>
-<body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
+@extends('layouts.frontend')
 
-@include('partials.navbar')
+@section('title', __('messages.downloads') . ' - ' . $siteSettings['name'])
 
-    <!-- Header -->
-
+@section('content')
     <!-- Header -->
     <header class="bg-gradient-to-r from-primary to-primary/80 text-white py-12 md:py-20 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
@@ -45,11 +10,13 @@
             <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase">Pusat <span class="text-red-200">{{ __('messages.downloads') }}</span></h1>
             
             <!-- Breadcrumbs -->
-            <nav class="flex justify-center mb-8 text-xs font-bold uppercase tracking-widest opacity-70">
-                <a href="{{ url('/') }}" class="hover:text-red-200 transition">{{ __('messages.home') }}</a>
-                <span class="mx-3">/</span>
-                <span class="text-red-200">{{ __('messages.downloads') }}</span>
-            </nav>
+            @include('partials.breadcrumbs', [
+                'items' => [
+                    ['label' => __('messages.downloads'), 'url' => '#']
+                ],
+                'class' => 'text-white/70 justify-center',
+                'activeClass' => 'text-red-200'
+            ])
             
             <p class="max-w-2xl mx-auto text-red-50 font-medium leading-relaxed opacity-90">
                 {{ __('messages.downloads_desc') }}
@@ -108,13 +75,4 @@
             </div>
         @endforelse
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-gray-400 py-16 border-t-8 border-red-700 dark:border-red-900 text-center">
-        <div class="container mx-auto px-4 md:px-12">
-            <p class="text-sm font-bold tracking-widest uppercase">&copy; {{ date('Y') }} {{ __('messages.copyright') }}</p>
-        </div>
-    </footer>
-
-</body>
-</html>
+@endsection

@@ -1,62 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth" x-data="{ 
-    darkMode: localStorage.getItem('darkMode') === 'true'
-}" :class="{ 'dark': darkMode }">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $siteSettings['name'] }} - Politeknik Negeri Tanah Laut</title>
-    @include('partials.seo')
-    @if(isset($siteSettings['favicon']) && $siteSettings['favicon'])
-        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $siteSettings['favicon']) }}">
-    @endif
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <style>
-        :root {
-            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: 'var(--primary-color)',
-                        red: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
-                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .hero-gradient {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color) 100%);
-            filter: saturate(1.1);
-        }
-        .dark .hero-gradient {
-            background: linear-gradient(135deg, #450a0a 0%, var(--primary-color) 100%);
-        }
-        [x-cloak] { display: none !important; }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
-</head>
-<body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300" x-data="{ 
-    annModalOpen: false, 
-    annActive: null 
-}">
+@extends('layouts.frontend')
 
+@section('title', $siteSettings['name'] . ' - Politeknik Negeri Tanah Laut')
+
+@section('announcements')
     <!-- Announcement Bar -->
     @if($announcements->count() > 0)
     <div 
@@ -134,9 +80,9 @@
             </button>
         </div>
     </div>
+@endsection
 
-@include('partials.navbar')
-
+@section('content')
     <!-- Hero Section -->
     <header id="beranda" class="hero-gradient text-white py-12 md:py-24 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
@@ -520,34 +466,70 @@
                         </div>
                     </div>
                 </div>
-                <div class="lg:w-1/2 w-full">
                     <div class="bg-white dark:bg-slate-900 p-8 md:p-12 rounded-[3rem] shadow-2xl border border-gray-100 dark:border-slate-800">
                         @if(session('success'))
-                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-8">
-                                {{ __('messages.success_message') }}
+                            <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-6 rounded-r-2xl mb-8 animate-fade-in shadow-sm">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle mr-3 text-xl"></i>
+                                    <div>
+                                        <p class="font-black uppercase text-xs tracking-widest mb-1">Berhasil Terkirim</p>
+                                        <p class="text-sm opacity-90">{{ session('success') }}</p>
+                                    </div>
+                                </div>
                             </div>
                         @endif
-                        <form action="{{ route('contacts.store') }}" method="POST" class="space-y-6">
+
+                        @if($errors->any())
+                            <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-6 rounded-r-2xl mb-8 animate-fade-in shadow-sm">
+                                <div class="flex items-center">
+                                    <i class="fas fa-exclamation-triangle mr-3 text-xl"></i>
+                                    <div>
+                                        <p class="font-black uppercase text-xs tracking-widest mb-1">Terjadi Kesalahan</p>
+                                        <p class="text-sm opacity-90">Mohon periksa kembali isian formulir Anda.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('contacts.store') }}#kontak" method="POST" class="space-y-6">
                             @csrf
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.full_name') }}</label>
-                                    <input type="text" name="name" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                                    <input type="text" name="name" value="{{ old('name') }}" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white @error('name') ring-2 ring-red-500 @enderror">
+                                    @error('name')
+                                        <p class="text-red-500 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider italic">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.email') }}</label>
-                                    <input type="email" name="email" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
+                                    <input type="email" name="email" value="{{ old('email') }}" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white @error('email') ring-2 ring-red-500 @enderror">
+                                    @error('email')
+                                        <p class="text-red-500 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider italic">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.subject') }}</label>
+                                    <input type="text" name="subject" value="{{ old('subject') }}" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white @error('subject') ring-2 ring-red-500 @enderror">
+                                    @error('subject')
+                                        <p class="text-red-500 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider italic">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="hidden">
+                                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Honey</label>
+                                    <input type="text" name="honeypot" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.subject') }}</label>
-                                <input type="text" name="subject" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white">
-                            </div>
-                            <div>
                                 <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{{ __('messages.message') }}</label>
-                                <textarea name="message" rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white"></textarea>
+                                <textarea name="message" rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-red-600 transition text-sm text-gray-900 dark:text-white @error('message') ring-2 ring-red-500 @enderror">{{ old('message') }}</textarea>
+                                @error('message')
+                                    <p class="text-red-500 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider italic">{{ $message }}</p>
+                                @enderror
                             </div>
-                            <button type="submit" class="w-full bg-red-700 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] hover:bg-red-800 transition shadow-xl shadow-primary/20 dark:shadow-none">
+                            <button type="submit" class="w-full bg-red-700 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] hover:bg-red-800 transition shadow-xl shadow-primary/20 dark:shadow-none transform active:scale-95">
                                 {{ __('messages.send_message') }}
                             </button>
                         </form>
@@ -556,8 +538,4 @@
             </div>
         </div>
     </section>
-
-@include('partials.footer')
-
-</body>
-</html>
+@endsection

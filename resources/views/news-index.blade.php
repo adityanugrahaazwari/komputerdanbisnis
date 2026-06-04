@@ -1,148 +1,97 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ 
-    darkMode: localStorage.getItem('darkMode') === 'true'
-}" :class="{ 'dark': darkMode }">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('messages.all_news') }} - JKB POLITALA</title>
-    @include('partials.seo', [
-        'seoTitle' => __('messages.all_news') . ' - JKB POLITALA',
-        'seoDescription' => 'Kumpulan berita dan informasi terbaru dari Jurusan Komputer dan Bisnis.'
-    ])
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <style>
-        :root {
-            --primary-color: {{ $siteSettings['primary_color'] ?? '#ef4444' }};
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: 'var(--primary-color)',
-                        red: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5', 400: '#f87171',
-                            500: 'var(--primary-color)', 600: 'var(--primary-color)', 700: 'var(--primary-color)', 800: 'var(--primary-color)', 900: 'var(--primary-color)',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>[x-cloak] { display: none !important; }</style>
-</head>
-<body class="bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
+@extends('layouts.frontend')
 
-@include('partials.navbar')
+@section('title', __('messages.all_news') . ' - ' . $siteSettings['name'])
 
-    <!-- Header -->
+@section('content')
+    <main class="container mx-auto px-4 md:px-12 py-12 md:py-20 min-h-[60vh]">
+        <!-- Breadcrumbs -->
+        @include('partials.breadcrumbs', [
+            'items' => [
+                ['label' => __('messages.news'), 'url' => '#']
+            ]
+        ])
 
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-primary to-primary/80 text-white py-12 md:py-20 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-        <div class="container mx-auto px-4 md:px-12 text-center relative z-10">
-            <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase">{{ __('messages.all_news') }}</h1>
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 gap-8">
+            <div class="text-center md:text-left">
+                <h1 class="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-4 tracking-tight uppercase">{{ __('messages.all_news') }}</h1>
+                <p class="text-gray-500 dark:text-gray-400 max-w-2xl font-medium">{{ __('messages.latest_news_desc') }}</p>
+            </div>
             
-            <!-- Breadcrumbs -->
-            @include('partials.breadcrumbs', [
-                'items' => [
-                    ['label' => __('messages.news'), 'url' => route('landing.news')]
-                ],
-                'class' => 'text-white/70 justify-center',
-                'activeClass' => 'text-red-200'
-            ])
-
-            <!-- Search & Filter Bar -->
-            <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 shadow-2xl">
-                <form action="{{ route('landing.news') }}" method="GET" class="flex flex-col md:flex-row gap-4">
-                    <div class="flex-1 relative">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-white/50"></i>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('messages.search_news') }}" class="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition">
-                    </div>
-                    <div class="md:w-64">
-                        <select name="category" class="w-full bg-white/10 border border-white/20 rounded-xl py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition appearance-none cursor-pointer">
-                            <option value="" class="bg-red-800">{{ __('messages.all_categories') }}</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->slug }}" class="bg-red-800" {{ request('category') == $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button type="submit" class="bg-white text-red-700 px-8 py-3 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-red-50 transition shadow-lg">
-                        {{ __('messages.filter') }}
+            <!-- Search & Filter -->
+            <div class="w-full md:w-auto flex flex-col sm:flex-row gap-4">
+                <form action="{{ route('landing.news') }}" method="GET" class="relative group">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('messages.search_news') }}" class="w-full sm:w-64 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl py-3 px-6 pr-12 focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm">
+                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center text-gray-400 group-hover:text-primary transition">
+                        <i class="fas fa-search text-xs"></i>
                     </button>
                 </form>
+
+                <div class="relative inline-block text-left" x-data="{ open: false }">
+                    <button @click="open = !open" class="inline-flex justify-center w-full rounded-2xl border-2 border-gray-100 dark:border-slate-800 shadow-sm px-6 py-3 bg-white dark:bg-slate-900 text-sm font-black text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition uppercase tracking-widest">
+                        {{ request('category') ? ($categories->where('slug', request('category'))->first()->name ?? __('messages.all_categories')) : __('messages.all_categories') }}
+                        <i class="fas fa-filter ml-2 text-[10px] mt-1"></i>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" x-cloak class="origin-top-right absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl bg-white dark:bg-slate-900 ring-1 ring-black ring-opacity-5 z-20 overflow-hidden border border-gray-100 dark:border-slate-800">
+                        <div class="py-2">
+                            <a href="{{ route('landing.news') }}" class="block px-6 py-3 text-xs font-black uppercase hover:bg-primary/5 dark:hover:bg-primary/10 hover:text-primary {{ !request('category') ? 'text-primary' : '' }}">
+                                {{ __('messages.all_categories') }}
+                            </a>
+                            @foreach($categories as $cat)
+                                <a href="{{ route('landing.news', ['category' => $cat->slug]) }}" class="block px-6 py-3 text-xs font-black uppercase hover:bg-primary/5 dark:hover:bg-primary/10 hover:text-primary {{ request('category') == $cat->slug ? 'text-primary' : '' }}">
+                                    {{ $cat->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </header>
 
-    <!-- News List -->
-    <main class="container mx-auto px-4 md:px-12 py-16 md:py-24">
-        @if(request('search') || request('category'))
-            <div class="mb-12 text-center">
-                <p class="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest text-xs">
-                    Hasil pencarian untuk: 
-                    @if(request('search')) <span class="text-red-600 dark:text-red-400">"{{ request('search') }}"</span> @endif
-                    @if(request('category')) <span class="ml-2 px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-[10px]">{{ request('category') }}</span> @endif
-                </p>
+        @if($posts->count() > 0)
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                @foreach($posts as $post)
+                    <article class="bg-white dark:bg-slate-900 rounded-[3rem] overflow-hidden shadow-xl dark:shadow-none flex flex-col border-b-[10px] border-primary transform hover:scale-[1.03] transition duration-500 border border-gray-100 dark:border-slate-800 group">
+                        @if($post->image)
+                            <div class="h-56 md:h-64 overflow-hidden relative">
+                                <img src="{{ asset('storage/' . $post->image) }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-1000">
+                                @if($post->category)
+                                    <span class="absolute top-6 left-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-primary shadow-lg">{{ $post->category->name }}</span>
+                                @endif
+                            </div>
+                        @else
+                            <div class="h-56 md:h-64 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-700 relative">
+                                <i class="fas fa-newspaper text-7xl md:text-8xl"></i>
+                                @if($post->category)
+                                    <span class="absolute top-6 left-6 bg-white dark:bg-slate-900 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-primary shadow-sm">{{ $post->category->name }}</span>
+                                @endif
+                            </div>
+                        @endif
+                        <div class="p-8 md:p-10 flex-1 flex flex-col">
+                            <div class="flex items-center text-[10px] font-bold text-gray-400 dark:text-gray-500 mb-6 uppercase tracking-[0.2em]">
+                                <i class="fas fa-calendar-alt mr-3 text-primary"></i> {{ $post->created_at->format('d M Y') }}
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-black text-gray-900 dark:text-white mb-6 leading-tight group-hover:text-primary transition line-clamp-2 h-14 md:h-16 uppercase tracking-tight">{{ $post->title }}</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-10 line-clamp-3 leading-relaxed italic">
+                                {{ strip_tags($post->content) }}
+                            </p>
+                            <a href="{{ route('landing.post', $post->slug) }}" class="mt-auto inline-flex items-center gap-4 bg-slate-50 dark:bg-slate-800 text-primary px-8 py-3 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-primary hover:text-white transition group/btn">
+                                {{ __('messages.read_more') }}
+                                <i class="fas fa-arrow-right transform group-hover/btn:translate-x-2 transition"></i>
+                            </a>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+            
+            <!-- Pagination -->
+            <div class="mt-20">
+                {{ $posts->links() }}
+            </div>
+        @else
+            <div class="text-center py-32 bg-white dark:bg-slate-900 rounded-[3rem] border-2 border-dashed border-gray-100 dark:border-slate-800">
+                <i class="fas fa-search text-6xl text-gray-200 dark:text-slate-800 mb-6 block"></i>
+                <p class="text-gray-400 dark:text-gray-600 font-bold uppercase tracking-widest">{{ __('messages.no_data') }}</p>
             </div>
         @endif
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 mb-16">
-            @forelse($posts as $post)
-            <article class="bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-xl dark:shadow-none flex flex-col hover:shadow-primary/10 dark:hover:shadow-none transition-all duration-300 border-b-8 border-red-700 group border border-gray-100 dark:border-slate-800">
-                @if($post->image)
-                    <div class="h-56 md:h-64 overflow-hidden relative">
-                        <img src="{{ asset('storage/' . $post->image) }}" class="h-full w-full object-cover group-hover:scale-110 transition duration-500">
-                        @if($post->category)
-                            <span class="absolute top-4 left-4 bg-red-700 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
-                                {{ $post->category->name }}
-                            </span>
-                        @endif
-                    </div>
-                @else
-                    <div class="h-56 md:h-64 w-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-200 dark:text-red-800 relative">
-                        <i class="fas fa-newspaper text-7xl md:text-8xl"></i>
-                        @if($post->category)
-                            <span class="absolute top-4 left-4 bg-red-700 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
-                                {{ $post->category->name }}
-                            </span>
-                        @endif
-                    </div>
-                @endif
-                <div class="p-6 md:p-8 flex-1 flex flex-col">
-                    <div class="flex items-center text-[10px] md:text-xs font-bold text-red-600 dark:text-red-400 mb-4 uppercase tracking-widest">
-                        <i class="fas fa-calendar-alt mr-2"></i> {{ $post->created_at->format('d M Y') }}
-                        <span class="mx-3 opacity-30">|</span>
-                        <i class="fas fa-user mr-1"></i> {{ $post->user->name }}
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-black text-gray-900 dark:text-white mb-4 leading-tight line-clamp-2 h-14 md:h-16 group-hover:text-red-700 dark:group-hover:text-red-400 transition-colors">{{ $post->title }}</h3>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-8 line-clamp-3 leading-relaxed">
-                        {{ strip_tags($post->content) }}
-                    </p>
-                    <a href="{{ route('landing.post', $post->slug) }}" class="text-red-700 dark:text-red-400 font-black hover:text-red-900 dark:hover:text-red-300 flex items-center mt-auto uppercase text-[10px] md:text-xs tracking-widest">
-                        {{ __('messages.read_more') }} <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-2"></i>
-                    </a>
-                </div>
-            </article>
-            @empty
-                <div class="col-span-full text-center py-32 bg-white dark:bg-slate-900 rounded-[3rem] shadow-inner border border-gray-100 dark:border-slate-800">
-                    <i class="fas fa-folder-open text-8xl text-red-100 dark:text-red-900/30 mb-6"></i>
-                    <p class="text-gray-400 text-xl md:text-2xl font-medium">{{ __('messages.no_data') }}</p>
-                </div>
-            @endforelse
-        </div>
-
-        <!-- Pagination -->
-        <div class="mt-16 flex justify-center">
-            {{ $posts->links() }}
-        </div>
     </main>
-
-@include('partials.footer')
-
-</body>
-</html>
+@endsection

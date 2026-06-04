@@ -91,13 +91,15 @@ class AppServiceProvider extends ServiceProvider
                 ];
 
                 $visitorCount = \App\Models\Visitor::count();
+                $socialMedia = \App\Models\SocialMedia::active()->ordered()->get();
 
                 $view->with([
                     'dynamicMenus' => $menus,
                     'frontendMenus' => $frontendMenus,
                     'notifications' => $notificationCounts,
                     'siteSettings' => $siteSettings,
-                    'visitorCount' => $visitorCount
+                    'visitorCount' => $visitorCount,
+                    'socialMedia' => $socialMedia
                 ]);
             } catch (\Exception $e) {
                 $view->with([

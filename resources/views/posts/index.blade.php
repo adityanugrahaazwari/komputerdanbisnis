@@ -16,6 +16,40 @@
         @endcan
     </div>
 
+    <!-- Filter Section -->
+    <div class="mb-8 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-gray-100 dark:border-slate-800">
+        <form action="{{ route('posts.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="relative">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul atau isi..." class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary outline-none transition-all">
+                <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+            </div>
+            
+            <select name="category" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary outline-none transition-all appearance-none cursor-pointer">
+                <option value="">Semua Kategori</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
+            </select>
+
+            <select name="status" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary outline-none transition-all appearance-none cursor-pointer">
+                <option value="">Semua Status</option>
+                <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>Published</option>
+                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+            </select>
+
+            <div class="flex gap-2">
+                <button type="submit" class="flex-1 bg-gray-900 dark:bg-primary text-white font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest hover:opacity-90 transition shadow-lg shadow-gray-200 dark:shadow-none">
+                    Filter
+                </button>
+                <a href="{{ route('posts.index') }}" class="px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-500 hover:text-red-600 transition flex items-center justify-center">
+                    <i class="fas fa-undo"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
     <div class="overflow-x-auto">
         <table class="w-full text-left">
             <thead>
